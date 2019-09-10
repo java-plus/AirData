@@ -1,6 +1,8 @@
 package fr.diginamic.entites;
 
-import java.util.Date;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -9,24 +11,33 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotBlank;
+import java.time.ZonedDateTime;
+
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class MesurePollution {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public long id;
-	double valeur;
-	String typeDeDonnee;
-	String date;
+	private Integer id;
+	@NotBlank
+	private Double valeur;
+	@NotBlank
+	private String typeDeDonnee;
+	@NotBlank
+	private ZonedDateTime date;
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "StationDeMesure_id")
-	StationDeMesure stationDeMesure;
+	private StationDeMesurePollution stationDeMesure;
 	
 	
 	
 	
-	public MesurePollution(double valeur, String typeDeDonnee, String date, StationDeMesure stationDeMesure) {
+	public MesurePollution(double valeur, String typeDeDonnee, ZonedDateTime date, StationDeMesurePollution stationDeMesure) {
 		super();
 		this.valeur = valeur;
 		this.typeDeDonnee = typeDeDonnee;
@@ -34,26 +45,6 @@ public class MesurePollution {
 		
 		this.stationDeMesure = stationDeMesure;
 	}
-	
-	
-	public double getValeur() {
-		return valeur;
-	}
-	public void setValeur(double valeur) {
-		this.valeur = valeur;
-	}
-	public String getTypeDeDonnee() {
-		return typeDeDonnee;
-	}
-	public void setTypeDeDonnee(String typeDeDonnee) {
-		this.typeDeDonnee = typeDeDonnee;
-	}
-	public String getDate() {
-		return date;
-	}
-	public void setDate(String date) {
-		this.date = date;
-	}
-	
+
 
 }
