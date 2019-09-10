@@ -4,10 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.PrePersist;
+import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.constraints.Email;
 import java.time.ZonedDateTime;
 
@@ -18,17 +16,18 @@ import java.time.ZonedDateTime;
 public class CompteUtilisateur {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-private ZonedDateTime dateInscription;
-private Boolean notificationMeteo;
-private Boolean notificationPollution;
+    private ZonedDateTime dateInscription;
+    private Boolean notificationMeteo;
+    private Boolean notificationPollution;
 
 
-@PrePersist
-public void prepersist(){
-    this.dateInscription = ZonedDateTime.now();
-}
+    @PrePersist
+    public void prepersist() {
+        this.dateInscription = ZonedDateTime.now();
+    }
 
 
 }

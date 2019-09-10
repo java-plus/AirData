@@ -1,17 +1,23 @@
 package fr.diginamic.entites;
 
-import org.springframework.data.annotation.Id;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 
 import javax.persistence.*;
 
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Favori {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToMany
+    @ManyToOne
     Commune commune;
 
     @ManyToOne
