@@ -11,6 +11,7 @@ public class Utilisateur {
     @Id
     private String id;
 
+    private String role;
     @NotBlank
     @Column(unique = true)
     private String identifiant;
