@@ -6,11 +6,11 @@ import fr.diginamic.entites.StationDeMesurePollution;
 
 public abstract class MesureUtils {
 
-	public static StationDeMesurePollution obtenirStationDeMesureCorrespondante(double latitude, double longitude,
+	public static StationDeMesurePollution obtenirStationDeMesureCorrespondante(Double latitude, Double longitude,
 			List<StationDeMesurePollution> listeDeStationsDeMesures) {
 
 		for (StationDeMesurePollution stationDeMesure : listeDeStationsDeMesures) {
-			if (stationDeMesure.getLatitude() == latitude && stationDeMesure.getLongitude() == longitude) {
+			if (stationDeMesure.getLatitude().equals(latitude) && stationDeMesure.getLongitude().equals(longitude)) {
 				return stationDeMesure;
 
 			}

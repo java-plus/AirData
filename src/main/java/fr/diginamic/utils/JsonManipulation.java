@@ -56,9 +56,9 @@ public class JsonManipulation {
 			// System.out.println("jsonObject " + i + " ------ " + jsonObject);
 
 			JSONObject jsonObjectGeometry = jsonObject.getJSONObject("geometry");
-			double latitude = (Double) jsonObjectGeometry.getJSONArray("coordinates").get(1);
+			Double latitude = (Double) jsonObjectGeometry.getJSONArray("coordinates").get(1);
 			// System.out.println(jsonObjectGeometry.getJSONArray("coordinates").get(0));
-			double longitude = (Double) jsonObjectGeometry.getJSONArray("coordinates").get(0);
+			Double longitude = (Double) jsonObjectGeometry.getJSONArray("coordinates").get(0);
 			// System.out.println(jsonObjectGeometry.getJSONArray("coordinates").get(1));
 
 			JSONObject jsonObjectFields = jsonObject.getJSONObject("fields");
@@ -68,8 +68,8 @@ public class JsonManipulation {
 			boolean stationsDeMesurePollutionExisteDeja = false;
 
 			for (StationDeMesurePollution stationsDeMesurePollution : listeDeStationsDeMesurePollution) {
-				if (stationsDeMesurePollution.getLatitude() == latitude
-						&& stationsDeMesurePollution.getLongitude() == longitude) {
+				if (stationsDeMesurePollution.getLatitude().equals(latitude)
+						&& stationsDeMesurePollution.getLongitude().equals(longitude)) {
 					stationsDeMesurePollutionExisteDeja = true;
 
 				}
@@ -80,7 +80,8 @@ public class JsonManipulation {
 			}
 
 			for (StationDeMesurePollution stationDeMesure : listeDeStationsDeMesurePollution) {
-				if (stationDeMesure.getLatitude() == latitude && stationDeMesure.getLongitude() == longitude) {
+				if (stationDeMesure.getLatitude().equals(latitude)
+						&& stationDeMesure.getLongitude().equals(longitude)) {
 					if (typeDonnee.equals("SO2")) {
 						stationDeMesure.setMesureSO2(true);
 					}
@@ -131,8 +132,8 @@ public class JsonManipulation {
 			StationDeMesurePollution stationDeMesure = new StationDeMesurePollution();
 
 			// obtenir latitude et longitude
-			double latitude = jsonObject.getJSONObject("geometry").getJSONArray("coordinates").getDouble(0);
-			double longitude = jsonObject.getJSONObject("geometry").getJSONArray("coordinates").getDouble(1);
+			Double latitude = jsonObject.getJSONObject("geometry").getJSONArray("coordinates").getDouble(1);
+			Double longitude = jsonObject.getJSONObject("geometry").getJSONArray("coordinates").getDouble(0);
 
 			stationDeMesure = MesureUtils.obtenirStationDeMesureCorrespondante(latitude, longitude,
 					listeDeStationDeMesure);
@@ -160,9 +161,9 @@ public class JsonManipulation {
 
 		for (int i = 0; i < count; i++) { // iterate through jsonArray
 
-			double longitude = myResponse.getJSONObject("communes").getJSONArray("list").getJSONObject(i)
+			Double longitude = myResponse.getJSONObject("communes").getJSONArray("list").getJSONObject(i)
 					.getJSONObject("coord").getDouble("Lon");
-			double latitude = myResponse.getJSONObject("communes").getJSONArray("list").getJSONObject(i)
+			Double latitude = myResponse.getJSONObject("communes").getJSONArray("list").getJSONObject(i)
 					.getJSONObject("coord").getDouble("Lat");
 			StationDeMesureMeteo stationDeMesureMeteo = new StationDeMesureMeteo(latitude, longitude);
 			listeDesStationMeteo.add(stationDeMesureMeteo);

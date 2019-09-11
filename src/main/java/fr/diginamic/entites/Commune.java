@@ -35,10 +35,10 @@ public class Commune {
 	@Pattern(regexp = "^[0-9]*$")
 	private String codeCommune;
 	@NotNull
-	private double latitude;
+	private Double latitude;
 
 	@NotNull
-	private double longitude;
+	private Double longitude;
 	@NotNull
 	private Integer population;
 
@@ -47,7 +47,7 @@ public class Commune {
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "StationDeMesureMeteo_id")
-	StationDeMesureMeteo StationDeMesureMeteo;
+	StationDeMesureMeteo stationDeMesureMeteo;
 	int distanceStationDeMesureMeteo;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
@@ -57,32 +57,32 @@ public class Commune {
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "StationDeMesureSO2_id")
-	StationDeMesurePollution StationDeMesureSO2;
+	StationDeMesurePollution stationDeMesureSO2;
 	int distanceSO2;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "StationDeMesurePM25_id")
-	StationDeMesurePollution StationDeMesurePM25;
+	StationDeMesurePollution stationDeMesurePM25;
 	int distancePM25;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "StationDeMesurePM10_id")
-	StationDeMesurePollution StationDeMesurePM10;
+	StationDeMesurePollution stationDeMesurePM10;
 	int distancePM10;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "StationDeMesureO3_id")
-	StationDeMesurePollution StationDeMesureO3;
+	StationDeMesurePollution stationDeMesureO3;
 	int distanceO3;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "StationDeMesureNO2_id")
-	StationDeMesurePollution StationDeMesureNO2;
+	StationDeMesurePollution stationDeMesureNO2;
 	int distanceNO2;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "StationDeMesureCO_id")
-	StationDeMesurePollution StationDeMesureCO;
+	StationDeMesurePollution stationDeMesureCO;
 	int distanceCO;
 
 	/**
