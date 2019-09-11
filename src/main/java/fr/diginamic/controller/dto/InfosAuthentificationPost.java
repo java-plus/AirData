@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class InfosAuthentificationPost {
 
-    private String login;
+    private String identifiant;
     private String mdp;
 }

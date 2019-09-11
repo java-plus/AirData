@@ -37,7 +37,7 @@ public class AuthentificationService {
     }
 
     public ResponseEntity<?> authenticate(InfosAuthentificationPost infos) {
-        return  this.authentificationRepository.findByIdentifiant(infos.getLogin())
+        return  this.authentificationRepository.findByIdentifiant(infos.getIdentifiant())
                 .filter(utilisateur -> passwordEncoder.matches(infos.getMdp(),utilisateur.getMotDePasse()))
                 .map(utilisateur -> {
                     Map<String,Object> infosSupplementaireToken = new HashMap<>();

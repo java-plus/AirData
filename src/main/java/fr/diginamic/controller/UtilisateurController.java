@@ -29,7 +29,7 @@ public class UtilisateurController {
     public UtilisateurDto creerCompte(@Valid @RequestBody UtilisateurCreationComptePost utilisateurCreationComptePost){
 
         Utilisateur utilisateur = transformerUtilisateur.UtilisateurCreationComptePostToUtilisateur(utilisateurCreationComptePost);
-
+        utilisateurService.insererEnBase(utilisateur);
         return transformerUtilisateur.UtilisateurToUtilisateurDto(utilisateur);
 
     }

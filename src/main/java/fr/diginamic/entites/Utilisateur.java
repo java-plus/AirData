@@ -4,6 +4,7 @@ import fr.diginamic.controller.dto.UtilisateurCreationComptePost;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -21,6 +22,7 @@ public class Utilisateur {
     private String id;
 
     @ManyToMany
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<Role> role;
     @NotBlank
     @Column(unique = true)
@@ -35,12 +37,14 @@ public class Utilisateur {
     private Integer age;
 
     @OneToMany(mappedBy = "utilisateur")
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     List<Favori> listeFavori;
 
     @ManyToOne
     Commune commune;
 
     @OneToOne
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     CompteUtilisateur compteUtilisateur;
 
 
