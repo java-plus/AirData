@@ -14,7 +14,7 @@ public class UtilisateurService {
 
 	public CompteUtilisateur obtenirCompteUtilisateur(String login) {
 		// TODO Auto-generated method stub
-		return utilisateurRepository.findCompteWithLogin(login);
+		return utilisateurRepository.findCompteUtilisateurWithIdentifiant(login);
 	}
 
 }
