@@ -1,11 +1,16 @@
 package fr.diginamic.entites;
 
+import java.time.ZonedDateTime;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.PrePersist;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-import java.time.ZonedDateTime;
 
 @Entity
 @Data
@@ -13,19 +18,17 @@ import java.time.ZonedDateTime;
 @AllArgsConstructor
 public class CompteUtilisateur {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 
     private ZonedDateTime dateInscription;
     private Boolean notificationMeteo=false;
     private Boolean notificationPollution=false;
 
-
-    @PrePersist
-    public void prepersist() {
-        this.dateInscription = ZonedDateTime.now();
-    }
-
+	@PrePersist
+	public void prepersist() {
+		this.dateInscription = ZonedDateTime.now();
+	}
 
 }
