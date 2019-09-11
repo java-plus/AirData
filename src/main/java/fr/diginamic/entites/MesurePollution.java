@@ -1,8 +1,6 @@
 package fr.diginamic.entites;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.time.ZonedDateTime;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -12,39 +10,39 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
-import java.time.ZonedDateTime;
+import javax.validation.constraints.NotNull;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class MesurePollution {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@NotBlank
+	@NotNull
 	private Double valeur;
 	@NotBlank
 	private String typeDeDonnee;
-	@NotBlank
+	@NotNull
 	private ZonedDateTime date;
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "StationDeMesure_id")
 	private StationDeMesurePollution stationDeMesure;
-	
-	
-	
-	
-	public MesurePollution(double valeur, String typeDeDonnee, ZonedDateTime date, StationDeMesurePollution stationDeMesure) {
+
+	public MesurePollution(double valeur, String typeDeDonnee, ZonedDateTime date,
+			StationDeMesurePollution stationDeMesure) {
 		super();
 		this.valeur = valeur;
 		this.typeDeDonnee = typeDeDonnee;
 		this.date = date;
-		
+
 		this.stationDeMesure = stationDeMesure;
 	}
-
 
 }

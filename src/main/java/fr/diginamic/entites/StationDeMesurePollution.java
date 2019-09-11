@@ -1,14 +1,13 @@
 package fr.diginamic.entites;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Transient;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
@@ -22,24 +21,18 @@ public class StationDeMesurePollution {
 	private Double latitude;
 	private Double longitude;
 
-	@Transient
-	private PositionGps positionGps;
-	private Boolean mesureSO2=false;
-    private Boolean mesurePM25=false;
-    private Boolean mesurePM10=false;
-    private Boolean mesureO3=false;
-    private Boolean mesureNO2=false;
-    private Boolean mesureCO=false;
+	private Boolean mesureSO2 = false;
+	private Boolean mesurePM25 = false;
+	private Boolean mesurePM10 = false;
+	private Boolean mesureO3 = false;
+	private Boolean mesureNO2 = false;
+	private Boolean mesureCO = false;
 
-	public StationDeMesurePollution(double latitude, double longitude, PositionGps positionGps) {
+	public StationDeMesurePollution(double latitude, double longitude) {
 		super();
-		this.latitude = positionGps.getLatitude();
-		this.longitude = positionGps.getLongitude();
-		this.positionGps = positionGps;
+		this.latitude = latitude;
+		this.longitude = longitude;
+
 	}
-
-
-
-
 
 }
