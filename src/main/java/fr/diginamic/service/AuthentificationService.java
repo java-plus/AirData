@@ -42,7 +42,7 @@ public class AuthentificationService {
                 .map(utilisateur -> {
                     Map<String,Object> infosSupplementaireToken = new HashMap<>();
                     infosSupplementaireToken.put("roles",utilisateur.getRole());
-                    infosSupplementaireToken.put("commune",utilisateur.getCommune());
+                    infosSupplementaireToken.put("commune",utilisateur.getCommune().getCodeCommune());
 
 
                     String jetonJWT = Jwts.builder()

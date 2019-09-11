@@ -2,6 +2,7 @@ package fr.diginamic;
 
 import fr.diginamic.controller.dto.UtilisateurConnecteService;
 import fr.diginamic.entites.Commune;
+import fr.diginamic.entites.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,8 +44,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
 
                         utilisateurConnecteService.setUsername(body.getSubject());
-                        utilisateurConnecteService.setCommune(body.get("commune", Commune.class));
-                        List<String> roles = body.get("roles",List.class);
+                        utilisateurConnecteService.setCodeCommune(body.get("commune", String.class));
+                        List<Role> listeRoles = body.get("roles",List.class);
+                        List<String>roles = listeRoles.stream().map(Role::getLibelle).collect(Collectors.toList());
                         List<SimpleGrantedAuthority> authorities = roles
                                 .stream()
                                 .map(SimpleGrantedAuthority::new)
