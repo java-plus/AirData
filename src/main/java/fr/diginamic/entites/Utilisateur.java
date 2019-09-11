@@ -1,17 +1,27 @@
 package fr.diginamic.entites;
 
+import fr.diginamic.controller.dto.UtilisateurCreationComptePost;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Utilisateur {
 
     @Id
     private String id;
 
-    private String role;
+    @ManyToMany
+    private List<Role> role;
     @NotBlank
     @Column(unique = true)
     private String identifiant;
@@ -22,16 +32,18 @@ public class Utilisateur {
     @Email
     private String email;
     @Positive
-    private Integer Age;
+    private Integer age;
 
     @OneToMany(mappedBy = "utilisateur")
     List<Favori> listeFavori;
 
-    @OneToOne
+    @ManyToOne
     Commune commune;
 
     @OneToOne
     CompteUtilisateur compteUtilisateur;
+
+
 
     @PrePersist
     private void prepersist(){

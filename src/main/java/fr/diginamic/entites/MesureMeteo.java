@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.ZonedDateTime;
 
 @Entity
@@ -27,19 +28,19 @@ public class MesureMeteo {
     private String weatherDescription;
     @NotBlank
     private String weatherIcon;
-    @NotBlank
+    @NotNull
     private Long temperature;
-    @NotBlank
+    @NotNull
     private Long pressure;
-    @NotBlank
+    @NotNull
     private Integer humidity;
-    @NotBlank
+    @NotNull
     private Long tempMin;
-    @NotBlank
+    @NotNull
     private Long tempMax;
-    @NotBlank
+    @NotNull
     private Long windSpeed;
-    @NotBlank
+    @NotNull
     private Integer windDegrees;
 
 }

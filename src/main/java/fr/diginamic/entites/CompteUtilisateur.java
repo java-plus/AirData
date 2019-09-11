@@ -18,8 +18,8 @@ public class CompteUtilisateur {
     private Integer id;
 
     private ZonedDateTime dateInscription;
-    private Boolean notificationMeteo;
-    private Boolean notificationPollution;
+    private Boolean notificationMeteo=false;
+    private Boolean notificationPollution=false;
 
 
     @PrePersist

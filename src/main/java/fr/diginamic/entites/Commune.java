@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 
@@ -27,13 +28,13 @@ public class Commune {
 	@Column(unique = true)
 	@Pattern(regexp = "^[0-9]*$")
 	private String codeCommune;
-	@NotBlank
+	@NotNull
 	private double latitude;
-	@NotBlank
+	@NotNull
 	private double longitude;
 	@Transient
 	private PositionGps centre;
-	@NotBlank
+	@NotNull
 	private Integer population;
 	
 	
@@ -89,7 +90,6 @@ public class Commune {
 	 * 
 	 * @param nom
 	 * @param code
-	 * @param codesPostaux
 	 * @param centre
 	 * @param population
 	 */

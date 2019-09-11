@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Data
@@ -16,9 +17,9 @@ public class StationDeMesureMeteo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @NotBlank
+    @NotNull
     private Double latitude;
-    @NotBlank
+    @NotNull
     private Double longitude;
 
 }

@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.ZonedDateTime;
 
 
@@ -24,11 +25,11 @@ public class MesurePollution {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@NotBlank
+	@NotNull
 	private Double valeur;
 	@NotBlank
 	private String typeDeDonnee;
-	@NotBlank
+	@NotNull
 	private ZonedDateTime date;
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "StationDeMesure_id")
