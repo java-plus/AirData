@@ -22,9 +22,9 @@ public class CompteUtilisateur {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	private ZonedDateTime dateInscription;
-	private Boolean notificationMeteo;
-	private Boolean notificationPollution;
+    private ZonedDateTime dateInscription;
+    private Boolean notificationMeteo=false;
+    private Boolean notificationPollution=false;
 
 	@PrePersist
 	public void prepersist() {
