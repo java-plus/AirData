@@ -45,7 +45,7 @@ public class FavoriService {
 
 	}
 
-	public void supprimerFavori(Favori favoriASupprimer) {
-		favoriRepository.delete(favoriASupprimer);
+	public void supprimerFavori(Integer idFavori) {
+		favoriRepository.deleteById(idFavori);
 	}
 }
