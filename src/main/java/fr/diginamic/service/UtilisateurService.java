@@ -1,10 +1,14 @@
 package fr.diginamic.service;
 
+import fr.diginamic.controller.dto.UtilisateurConnecteService;
 import fr.diginamic.entites.Utilisateur;
 import fr.diginamic.exception.UtilisateurIncorrectException;
+import fr.diginamic.repository.CompteUtilisateurRepository;
 import fr.diginamic.repository.UtilisateurRepository;
 
+import fr.diginamic.utils.UtilisateurConnecteUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import fr.diginamic.entites.CompteUtilisateur;
@@ -17,21 +21,23 @@ import javax.validation.ValidatorFactory;
 public class UtilisateurService {
 
     UtilisateurRepository utilisateurRepository;
+    CompteUtilisateurRepository compteUtilisateurRepository;
     ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     Validator validator = factory.getValidator();
 
 
-    public UtilisateurService(UtilisateurRepository utilisateurRepository) {
+    public UtilisateurService(UtilisateurRepository utilisateurRepository, CompteUtilisateurRepository compteUtilisateurRepository) {
         this.utilisateurRepository = utilisateurRepository;
+        this.compteUtilisateurRepository = compteUtilisateurRepository;
     }
 
     public void creerUtilisateur(Utilisateur utilisateur){
         utilisateurRepository.save(utilisateur);
     }
 
-	public CompteUtilisateur obtenirCompteUtilisateur(String login) {
-
-		return utilisateurRepository.findCompteUtilisateurWithIdentifiant(login);
+	public CompteUtilisateur obtenirCompteUtilisateur() {
+        String identifiant = UtilisateurConnecteUtils.recupererIdentifiant();
+		return utilisateurRepository.findCompteUtilisateurWithIdentifiant(identifiant);
 	}
 
     public void insererEnBase(Utilisateur utilisateur) {
@@ -40,5 +46,19 @@ public class UtilisateurService {
         }else{
             throw new UtilisateurIncorrectException();
         }
+    }
+
+    public CompteUtilisateur modifierCompteUtilisateur(CompteUtilisateur modification){
+
+        CompteUtilisateur compteUtilisateur = utilisateurRepository.findCompteUtilisateurWithIdentifiant(UtilisateurConnecteUtils.recupererIdentifiant());
+        if(modification.getNotificationMeteo()!=null){
+            compteUtilisateur.setNotificationMeteo(modification.getNotificationMeteo());
+        }
+        if(modification.getNotificationPollution()!=null){
+            compteUtilisateur.setNotificationPollution(modification.getNotificationPollution());
+        }
+        compteUtilisateurRepository.save(compteUtilisateur);
+        return compteUtilisateur;
+
     }
 }
