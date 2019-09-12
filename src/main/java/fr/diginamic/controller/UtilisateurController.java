@@ -3,6 +3,7 @@ package fr.diginamic.controller;
 import fr.diginamic.controller.dto.UtilisateurConnecteService;
 import fr.diginamic.controller.dto.UtilisateurCreationComptePost;
 import fr.diginamic.controller.dto.UtilisateurDto;
+import fr.diginamic.entites.Role;
 import fr.diginamic.entites.Utilisateur;
 import fr.diginamic.transformer.TransformerUtilisateur;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,6 +32,14 @@ public class UtilisateurController {
         utilisateurService.insererEnBase(utilisateur);
         return transformerUtilisateur.UtilisateurToUtilisateurDto(utilisateur);
 
+    }
+
+    @PostMapping("/compte_admin")
+    public UtilisateurDto creerCompteAdmin(@Valid @RequestBody UtilisateurCreationComptePost utilisateurCreationComptePost){
+        Utilisateur utilisateur = transformerUtilisateur.UtilisateurCreationComptePostToUtilisateur(utilisateurCreationComptePost);
+        utilisateur.getRole().add(new Role("ROLE_ADMIN"));
+        utilisateurService.insererEnBase(utilisateur);
+        return transformerUtilisateur.UtilisateurToUtilisateurDto(utilisateur);
     }
 
 
