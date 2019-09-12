@@ -36,14 +36,13 @@ public class UtilisateurController {
 
 	@GetMapping("/compte")
 	public CompteUtilisateur obtenirCompteUtilisateur() {
-
-        String login = ((UtilisateurConnecteService)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-		return utilisateurService.obtenirCompteUtilisateur(login);
-
+		return utilisateurService.obtenirCompteUtilisateur();
 	}
 
 	@PatchMapping("/compte")
     public CompteUtilisateur modifierCompteUtilisateur(@RequestBody CompteUtilisateur compteUtilisateur){
+
+        return utilisateurService.modifierCompteUtilisateur(compteUtilisateur);
 
     }
 

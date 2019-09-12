@@ -13,5 +13,8 @@ import fr.diginamic.entites.Utilisateur;
 public interface UtilisateurRepository extends JpaRepository<Utilisateur,String> {
 
 	@Query("select u.compteUtilisateur from Utilisateur u where u.identifiant=?1")
-	CompteUtilisateur findCompteUtilisateurWithIdentifiant(String login);
+	CompteUtilisateur findCompteUtilisateurWithIdentifiant(String identifiant);
+
+	@Query("select u.id from Utilisateur u where u.identifiant=?1")
+	String findIdWithIdentifiant(String identifiant);
 }
