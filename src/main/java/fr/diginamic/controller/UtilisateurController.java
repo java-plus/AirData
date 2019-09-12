@@ -1,9 +1,11 @@
 package fr.diginamic.controller;
 
+import fr.diginamic.controller.dto.UtilisateurConnecteService;
 import fr.diginamic.controller.dto.UtilisateurCreationComptePost;
 import fr.diginamic.controller.dto.UtilisateurDto;
 import fr.diginamic.entites.Utilisateur;
 import fr.diginamic.transformer.TransformerUtilisateur;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,9 +40,7 @@ public class UtilisateurController {
 	@GetMapping("/compte")
 	public CompteUtilisateur obtenirCompteutilisateur() {
 
-		// TODO trouver login dans context
-		String login = "";
-
+        String login = ((UtilisateurConnecteService)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
 		return utilisateurService.obtenirCompteUtilisateur(login);
 
 	}

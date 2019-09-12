@@ -17,6 +17,6 @@ import org.springframework.web.context.WebApplicationContext;
 public class UtilisateurConnecteService {
 
     private String username;
-    private Commune commune;
+    private String codeCommune;
 
 }

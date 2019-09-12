@@ -24,6 +24,7 @@ public class Utilisateur {
     @ManyToMany
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<Role> role;
+
     @NotBlank
     @Column(unique = true)
     private String identifiant;
