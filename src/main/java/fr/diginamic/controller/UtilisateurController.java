@@ -6,10 +6,7 @@ import fr.diginamic.controller.dto.UtilisateurDto;
 import fr.diginamic.entites.Utilisateur;
 import fr.diginamic.transformer.TransformerUtilisateur;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -38,11 +35,15 @@ public class UtilisateurController {
 
 
 	@GetMapping("/compte")
-	public CompteUtilisateur obtenirCompteutilisateur() {
-
-        String login = ((UtilisateurConnecteService)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-		return utilisateurService.obtenirCompteUtilisateur(login);
-
+	public CompteUtilisateur obtenirCompteUtilisateur() {
+		return utilisateurService.obtenirCompteUtilisateur();
 	}
+
+	@PatchMapping("/compte")
+    public CompteUtilisateur modifierCompteUtilisateur(@RequestBody CompteUtilisateur compteUtilisateur){
+
+        return utilisateurService.modifierCompteUtilisateur(compteUtilisateur);
+
+    }
 
 }
