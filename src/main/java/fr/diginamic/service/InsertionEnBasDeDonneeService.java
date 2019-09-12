@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Service;
 
+import fr.diginamic.entites.MesureMeteo;
 import fr.diginamic.entites.MesurePollution;
+import fr.diginamic.entites.StationDeMesureMeteo;
 import fr.diginamic.entites.StationDeMesurePollution;
 import fr.diginamic.utils.ApiUtils;
 import fr.diginamic.utils.JsonManipulation;
@@ -35,13 +37,26 @@ public class InsertionEnBasDeDonneeService {
 		List<MesurePollution> listeDesMesuresPollution = new ArrayList<MesurePollution>();
 		listeDesMesuresPollution = JsonManipulation.obtenirLesMesures(myResponse, listeDeStationsDeMesure);
 		for (MesurePollution mesurePollution : listeDesMesuresPollution) {
-			createOrNot(mesurePollution);
+			createOrNotMesurePollution(mesurePollution);
+		}
+
+		JSONObject myResponseMeteo = ApiUtils.callApiMeteo(
+				"http://api.openweathermap.org/data/2.5/box/city?bbox=-2.48291015625,46.29001987172955,1.2139892578125,48.25028349849022,100&appid=cf994ca322a654d044fd952ce00569fe");
+		List<StationDeMesureMeteo> listeDeStationsDeMesureMeteo = new ArrayList<StationDeMesureMeteo>();
+		listeDeStationsDeMesureMeteo = JsonManipulation.obtenirLesStationsMeteo(myResponseMeteo);
+
+		/////////////////// OBTENTION DE LA LISTE DES MESURES METEO DISPONIBLES
+		/////////////////// SUR OMPENWEATHERMAP//////////////////////
+		List<MesureMeteo> listeDeMesureMeteo = JsonManipulation.obtenirLesMesuresMeteo(myResponseMeteo,
+				listeDeStationsDeMesureMeteo);
+		for (MesureMeteo mesureMeteo : listeDeMesureMeteo) {
+			createOrNotMesureMeteo(mesureMeteo);
 		}
 	}
 
-	private void createOrNot(MesurePollution mesurePollution) {
+	private void createOrNotMesureMeteo(MesureMeteo mesureMeteo) {
 		// TODO Auto-generated method stub
-		mesurePollutionService.obtenirMesurePollution(mesurePollution);
+		mesureMeteoService.obtenirMesurePollution(mesurePollution);
 
 	}
 
