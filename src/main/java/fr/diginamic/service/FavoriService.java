@@ -19,12 +19,17 @@ public class FavoriService {
 
 	public List<Favori> recupererFavoris(Integer utilisateurId) {
 
-		return favoriRepository.recupererFavorisSelonUtilisateur(utilisateurId);
+		// return favoriRepository.recupererFavorisSelonUtilisateur(utilisateurId);
+		return null;
 
 	}
 
-	public void insererEnBase() {
+	public void insererEnBase(Favori favori) {
+		favoriRepository.save(favori);
+	}
 
+	public void supprimerFavori(Favori Favori) {
+		favoriRepository.delete(entity);
 	}
 
 }
