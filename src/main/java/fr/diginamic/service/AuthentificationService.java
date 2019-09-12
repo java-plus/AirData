@@ -1,6 +1,7 @@
 package fr.diginamic.service;
 
 import fr.diginamic.controller.dto.InfosAuthentificationPost;
+import fr.diginamic.entites.Role;
 import fr.diginamic.repository.AuthentificationRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class AuthentificationService {
@@ -41,7 +43,7 @@ public class AuthentificationService {
                 .filter(utilisateur -> passwordEncoder.matches(infos.getMdp(),utilisateur.getMotDePasse()))
                 .map(utilisateur -> {
                     Map<String,Object> infosSupplementaireToken = new HashMap<>();
-                    infosSupplementaireToken.put("roles",utilisateur.getRole());
+                    infosSupplementaireToken.put("roles",utilisateur.getRole().stream().map(Role::getLibelle).collect(Collectors.joining(",")));
                     infosSupplementaireToken.put("commune",utilisateur.getCommune().getCodeCommune());
 
 

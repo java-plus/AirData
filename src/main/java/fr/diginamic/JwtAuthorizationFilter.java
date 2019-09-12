@@ -19,6 +19,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -45,12 +46,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
                         utilisateurConnecteService.setUsername(body.getSubject());
                         utilisateurConnecteService.setCodeCommune(body.get("commune", String.class));
-                        List<Role> listeRoles = body.get("roles",List.class);
-                        List<String>roles = listeRoles.stream().map(Role::getLibelle).collect(Collectors.toList());
-                        List<SimpleGrantedAuthority> authorities = roles
-                                .stream()
-                                .map(SimpleGrantedAuthority::new)
-                                .collect(Collectors.toList());
+                        List<SimpleGrantedAuthority> authorities = Arrays.asList(body.get("roles",String.class).split(",")).stream().map(roleString -> new SimpleGrantedAuthority(roleString)).collect(Collectors.toList());
                         Authentication authentication = new UsernamePasswordAuthenticationToken(utilisateurConnecteService, null, authorities);
                         SecurityContextHolder.getContext().setAuthentication(authentication);
                     });
