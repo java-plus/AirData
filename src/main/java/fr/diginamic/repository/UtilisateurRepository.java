@@ -12,6 +12,6 @@ import fr.diginamic.entites.Utilisateur;
 @Repository
 public interface UtilisateurRepository extends JpaRepository<Utilisateur,String> {
 
-	@Query("select u.compteUtilisateur from Utilisateur u where login=u.identifiant")
+	@Query("select u.compteUtilisateur from Utilisateur u where u.identifiant=?1")
 	CompteUtilisateur findCompteUtilisateurWithIdentifiant(String login);
 }
