@@ -3,8 +3,11 @@ package fr.diginamic.controller;
 import fr.diginamic.controller.dto.UtilisateurConnecteService;
 import fr.diginamic.controller.dto.UtilisateurCreationComptePost;
 import fr.diginamic.controller.dto.UtilisateurDto;
+import fr.diginamic.entites.Role;
 import fr.diginamic.entites.Utilisateur;
 import fr.diginamic.transformer.TransformerUtilisateur;
+import fr.diginamic.utils.UtilisateurConnecteUtils;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +36,14 @@ public class UtilisateurController {
 
     }
 
+    @PostMapping("/compte_admin")
+    public UtilisateurDto creerCompteAdmin(@Valid @RequestBody UtilisateurCreationComptePost utilisateurCreationComptePost){
+        Utilisateur utilisateur = transformerUtilisateur.UtilisateurCreationComptePostToUtilisateur(utilisateurCreationComptePost);
+        utilisateur.getRole().add(new Role("ROLE_ADMIN"));
+        utilisateurService.insererEnBase(utilisateur);
+        return transformerUtilisateur.UtilisateurToUtilisateurDto(utilisateur);
+    }
+
 
 	@GetMapping("/compte")
 	public CompteUtilisateur obtenirCompteUtilisateur() {
@@ -45,5 +56,17 @@ public class UtilisateurController {
         return utilisateurService.modifierCompteUtilisateur(compteUtilisateur);
 
     }
+
+    @DeleteMapping("/compte")
+    public ResponseEntity<?> supprimerCompte(){
+        String identifiant =UtilisateurConnecteUtils.recupererIdentifiant();
+        return utilisateurService.supprimerCompte(identifiant);
+    }
+
+    @DeleteMapping("/compte_avec_admin")
+    public ResponseEntity<?> supprimerCompteAvecAdmin(@RequestParam String identifiant ){
+        return utilisateurService.supprimerCompte(identifiant);
+    }
+
 
 }
