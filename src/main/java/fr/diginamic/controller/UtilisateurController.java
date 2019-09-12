@@ -1,8 +1,14 @@
 package fr.diginamic.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import fr.diginamic.controller.dto.UtilisateurConnecteService;
+import fr.diginamic.controller.dto.UtilisateurCreationComptePost;
+import fr.diginamic.controller.dto.UtilisateurDto;
+import fr.diginamic.entites.Utilisateur;
+import fr.diginamic.transformer.TransformerUtilisateur;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 import fr.diginamic.entites.CompteUtilisateur;
 import fr.diginamic.service.UtilisateurService;
@@ -10,17 +16,34 @@ import fr.diginamic.service.UtilisateurService;
 @RestController
 public class UtilisateurController {
 
-	@Autowired
-	UtilisateurService utilisateurService;
+    private TransformerUtilisateur transformerUtilisateur;
+    private UtilisateurService utilisateurService;
 
-	@GetMapping
-	public CompteUtilisateur obtenirCompteutilisateur() {
+    public UtilisateurController(TransformerUtilisateur transformerUtilisateur,UtilisateurService utilisateurService) {
+        this.transformerUtilisateur = transformerUtilisateur;
+        this.utilisateurService = utilisateurService;
+    }
 
-		// TODO trouver login dans context
-		String login = "";
+    @PostMapping("/compte")
+    public UtilisateurDto creerCompte(@Valid @RequestBody UtilisateurCreationComptePost utilisateurCreationComptePost){
 
-		return utilisateurService.obtenirCompteUtilisateur(login);
+        Utilisateur utilisateur = transformerUtilisateur.UtilisateurCreationComptePostToUtilisateur(utilisateurCreationComptePost);
+        utilisateurService.insererEnBase(utilisateur);
+        return transformerUtilisateur.UtilisateurToUtilisateurDto(utilisateur);
 
+    }
+
+
+	@GetMapping("/compte")
+	public CompteUtilisateur obtenirCompteUtilisateur() {
+		return utilisateurService.obtenirCompteUtilisateur();
 	}
+
+	@PatchMapping("/compte")
+    public CompteUtilisateur modifierCompteUtilisateur(@RequestBody CompteUtilisateur compteUtilisateur){
+
+        return utilisateurService.modifierCompteUtilisateur(compteUtilisateur);
+
+    }
 
 }

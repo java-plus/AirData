@@ -1,5 +1,6 @@
 package fr.diginamic.entites;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -23,7 +24,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Commune {
+public class Commune implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,7 +37,6 @@ public class Commune {
 	private String codeCommune;
 	@NotNull
 	private Double latitude;
-
 	@NotNull
 	private Double longitude;
 	@NotNull
