@@ -45,4 +45,10 @@ public class InsertionEnBasDeDonneeService {
 
 	}
 
+	private void createOrNotMesurePollution(MesurePollution mesurePollution) {
+		// TODO Auto-generated method stub
+		mesurePollutionService.obtenirMesurePollution(mesurePollution);
+
+	}
+
 }
