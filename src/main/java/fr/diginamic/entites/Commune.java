@@ -1,17 +1,24 @@
 package fr.diginamic.entites;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
@@ -29,9 +36,9 @@ public class Commune implements Serializable {
 	@Pattern(regexp = "^[0-9]*$")
 	private String codeCommune;
 	@NotNull
-	private double latitude;
+	private Double latitude;
 	@NotNull
-	private double longitude;
+	private Double longitude;
 	@NotNull
 	private Integer population;
 
@@ -40,7 +47,7 @@ public class Commune implements Serializable {
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "StationDeMesureMeteo_id")
-	StationDeMesureMeteo StationDeMesureMeteo;
+	StationDeMesureMeteo stationDeMesureMeteo;
 	int distanceStationDeMesureMeteo;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
@@ -50,32 +57,32 @@ public class Commune implements Serializable {
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "StationDeMesureSO2_id")
-	StationDeMesurePollution StationDeMesureSO2;
+	StationDeMesurePollution stationDeMesureSO2;
 	int distanceSO2;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "StationDeMesurePM25_id")
-	StationDeMesurePollution StationDeMesurePM25;
+	StationDeMesurePollution stationDeMesurePM25;
 	int distancePM25;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "StationDeMesurePM10_id")
-	StationDeMesurePollution StationDeMesurePM10;
+	StationDeMesurePollution stationDeMesurePM10;
 	int distancePM10;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "StationDeMesureO3_id")
-	StationDeMesurePollution StationDeMesureO3;
+	StationDeMesurePollution stationDeMesureO3;
 	int distanceO3;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "StationDeMesureNO2_id")
-	StationDeMesurePollution StationDeMesureNO2;
+	StationDeMesurePollution stationDeMesureNO2;
 	int distanceNO2;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "StationDeMesureCO_id")
-	StationDeMesurePollution StationDeMesureCO;
+	StationDeMesurePollution stationDeMesureCO;
 	int distanceCO;
 
 	/**

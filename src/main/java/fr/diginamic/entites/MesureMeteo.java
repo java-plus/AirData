@@ -4,8 +4,6 @@ import java.time.ZonedDateTime;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -23,30 +21,28 @@ import lombok.NoArgsConstructor;
 public class MesureMeteo {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	@NotNull
 	private ZonedDateTime date;
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "StationDeMesure_id")
 	private StationDeMesureMeteo stationDeMesure;
-
 	@NotBlank
 	private String weatherDescription;
 	@NotBlank
 	private String weatherIcon;
 	@NotNull
-	private Long temperature;
+	private Double temperature;
 	@NotNull
-	private Long pressure;
+	private Double pressure;
 	@NotNull
 	private Integer humidity;
 	@NotNull
-	private Long tempMin;
+	private Double tempMin;
 	@NotNull
-	private Long tempMax;
+	private Double tempMax;
 	@NotNull
-	private Long windSpeed;
+	private Double windSpeed;
 	@NotNull
 	private Integer windDegrees;
 

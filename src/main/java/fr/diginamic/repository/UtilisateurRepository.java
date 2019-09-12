@@ -1,5 +1,7 @@
 package fr.diginamic.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -16,4 +18,5 @@ public interface UtilisateurRepository extends JpaRepository<Utilisateur, String
 	@Query("select u.id from Utilisateur u where u.identifiant=?1")
 	String findIdWithIdentifiant(String identifiant);
 
+	Optional<Utilisateur> findByIdentifiant(String identifiant);
 }
