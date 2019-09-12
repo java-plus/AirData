@@ -11,6 +11,10 @@ import fr.diginamic.entites.MesurePollution;
 import fr.diginamic.exception.CommuneNonTrouveeException;
 import fr.diginamic.repository.CommuneRepository;
 
+/**
+ * @author Eloi
+ *
+ */
 @Service
 public class CommuneService {
 
@@ -24,11 +28,13 @@ public class CommuneService {
 	 * @param communeRepository
 	 * @param mesureMeteoService
 	 * @param mesurePollutionService
+	 * @param transformerMesuresCommune
 	 */
 	public CommuneService(CommuneRepository communeRepository, MesureMeteoService mesureMeteoService, MesurePollutionService mesurePollutionService) {
 		this.communeRepository = communeRepository;
 		this.mesureMeteoService = mesureMeteoService;
 		this.mesurePollutionService = mesurePollutionService;
+
 	}
 
 	public Commune trouverCommuneParCode(String codeCommune) {
@@ -44,11 +50,15 @@ public class CommuneService {
 	}
 
 	public CommuneMesuresDto recupererMesureParCommune(String codeCommune) {
+
 		Commune commune = communeRepository.findByCodeCommune(codeCommune).orElseThrow(CommuneNonTrouveeException::new);
-		Integer population = commune.getPopulation();
+
 		List<MesureMeteo> listeMeteo = mesureMeteoService.obtenirLesMesuresDeMeteo(codeCommune);
 		List<MesurePollution> listePollution = mesurePollutionService.obtenirLesMesuresDePollution(codeCommune);
-		return null;
+
+		CommuneMesuresDto communeMesuresDto = new CommuneMesuresDto(commune, listeMeteo, listePollution);
+
+		return communeMesuresDto;
 	}
 
 }

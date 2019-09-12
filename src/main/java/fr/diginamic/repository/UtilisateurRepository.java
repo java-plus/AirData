@@ -19,4 +19,5 @@ public interface UtilisateurRepository extends JpaRepository<Utilisateur, String
 	String findIdWithIdentifiant(String identifiant);
 
 	Optional<Utilisateur> findByIdentifiant(String identifiant);
+
 }

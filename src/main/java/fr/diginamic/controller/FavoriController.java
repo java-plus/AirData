@@ -18,22 +18,31 @@ import fr.diginamic.transformer.TransformerFavori;
 @RequestMapping("/favoris")
 public class FavoriController {
 
-	private FavoriService FavoriService;
-
+	private FavoriService favoriService;
 	private TransformerFavori transformerFavori;
+
+	/**
+	 * Constructor
+	 * 
+	 * @param favoriService
+	 * @param transformerFavori
+	 */
+	public FavoriController(FavoriService favoriService, TransformerFavori transformerFavori) {
+		this.favoriService = favoriService;
+		this.transformerFavori = transformerFavori;
+	}
 
 	@GetMapping
 	public List<Favori> recupererFavoris() {
 
-		// return FavoriService.recupererFavoris(utilisateurId);
-		return null;
+		return favoriService.recupererFavoris();
 
 	}
 
 	@PostMapping
 	public Favori enregistrerFavori(@RequestBody FavoriDtoPost favoriCreationDto) {
 		Favori favori = transformerFavori.favoriCreationDtoToFavori();
-		return FavoriService.insererEnBase(favori);
+		return favoriService.insererEnBase(favori);
 
 	}
 

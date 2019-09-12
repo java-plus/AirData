@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import fr.diginamic.entites.Favori;
 import fr.diginamic.entites.Utilisateur;
+import fr.diginamic.exception.UtilisateurNonTrouveException;
 import fr.diginamic.repository.FavoriRepository;
 import fr.diginamic.repository.UtilisateurRepository;
 import fr.diginamic.utils.UtilisateurConnecteUtils;
@@ -25,10 +26,8 @@ public class FavoriService {
 	}
 
 	public List<Favori> recupererFavoris() {
-		String utilisateurId = utilisateurRepository.findIdWithIdentifiant(UtilisateurConnecteUtils.recupererIdentifiant());
-
-		Utilisateur utilisateur = new Utilisateur();
-		utilisateur.setId(utilisateurId);
+		// String utilisateurId = utilisateurRepository.findIdWithIdentifiant(UtilisateurConnecteUtils.recupererIdentifiant());
+		Utilisateur utilisateur = utilisateurRepository.findByIdentifiant(UtilisateurConnecteUtils.recupererIdentifiant()).orElseThrow(UtilisateurNonTrouveException::new);
 		return favoriRepository.findByUtilisateurId(utilisateur);
 
 	}
