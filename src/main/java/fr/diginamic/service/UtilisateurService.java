@@ -3,11 +3,13 @@ package fr.diginamic.service;
 import fr.diginamic.controller.dto.UtilisateurConnecteService;
 import fr.diginamic.entites.Utilisateur;
 import fr.diginamic.exception.UtilisateurIncorrectException;
+import fr.diginamic.exception.UtilisateurNonTrouveException;
 import fr.diginamic.repository.CompteUtilisateurRepository;
 import fr.diginamic.repository.UtilisateurRepository;
 
 import fr.diginamic.utils.UtilisateurConnecteUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -60,5 +62,11 @@ public class UtilisateurService {
         compteUtilisateurRepository.save(compteUtilisateur);
         return compteUtilisateur;
 
+    }
+
+    public ResponseEntity<?> supprimerCompte(String identifiant){
+        Utilisateur utilisateur = utilisateurRepository.findByIdentifiant(identifiant).orElseThrow(UtilisateurNonTrouveException::new);
+        utilisateurRepository.delete(utilisateur);
+        return ResponseEntity.ok().build();
     }
 }
