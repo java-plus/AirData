@@ -25,11 +25,11 @@ public class FavoriService {
 	}
 
 	public void insererEnBase(Favori favori) {
-		favoriRepository.save(favori);
+		// favoriRepository.save(favori);
 	}
 
 	public void supprimerFavori(Favori Favori) {
-		favoriRepository.delete(entity);
+		// favoriRepository.delete(entity);
 	}
 
 }

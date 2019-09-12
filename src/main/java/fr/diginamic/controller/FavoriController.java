@@ -21,7 +21,7 @@ public class FavoriController {
 	@GetMapping
 	public List<Favori> recupererFavoris() {
 
-		return FavoriService.recupererFavoris(utilisateurId);
+		// return FavoriService.recupererFavoris(utilisateurId);
 		return null;
 
 	}
@@ -35,7 +35,7 @@ public class FavoriController {
 
 	@DeleteMapping
 	public void supprimerFavori() {
-		FavoriService.supprimerFavori(Favori);
+		// FavoriService.supprimerFavori(Favori);
 	}
 
 }
