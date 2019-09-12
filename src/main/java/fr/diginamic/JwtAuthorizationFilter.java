@@ -2,6 +2,7 @@ package fr.diginamic;
 
 import fr.diginamic.controller.dto.UtilisateurConnecteService;
 import fr.diginamic.entites.Commune;
+import fr.diginamic.entites.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +19,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -43,12 +45,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
 
                         utilisateurConnecteService.setUsername(body.getSubject());
-                        utilisateurConnecteService.setCommune(body.get("commune", Commune.class));
-                        List<String> roles = body.get("roles",List.class);
-                        List<SimpleGrantedAuthority> authorities = roles
-                                .stream()
-                                .map(SimpleGrantedAuthority::new)
-                                .collect(Collectors.toList());
+                        utilisateurConnecteService.setCodeCommune(body.get("commune", String.class));
+                        List<SimpleGrantedAuthority> authorities = Arrays.asList(body.get("roles",String.class).split(",")).stream().map(roleString -> new SimpleGrantedAuthority(roleString)).collect(Collectors.toList());
                         Authentication authentication = new UsernamePasswordAuthenticationToken(utilisateurConnecteService, null, authorities);
                         SecurityContextHolder.getContext().setAuthentication(authentication);
                     });
