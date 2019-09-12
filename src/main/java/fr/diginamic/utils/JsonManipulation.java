@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import fr.diginamic.entites.Commune;
+import fr.diginamic.entites.MesureMeteo;
 import fr.diginamic.entites.MesurePollution;
 import fr.diginamic.entites.StationDeMesureMeteo;
 import fr.diginamic.entites.StationDeMesurePollution;
@@ -135,7 +136,7 @@ public class JsonManipulation {
 			Double latitude = jsonObject.getJSONObject("geometry").getJSONArray("coordinates").getDouble(1);
 			Double longitude = jsonObject.getJSONObject("geometry").getJSONArray("coordinates").getDouble(0);
 
-			stationDeMesure = MesureUtils.obtenirStationDeMesureCorrespondante(latitude, longitude,
+			stationDeMesure = MesureUtils.obtenirStationDeMesurePollutionCorrespondante(latitude, longitude,
 					listeDeStationDeMesure);
 
 			MesurePollution mesure = new MesurePollution(valeur, typeDonnee, zonedDateTime, stationDeMesure);
@@ -171,6 +172,50 @@ public class JsonManipulation {
 		}
 
 		return listeDesStationMeteo;
+	}
+
+	public static List<MesureMeteo> obtenirLesMesuresMeteo(JSONObject myResponseMeteo,
+			List<StationDeMesureMeteo> listeDeStationDeMesure) throws JSONException {
+
+		List<MesureMeteo> listeDesMesureMeteo = new ArrayList<MesureMeteo>();
+
+		int count = myResponseMeteo.getJSONObject("communes").getJSONArray("list").length();
+
+		for (int i = 0; i < count; i++) { // iterate through jsonArray
+
+			Double longitude = myResponseMeteo.getJSONObject("communes").getJSONArray("list").getJSONObject(i)
+					.getJSONObject("coord").getDouble("Lon");
+			Double latitude = myResponseMeteo.getJSONObject("communes").getJSONArray("list").getJSONObject(i)
+					.getJSONObject("coord").getDouble("Lat");
+			StationDeMesureMeteo stationDeMesure = MesureUtils.obtenirStationDeMesureMeteoCorrespondante(latitude,
+					longitude, listeDeStationDeMesure);
+			String weatherDescription = myResponseMeteo.getJSONObject("communes").getJSONArray("list").getJSONObject(i)
+					.getJSONArray("weather").getJSONObject(0).getString("description");
+			String weatherIcon = myResponseMeteo.getJSONObject("communes").getJSONArray("list").getJSONObject(i)
+					.getJSONArray("weather").getJSONObject(0).getString("icon");
+			Double temperature = myResponseMeteo.getJSONObject("communes").getJSONArray("list").getJSONObject(i)
+					.getJSONObject("main").getDouble("temp");
+			Double pressure = myResponseMeteo.getJSONObject("communes").getJSONArray("list").getJSONObject(i)
+					.getJSONObject("main").getDouble("pressure");
+			Integer humidity = myResponseMeteo.getJSONObject("communes").getJSONArray("list").getJSONObject(i)
+					.getJSONObject("main").getInt("humidity");
+			Double tempMin = myResponseMeteo.getJSONObject("communes").getJSONArray("list").getJSONObject(i)
+					.getJSONObject("main").getDouble("temp_min");
+			Double tempMax = myResponseMeteo.getJSONObject("communes").getJSONArray("list").getJSONObject(i)
+					.getJSONObject("main").getDouble("temp_max");
+			Double windSpeed = myResponseMeteo.getJSONObject("communes").getJSONArray("list").getJSONObject(i)
+					.getJSONObject("wind").getDouble("speed");
+
+			Integer windDegrees = myResponseMeteo.getJSONObject("communes").getJSONArray("list").getJSONObject(i)
+					.getJSONObject("main").optInt("deg");
+
+			MesureMeteo mesureMeteo = new MesureMeteo(ZonedDateTime.now(), stationDeMesure, weatherDescription,
+					weatherIcon, temperature, pressure, humidity, tempMin, tempMax, windSpeed, windDegrees);
+			listeDesMesureMeteo.add(mesureMeteo);
+
+		}
+
+		return listeDesMesureMeteo;
 	}
 
 }
