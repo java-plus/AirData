@@ -124,7 +124,7 @@ public class JsonManipulation {
 																							// @
 																							// i
 																							// position
-
+			String id = jsonObject.getString("recordid");
 			JSONObject jsonObjectFields = jsonObject.getJSONObject("fields");
 			String typeDonnee = jsonObjectFields.getString("measurements_parameter");
 			double valeur = jsonObjectFields.getDouble("measurements_value");
@@ -139,7 +139,7 @@ public class JsonManipulation {
 			stationDeMesure = MesureUtils.obtenirStationDeMesurePollutionCorrespondante(latitude, longitude,
 					listeDeStationDeMesure);
 
-			MesurePollution mesure = new MesurePollution(valeur, typeDonnee, zonedDateTime, stationDeMesure);
+			MesurePollution mesure = new MesurePollution(id, valeur, typeDonnee, zonedDateTime, stationDeMesure);
 			if (mesure != null) {
 
 				listeDesMesures.add(mesure);
@@ -183,6 +183,7 @@ public class JsonManipulation {
 
 		for (int i = 0; i < count; i++) { // iterate through jsonArray
 
+			Long id = myResponseMeteo.getJSONObject("communes").getJSONArray("list").getJSONObject(i).getLong("id");
 			Double longitude = myResponseMeteo.getJSONObject("communes").getJSONArray("list").getJSONObject(i)
 					.getJSONObject("coord").getDouble("Lon");
 			Double latitude = myResponseMeteo.getJSONObject("communes").getJSONArray("list").getJSONObject(i)
@@ -209,7 +210,7 @@ public class JsonManipulation {
 			Integer windDegrees = myResponseMeteo.getJSONObject("communes").getJSONArray("list").getJSONObject(i)
 					.getJSONObject("main").optInt("deg");
 
-			MesureMeteo mesureMeteo = new MesureMeteo(ZonedDateTime.now(), stationDeMesure, weatherDescription,
+			MesureMeteo mesureMeteo = new MesureMeteo(id, ZonedDateTime.now(), stationDeMesure, weatherDescription,
 					weatherIcon, temperature, pressure, humidity, tempMin, tempMax, windSpeed, windDegrees);
 			listeDesMesureMeteo.add(mesureMeteo);
 

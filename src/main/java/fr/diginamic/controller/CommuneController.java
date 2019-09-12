@@ -39,7 +39,6 @@ public class CommuneController {
 
 	@GetMapping("/insertion")
 	public List<Commune> insererLaListeDesCommunes() throws Exception {
-
 		/////////////////// OBTENTION DE LA LISTE DES STATIONS DE
 		/////////////////// MESURE POLLUTION//////////////////////
 		JSONObject myResponse = ApiUtils.callApiPollution(
@@ -79,10 +78,12 @@ public class CommuneController {
 		List<MesureMeteo> listeDeMesureMeteo = JsonManipulation.obtenirLesMesuresMeteo(myResponseMeteo,
 				listeDeStationsDeMesureMeteo);
 		/////////////////// INSERTION EN BASE//////////////////////
-		communeService.insererEnBas(listeDesCommunes);
-		mesurePollutionService.insererEnBase(listeDesMesuresPollution);
-		mesureMeteoService.insererEnBase(listeDeMesureMeteo);
 
+		communeService.insererEnBas(listeDesCommunes);
+
+		mesurePollutionService.insererEnBase(listeDesMesuresPollution);
+
+		mesureMeteoService.insererEnBase(listeDeMesureMeteo);
 		return listeDesCommunes;
 	}
 }

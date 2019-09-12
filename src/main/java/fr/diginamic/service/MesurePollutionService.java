@@ -1,6 +1,7 @@
 package fr.diginamic.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,17 @@ public class MesurePollutionService {
 	public List<MesurePollution> obtenirLesMesuresDePollution(String codeCommune) {
 		// TODO retrouver la commune de l'utilisateur via
 		return mesurePollutionRepository.obtenirLesMesuresDePollution(codeCommune);
+	}
+
+	public Optional<MesurePollution> obtenirMesurePollution(MesurePollution mesurePollution) {
+		// TODO Auto-generated method stub
+
+		return mesurePollutionRepository.findById(mesurePollution.getId());
+	}
+
+	public void insererEnBase(MesurePollution mesurePollution) {
+		// TODO Auto-generated method stub
+		mesurePollutionRepository.save(mesurePollution);
 	}
 
 }

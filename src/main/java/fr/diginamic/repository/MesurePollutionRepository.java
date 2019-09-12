@@ -2,6 +2,7 @@ package fr.diginamic.repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Repository;
 import fr.diginamic.entites.MesurePollution;
 
 @Repository
-public interface MesurePollutionRepository extends JpaRepository<MesurePollution, Integer> {
+public interface MesurePollutionRepository extends JpaRepository<MesurePollution, String> {
+
+	public Optional<MesurePollution> findById(String id);
 
 	default List<MesurePollution> obtenirLesMesuresDePollution(String code) {
 

@@ -12,6 +12,7 @@ import fr.diginamic.entites.MesureMeteo;
 import fr.diginamic.entites.MesurePollution;
 import fr.diginamic.service.MesureMeteoService;
 import fr.diginamic.service.MesurePollutionService;
+import fr.diginamic.utils.UtilisateurConnecteUtils;
 
 @RestController
 @RequestMapping("/mesures")
@@ -26,10 +27,8 @@ public class MesureController {
 	@GetMapping("/pollution")
 	public List<MesurePollution> obtenirLesMesuresPollution() {
 
-		String codeCommune = "";
-		// TODO retrouver codeCommune enregistré pour l'utilisateur via le
-		// context envoyé par le filter
-		// context.getCodeCommune= codeCommune;
+		String codeCommune = UtilisateurConnecteUtils.recupererCodeCommune();
+
 		return mesurePollutionService.obtenirLesMesuresDePollution(codeCommune);
 
 	}
@@ -44,10 +43,8 @@ public class MesureController {
 	@GetMapping("/meteo")
 	public List<MesureMeteo> obtenirLesMesuresDeMeteo() {
 
-		String codeCommune = "";
-		// TODO retrouver codeCommune enregistré pour l'utilisateur via le
-		// context envoyé par le filter
-		// context.getCodeCommune= codeCommune;
+		String codeCommune = UtilisateurConnecteUtils.recupererCodeCommune();
+
 		return mesureMeteoService.obtenirLesMesuresDeMeteo(codeCommune);
 
 	}
