@@ -5,31 +5,47 @@ package fr.diginamic.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.diginamic.entites.Favori;
+import fr.diginamic.entites.Utilisateur;
 import fr.diginamic.repository.FavoriRepository;
+import fr.diginamic.repository.UtilisateurRepository;
+import fr.diginamic.utils.UtilisateurConnecteUtils;
 
 @Service
 public class FavoriService {
 
-	@Autowired
 	private FavoriRepository favoriRepository;
+	private UtilisateurRepository utilisateurRepository;
 
-	public List<Favori> recupererFavoris(Integer utilisateurId) {
+	public FavoriService(FavoriRepository favoriRepository, UtilisateurRepository utilisateurRepository) {
+		this.favoriRepository = favoriRepository;
+		this.utilisateurRepository = utilisateurRepository;
+	}
 
-		// return favoriRepository.recupererFavorisSelonUtilisateur(utilisateurId);
-		return null;
+	public List<Favori> recupererFavoris() {
+		String utilisateurId = utilisateurRepository.findIdWithIdentifiant(UtilisateurConnecteUtils.recupererIdentifiant());
+
+		Utilisateur utilisateur = new Utilisateur();
+		utilisateur.setId(utilisateurId);
+		return favoriRepository.findByUtilisateurId(utilisateur);
 
 	}
 
-	public void insererEnBase(Favori favori) {
-		// favoriRepository.save(favori);
+	public Favori insererEnBase(Favori favoriAEnregistrer) {
+
+		String utilisateurId = utilisateurRepository.findIdWithIdentifiant(UtilisateurConnecteUtils.recupererIdentifiant());
+
+		Utilisateur utilisateur = new Utilisateur();
+		utilisateur.setId(utilisateurId);
+		favoriAEnregistrer.setUtilisateur(utilisateur);
+
+		return favoriRepository.save(favoriAEnregistrer);
+
 	}
 
-	public void supprimerFavori(Favori Favori) {
-		// favoriRepository.delete(entity);
+	public void supprimerFavori(Favori favoriASupprimer) {
+		favoriRepository.delete(favoriASupprimer);
 	}
-
 }

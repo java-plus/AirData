@@ -7,8 +7,10 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import fr.diginamic.controller.dto.CommuneMesuresDto;
 import fr.diginamic.entites.Commune;
 import fr.diginamic.entites.MesurePollution;
 import fr.diginamic.entites.StationDeMesureMeteo;
@@ -29,8 +31,10 @@ public class CommuneController {
 	MesureService mesureService;
 
 	@GetMapping
-	public List<Commune> obtenirLaListeDesCommunes() {
-		return communeService.obtenirLaListeDesCommunes();
+	public CommuneMesuresDto recupererMesuresCommunes(@RequestParam String codeCommune) {
+
+		return communeService.recupererMesureParCommune(codeCommune);
+
 	}
 
 	@GetMapping("/insertion")
@@ -40,21 +44,18 @@ public class CommuneController {
 		/////////////////// MESURE POLLUTION//////////////////////
 		JSONObject myResponse = ApiUtils.callApiPollution(
 				"https://public.opendatasoft.com/api/records/1.0/search/?dataset=openaq&rows=1500&sort=measurements_lastupdated&facet=location&facet=measurements_parameter&facet=measurements_sourcename&facet=measurements_lastupdated&geofilter.polygon=(46.29001987172955%2C-2.48291015625)%2C(48.25028349849022%2C-2.48291015625)%2C(48.25028349849022%2C1.2139892578125)%2C(46.29001987172955%2C1.2139892578125)%2C(46.29001987172955%2C-2.48291015625)");
-		List<StationDeMesurePollution> listeDeStationsDeMesure = JsonManipulation
-				.obtenirLesStationDeMesures(myResponse);
+		List<StationDeMesurePollution> listeDeStationsDeMesure = JsonManipulation.obtenirLesStationDeMesures(myResponse);
 
 		/////////////////// OBTENTION DE LA LISTE DES COMMUNES DISPONIBLES SUR
 		/////////////////// GEO DATA//////////////////////
-		JSONObject myResponseCommunes = ApiUtils.callApiCommunes(
-				"https://geo.api.gouv.fr/communes?codeRegion=52&fields=nom,code,codesPostaux,centre,codeRegion,population&format=json&geometry=centre");
+		JSONObject myResponseCommunes = ApiUtils.callApiCommunes("https://geo.api.gouv.fr/communes?codeRegion=52&fields=nom,code,codesPostaux,centre,codeRegion,population&format=json&geometry=centre");
 		List<Commune> listeDesCommunes = new ArrayList<Commune>();
 		listeDesCommunes = JsonManipulation.obtenirLesCommunes(myResponseCommunes);
 
 		/////////////////// MISE EN RELATION DES COMMUNES DISPONIBLES SUR GEO
 		/////////////////// DATA ET DES STATIONS DE
 		/////////////////// MESURES//////////////////////
-		listeDesCommunes = CommuneUtils.obtenirLesStationsDeMesuresLesPlusProches(listeDesCommunes,
-				listeDeStationsDeMesure);
+		listeDesCommunes = CommuneUtils.obtenirLesStationsDeMesuresLesPlusProches(listeDesCommunes, listeDeStationsDeMesure);
 
 		/////////////////// OBTENTION DE LA LISTE DES
 		/////////////////// MESURES POLLUTION//////////////////////
@@ -63,12 +64,10 @@ public class CommuneController {
 
 		/////////////////// OBTENTION DE LA LISTE DES STATIONS METEO DISPONIBLES
 		/////////////////// SUR OMPENWEATHERMAP//////////////////////
-		JSONObject myResponseMeteo = ApiUtils.callApiMeteo(
-				"http://api.openweathermap.org/data/2.5/box/city?bbox=-2.48291015625,46.29001987172955,1.2139892578125,48.25028349849022,100&appid=cf994ca322a654d044fd952ce00569fe");
+		JSONObject myResponseMeteo = ApiUtils.callApiMeteo("http://api.openweathermap.org/data/2.5/box/city?bbox=-2.48291015625,46.29001987172955,1.2139892578125,48.25028349849022,100&appid=cf994ca322a654d044fd952ce00569fe");
 		List<StationDeMesureMeteo> listeDeStationsDeMesureMeteo = new ArrayList<StationDeMesureMeteo>();
 		listeDeStationsDeMesureMeteo = JsonManipulation.obtenirLesStationsMeteo(myResponseMeteo);
-		listeDesCommunes = CommuneUtils.obtenirLesStationsDeMesuresMeteoLesPlusProches(listeDesCommunes,
-				listeDeStationsDeMesureMeteo);
+		listeDesCommunes = CommuneUtils.obtenirLesStationsDeMesuresMeteoLesPlusProches(listeDesCommunes, listeDeStationsDeMesureMeteo);
 
 		/////////////////// INSERTION EN BASE//////////////////////
 		communeService.insererEnBas(listeDesCommunes);
