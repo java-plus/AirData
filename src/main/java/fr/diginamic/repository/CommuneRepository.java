@@ -1,13 +1,27 @@
 package fr.diginamic.repository;
 
-import fr.diginamic.entites.Commune;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import fr.diginamic.entites.Commune;
 
+/**
+ * Ce repository gère les communes dans la base de donnée
+ * 
+ * @author Diginamic02
+ *
+ */
 @Repository
-public interface CommuneRepository extends JpaRepository<Commune,Integer> {
+public interface CommuneRepository extends JpaRepository<Commune, Integer> {
 
-    public Optional<Commune> findByCodeCommune(String codeCommune);
+	/**
+	 * Methode Cette methode trouve une Commune en base de donnée en fonction de
+	 * son Id
+	 * 
+	 * @param codeCommune
+	 * @return
+	 */
+	public Optional<Commune> findByCodeCommune(String codeCommune);
 }
