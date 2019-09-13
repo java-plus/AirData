@@ -4,37 +4,22 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import fr.diginamic.controller.dto.CommuneMesuresDto;
 import fr.diginamic.entites.Commune;
-import fr.diginamic.entites.MesureMeteo;
-import fr.diginamic.entites.MesurePollution;
 import fr.diginamic.exception.CommuneNonTrouveeException;
 import fr.diginamic.repository.CommuneRepository;
 
-/**
- * @author Eloi
- *
- */
 @Service
 public class CommuneService {
 
 	private CommuneRepository communeRepository;
-	private MesureMeteoService mesureMeteoService;
-	private MesurePollutionService mesurePollutionService;
 
 	/**
 	 * Constructor
 	 * 
 	 * @param communeRepository
-	 * @param mesureMeteoService
-	 * @param mesurePollutionService
-	 * @param transformerMesuresCommune
 	 */
-	public CommuneService(CommuneRepository communeRepository, MesureMeteoService mesureMeteoService, MesurePollutionService mesurePollutionService) {
+	public CommuneService(CommuneRepository communeRepository) {
 		this.communeRepository = communeRepository;
-		this.mesureMeteoService = mesureMeteoService;
-		this.mesurePollutionService = mesurePollutionService;
-
 	}
 
 	public Commune trouverCommuneParCode(String codeCommune) {
@@ -47,18 +32,6 @@ public class CommuneService {
 
 	public void insererEnBas(List<Commune> listeDesCommunes) {
 		communeRepository.saveAll(listeDesCommunes);
-	}
-
-	public CommuneMesuresDto recupererMesureParCommune(String codeCommune) {
-
-		Commune commune = communeRepository.findByCodeCommune(codeCommune).orElseThrow(CommuneNonTrouveeException::new);
-
-		List<MesureMeteo> listeMeteo = mesureMeteoService.obtenirLesMesuresDeMeteo(codeCommune);
-		List<MesurePollution> listePollution = mesurePollutionService.obtenirLesMesuresDePollution(codeCommune);
-
-		CommuneMesuresDto communeMesuresDto = new CommuneMesuresDto(commune, listeMeteo, listePollution);
-
-		return communeMesuresDto;
 	}
 
 }

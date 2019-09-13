@@ -16,6 +16,7 @@ import fr.diginamic.entites.MesureMeteo;
 import fr.diginamic.entites.MesurePollution;
 import fr.diginamic.entites.StationDeMesureMeteo;
 import fr.diginamic.entites.StationDeMesurePollution;
+import fr.diginamic.service.CommuneMesuresService;
 import fr.diginamic.service.CommuneService;
 import fr.diginamic.service.MesureMeteoService;
 import fr.diginamic.service.MesurePollutionService;
@@ -33,11 +34,13 @@ public class CommuneController {
 	MesurePollutionService mesurePollutionService;
 	@Autowired
 	MesureMeteoService mesureMeteoService;
+	@Autowired
+	private CommuneMesuresService communeMesuresService;
 
 	@GetMapping
 	public CommuneMesuresDto recupererMesuresCommunes(@RequestParam String codeCommune) {
 
-		return communeService.recupererMesureParCommune(codeCommune);
+		return communeMesuresService.recupererMesureParCommune(codeCommune);
 
 	}
 
@@ -74,8 +77,7 @@ public class CommuneController {
 
 		/////////////////// OBTENTION DE LA LISTE DES MESURES METEO DISPONIBLES
 		/////////////////// SUR OMPENWEATHERMAP//////////////////////
-		List<MesureMeteo> listeDeMesureMeteo = JsonManipulation.obtenirLesMesuresMeteo(myResponseMeteo,
-				listeDeStationsDeMesureMeteo);
+		List<MesureMeteo> listeDeMesureMeteo = JsonManipulation.obtenirLesMesuresMeteo(myResponseMeteo, listeDeStationsDeMesureMeteo);
 		/////////////////// INSERTION EN BASE//////////////////////
 
 		communeService.insererEnBas(listeDesCommunes);
