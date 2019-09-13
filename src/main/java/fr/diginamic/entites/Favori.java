@@ -1,6 +1,7 @@
 package fr.diginamic.entites;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,7 +25,7 @@ public class Favori {
 	@ManyToOne
 	Commune commune;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "UTILISATEUR_ID")
 	private Utilisateur utilisateur;
 
