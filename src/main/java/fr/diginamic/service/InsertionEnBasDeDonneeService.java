@@ -15,6 +15,14 @@ import fr.diginamic.entites.StationDeMesurePollution;
 import fr.diginamic.utils.ApiUtils;
 import fr.diginamic.utils.JsonManipulation;
 
+/**
+ * Classe insererEnBaseToutesLes24h Cette classe est un service gère les
+ * insertions en base de donnée Elle fait appel aux APIs, trie et transforme les
+ * données puis les envoie vers les Repository adequats.
+ * 
+ * @author Diginamic02
+ *
+ */
 @Service
 @EnableScheduling
 public class InsertionEnBasDeDonneeService {
@@ -27,6 +35,18 @@ public class InsertionEnBasDeDonneeService {
 	MesureMeteoService mesureMeteoService;
 
 	// @Scheduled(fixedDelay = 100000)
+	/**
+	 * Methode insererEnBaseToutesLes24h() Cette methode s'active
+	 * automatiquement (grâce à un @Schedule) tous les X temps pour vérifier si
+	 * de nouvelles données sont disponibles sur les APIs. Elle appelle les
+	 * APIs, trie et transforme les données pour les transformer en MesureMeteo
+	 * et MesurePollution puis vérifie via createOrNotMesureMeteo(mesureMeteo)
+	 * et createOrNotMesurePollution(MesurePollution mesurePollution) dans le
+	 * Repository si la mesure existe déjà, si ce n'est pas le cas, elle
+	 * l'insère en base, sinon elle ne fait rien et passe à la suivante
+	 * 
+	 * @throws Exception
+	 */
 	public void insererEnBaseToutesLes24h() throws Exception {
 		// System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 
@@ -54,6 +74,13 @@ public class InsertionEnBasDeDonneeService {
 		}
 	}
 
+	/**
+	 * Methode createOrNotMesureMeteo(MesureMeteo mesureMeteo) Cette methode
+	 * vérifie si la MesureMeteo existe deja dans la base de donnée et si ce
+	 * n'est pas le cas, l'insere en base.
+	 * 
+	 * @param mesureMeteo
+	 */
 	private void createOrNotMesureMeteo(MesureMeteo mesureMeteo) {
 		// TODO Auto-generated method stub
 		if (!mesureMeteoService.obtenirMesureMeteo(mesureMeteo).isPresent()) {
@@ -62,6 +89,13 @@ public class InsertionEnBasDeDonneeService {
 
 	}
 
+	/**
+	 * Methode createOrNotMesurePollution(MesurePollution mesurePollution) Cette
+	 * methode vérifie si la MesurePollution existe deja dans la base de donnée
+	 * et si ce n'est pas le cas, l'insere en base.
+	 * 
+	 * @param mesurePollution
+	 */
 	private void createOrNotMesurePollution(MesurePollution mesurePollution) {
 		// TODO Auto-generated method stub
 		if (!mesurePollutionService.obtenirMesurePollution(mesurePollution).isPresent()) {

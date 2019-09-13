@@ -20,73 +20,130 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Objet Commune représentant une commune
+ * 
+ * @author Diginamic02
+ *
+ */
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Commune implements Serializable {
 
+	/** id : Integer . est l'identifiant en base de donnée de la commune */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Integer id;
+	/** nom : String est le nom de la commune (exemple: Nantes) */
 	@NotBlank
 	private String nom;
+	/**
+	 * codeCommune : String est le code insee de la commune, un code insee est
+	 * attribué par l'état à chaque commune et est unique à chaque commune en
+	 * France (contrairement au code postal), exemple: code insee de nantes:
+	 * 44109
+	 */
 	@NotBlank
 	@Column(unique = true)
 	@Pattern(regexp = "^[0-9]*$")
 	private String codeCommune;
+	/** latitude : Double est la latitude de la commune */
 	@NotNull
 	private Double latitude;
+	/** longitude : Double est la longitude de la commune */
 	@NotNull
 	private Double longitude;
+	/** population : Integer est la population de la commune */
 	@NotNull
 	private Integer population;
 
 	@Transient
 	List<StationDeMesurePollution> listeDeStationsDeMesures;
 
+	/**
+	 * stationDeMesureMeteo : StationDeMesureMeteo est la station de mesure
+	 * Meteo la plus proche de la commune
+	 */
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "StationDeMesureMeteo_id")
 	StationDeMesureMeteo stationDeMesureMeteo;
+	/**
+	 * distanceStationDeMesureMeteo : int est la distance en mètre d ela station
+	 * meteo la plus proche de la commune
+	 */
 	int distanceStationDeMesureMeteo;
 
+	/**
+	 * StationDeMesure : StationDeMesurePollution est la station de mesure
+	 * pollution la plus proche de la commune
+	 */
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "StationDeMesure_id")
 	StationDeMesurePollution StationDeMesure;
+	/**
+	 * distance : int est la distance en mètres de la station de mesure
+	 * pollution la plus proche de la commune
+	 */
 	int distance;
 
+	/**
+	 * stationDeMesureSO2 : StationDeMesurePollution est la station de mesure
+	 * pollution la plus proche de la commune et mesurant le SO2 dans l'air
+	 */
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "StationDeMesureSO2_id")
 	StationDeMesurePollution stationDeMesureSO2;
 	int distanceSO2;
 
+	/**
+	 * stationDeMesurePM25 : StationDeMesurePollution est la station de mesure
+	 * pollution la plus proche de la commune et mesurant le PM2.5 dans l'air
+	 */
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "StationDeMesurePM25_id")
 	StationDeMesurePollution stationDeMesurePM25;
 	int distancePM25;
 
+	/**
+	 * stationDeMesurePM10 : StationDeMesurePollution est la station de mesure
+	 * pollution la plus proche de la commune et mesurant le PM10 dans l'air
+	 */
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "StationDeMesurePM10_id")
 	StationDeMesurePollution stationDeMesurePM10;
 	int distancePM10;
 
+	/**
+	 * stationDeMesureO3 : StationDeMesurePollution est la station de mesure
+	 * pollution la plus proche de la commune et mesurant le O3 dans l'air
+	 */
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "StationDeMesureO3_id")
 	StationDeMesurePollution stationDeMesureO3;
 	int distanceO3;
 
+	/**
+	 * stationDeMesureNO2 : StationDeMesurePollution est la station de mesure
+	 * pollution la plus proche de la commune et mesurant le NO2 dans l'air
+	 */
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "StationDeMesureNO2_id")
 	StationDeMesurePollution stationDeMesureNO2;
 	int distanceNO2;
 
+	/**
+	 * stationDeMesureCO : StationDeMesurePollution est la station de mesure
+	 * pollution la plus proche de la commune et mesurant le CO dans l'air
+	 */
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "StationDeMesureCO_id")
 	StationDeMesurePollution stationDeMesureCO;
 	int distanceCO;
 
 	/**
-	 * Constructeur
+	 * Constructeur retournant une instance de Commune
 	 * 
 	 * @param nom
 	 * @param codeCommune
