@@ -3,6 +3,7 @@ package fr.diginamic.controller;
 import fr.diginamic.controller.dto.UtilisateurConnecteService;
 import fr.diginamic.controller.dto.UtilisateurCreationComptePost;
 import fr.diginamic.controller.dto.UtilisateurDto;
+import fr.diginamic.controller.dto.UtilisateurRgpdDto;
 import fr.diginamic.entites.Role;
 import fr.diginamic.entites.Utilisateur;
 import fr.diginamic.transformer.TransformerUtilisateur;
@@ -69,4 +70,8 @@ public class UtilisateurController {
     }
 
 
+    @GetMapping("/utilisateur_rgpd")
+    public UtilisateurRgpdDto recupererUtilisateur(){
+        return transformerUtilisateur.utilisateurToUtilisateurRgpdDto(utilisateurService.recupererUtilisateur());
+    }
 }

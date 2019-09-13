@@ -69,4 +69,8 @@ public class UtilisateurService {
         utilisateurRepository.delete(utilisateur);
         return ResponseEntity.ok().build();
     }
+
+    public Utilisateur recupererUtilisateur() {
+       return utilisateurRepository.findByIdentifiant(UtilisateurConnecteUtils.recupererIdentifiant()).orElseThrow(UtilisateurNonTrouveException::new);
+    }
 }

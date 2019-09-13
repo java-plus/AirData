@@ -22,6 +22,7 @@ public class CommuneService {
     }
 
     public Commune trouverCommuneParCode(String codeCommune){
+
         return communeRepository.findByCodeCommune(codeCommune).orElseThrow(CommuneNonTrouveeException::new);
     }
 

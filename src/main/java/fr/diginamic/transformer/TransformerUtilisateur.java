@@ -2,7 +2,9 @@ package fr.diginamic.transformer;
 
 import fr.diginamic.controller.dto.UtilisateurCreationComptePost;
 import fr.diginamic.controller.dto.UtilisateurDto;
+import fr.diginamic.controller.dto.UtilisateurRgpdDto;
 import fr.diginamic.entites.*;
+import fr.diginamic.exception.CreationUtilisateurRgpdDtoImpossibleException;
 import fr.diginamic.service.CommuneService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -10,18 +12,23 @@ import org.springframework.stereotype.Component;
 import javax.rmi.CORBA.Util;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class TransformerUtilisateur {
-    //TODO dto utilisateur supprimer constructeur
+
 
     private PasswordEncoder passwordEncoder;
 
     private CommuneService communeService;
 
-    public TransformerUtilisateur(PasswordEncoder passwordEncoder, CommuneService communeService) {
+    private TransformerFavori transformerFavori;
+
+
+    public TransformerUtilisateur(PasswordEncoder passwordEncoder, CommuneService communeService, TransformerFavori transformerFavori) {
         this.passwordEncoder = passwordEncoder;
         this.communeService = communeService;
+        this.transformerFavori = transformerFavori;
     }
 
     public Utilisateur UtilisateurCreationComptePostToUtilisateur(UtilisateurCreationComptePost utilisateurCreationComptePost) {
@@ -40,16 +47,7 @@ public class TransformerUtilisateur {
 
     }
 
-    public UtilisateurDto UtilisateurToUtilisateurDto(Utilisateur utilisateur){
-        /*private String id;
-        private String role;
-        private String identifiant;
-        private String email;
-        private Integer age;
-        List<Favori> listeFavori;
-        Commune commune;
-        CompteUtilisateur compteUtilisateur;*/
-
+    public UtilisateurDto UtilisateurToUtilisateurDto(Utilisateur utilisateur) {
         UtilisateurDto utilisateurDto = new UtilisateurDto();
         utilisateurDto.setId(utilisateur.getId());
         utilisateurDto.setRole(utilisateur.getRole());
@@ -60,5 +58,22 @@ public class TransformerUtilisateur {
         utilisateurDto.setCommune(utilisateur.getCommune());
         utilisateurDto.setCompteUtilisateur(utilisateur.getCompteUtilisateur());
         return utilisateurDto;
+    }
+
+    public UtilisateurRgpdDto utilisateurToUtilisateurRgpdDto(Utilisateur utilisateur) {
+        if (utilisateur != null) {
+            UtilisateurRgpdDto utilisateurRgpdDto = new UtilisateurRgpdDto();
+            utilisateurRgpdDto.setId(utilisateur.getId());
+            utilisateurRgpdDto.setRole(utilisateur.getRole());
+            utilisateurRgpdDto.setIdentifiant(utilisateur.getIdentifiant());
+            utilisateurRgpdDto.setEmail(utilisateur.getEmail());
+            utilisateurRgpdDto.setAge(utilisateur.getAge());
+            utilisateurRgpdDto.setListeFavori(utilisateur.getListeFavori().stream().map(f -> transformerFavori.FavoriToFavoriDto(f)).collect(Collectors.toList()));
+            utilisateurRgpdDto.setCommune(utilisateur.getCommune());
+            utilisateurRgpdDto.setCompteUtilisateur(utilisateur.getCompteUtilisateur());
+            return utilisateurRgpdDto;
+        } else {
+            throw new CreationUtilisateurRgpdDtoImpossibleException();
+        }
     }
 }
