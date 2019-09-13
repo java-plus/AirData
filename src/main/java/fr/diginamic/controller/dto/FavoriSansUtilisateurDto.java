@@ -1,28 +1,21 @@
-package fr.diginamic.entites;
+package fr.diginamic.controller.dto;
 
+import fr.diginamic.entites.Commune;
+import fr.diginamic.entites.Utilisateur;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
-import javax.persistence.*;
-
-@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Favori {
+public class FavoriSansUtilisateurDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
 
-    @ManyToOne
     private Commune commune;
-
-    @ManyToOne
-    @JoinColumn(name = "UTILISATEUR_ID")
-    private Utilisateur utilisateur;
 
     private Boolean weatherDescription =false;
     private Boolean weatherIcon=false;
@@ -40,6 +33,5 @@ public class Favori {
     private Boolean mesureO3=false;
     private Boolean mesureNO2=false;
     private Boolean mesureCO=false;
-
 
 }
