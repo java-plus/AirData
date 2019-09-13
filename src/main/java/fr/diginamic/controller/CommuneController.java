@@ -1,7 +1,6 @@
 package fr.diginamic.controller;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -18,6 +17,8 @@ import fr.diginamic.entites.StationDeMesurePollution;
 import fr.diginamic.service.CommuneService;
 import fr.diginamic.service.MesureMeteoService;
 import fr.diginamic.service.MesurePollutionService;
+import fr.diginamic.service.StationDeMesureMeteoService;
+import fr.diginamic.service.StationDeMesurePollutionService;
 import fr.diginamic.utils.ApiUtils;
 import fr.diginamic.utils.CommuneUtils;
 import fr.diginamic.utils.JsonManipulation;
@@ -32,6 +33,10 @@ public class CommuneController {
 	MesurePollutionService mesurePollutionService;
 	@Autowired
 	MesureMeteoService mesureMeteoService;
+	@Autowired
+	StationDeMesureMeteoService stationDeMesureMeteoService;
+	@Autowired
+	StationDeMesurePollutionService stationDeMesurePollutionService;
 
 	@GetMapping
 	public List<Commune> obtenirLaListeDesCommunes() {
@@ -44,7 +49,7 @@ public class CommuneController {
 		/////////////////// MESURE POLLUTION//////////////////////
 		JSONObject myResponse = ApiUtils.callApiPollution(
 				"https://public.opendatasoft.com/api/records/1.0/search/?dataset=openaq&rows=1500&sort=measurements_lastupdated&facet=location&facet=measurements_parameter&facet=measurements_sourcename&facet=measurements_lastupdated&geofilter.polygon=(46.29001987172955%2C-2.48291015625)%2C(48.25028349849022%2C-2.48291015625)%2C(48.25028349849022%2C1.2139892578125)%2C(46.29001987172955%2C1.2139892578125)%2C(46.29001987172955%2C-2.48291015625)");
-		List<StationDeMesurePollution> listeDeStationsDeMesure = JsonManipulation
+		List<StationDeMesurePollution> listeDeStationsDeMesurePollution = JsonManipulation
 				.obtenirLesStationDeMesures(myResponse);
 
 		/////////////////// OBTENTION DE LA LISTE DES COMMUNES DISPONIBLES SUR
@@ -58,12 +63,12 @@ public class CommuneController {
 		/////////////////// DATA ET DES STATIONS DE
 		/////////////////// MESURES//////////////////////
 		listeDesCommunes = CommuneUtils.obtenirLesStationsDeMesuresLesPlusProches(listeDesCommunes,
-				listeDeStationsDeMesure);
+				listeDeStationsDeMesurePollution);
 
 		/////////////////// OBTENTION DE LA LISTE DES
 		/////////////////// MESURES POLLUTION//////////////////////
 		List<MesurePollution> listeDesMesuresPollution = new ArrayList<MesurePollution>();
-		listeDesMesuresPollution = JsonManipulation.obtenirLesMesures(myResponse, listeDeStationsDeMesure);
+		listeDesMesuresPollution = JsonManipulation.obtenirLesMesures(myResponse, listeDeStationsDeMesurePollution);
 
 		/////////////////// OBTENTION DE LA LISTE DES STATIONS METEO DISPONIBLES
 		/////////////////// SUR OMPENWEATHERMAP//////////////////////
@@ -80,21 +85,12 @@ public class CommuneController {
 				listeDeStationsDeMesureMeteo);
 		/////////////////// INSERTION EN BASE//////////////////////
 
+		stationDeMesurePollutionService.insererEnBaseListeStationsDeMesurePollution(listeDeStationsDeMesurePollution);
+		stationDeMesureMeteoService.insererEnBaseListeStationsDeMesureMeteo(listeDeStationsDeMesureMeteo);
 		communeService.insererEnBas(listeDesCommunes);
 
-		for (Iterator<MesurePollution> iter = listeDesMesuresPollution.listIterator(); iter.hasNext();) {
-			MesurePollution a = iter.next();
-			if (a.getStationDeMesure().getId() == null) {
-				iter.remove();
-			}
-		}
 		mesurePollutionService.insererEnBase(listeDesMesuresPollution);
-		for (Iterator<MesureMeteo> iter = listeDeMesureMeteo.listIterator(); iter.hasNext();) {
-			MesureMeteo a = iter.next();
-			if (a.getStationDeMesure().getId() == null) {
-				iter.remove();
-			}
-		}
+
 		mesureMeteoService.insererEnBase(listeDeMesureMeteo);
 		return "ok";
 	}

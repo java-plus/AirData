@@ -6,12 +6,15 @@ import java.util.List;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import fr.diginamic.entites.MesureMeteo;
 import fr.diginamic.entites.MesurePollution;
 import fr.diginamic.entites.StationDeMesureMeteo;
 import fr.diginamic.entites.StationDeMesurePollution;
+import fr.diginamic.repository.StationMeteoRepository;
+import fr.diginamic.repository.StationPollutionRepository;
 import fr.diginamic.utils.ApiUtils;
 import fr.diginamic.utils.JsonManipulation;
 
@@ -33,8 +36,12 @@ public class InsertionEnBasDeDonneeService {
 	MesurePollutionService mesurePollutionService;
 	@Autowired
 	MesureMeteoService mesureMeteoService;
+	@Autowired
+	StationMeteoRepository stationMeteoRepository;
+	@Autowired
+	StationPollutionRepository stationPollutionRepository;
 
-	// @Scheduled(fixedDelay = 100000)
+	@Scheduled(fixedDelay = 100000)
 	/**
 	 * Methode insererEnBaseToutesLes24h() Cette methode s'active
 	 * automatiquement (grâce à un @Schedule) tous les X temps pour vérifier si
@@ -84,6 +91,8 @@ public class InsertionEnBasDeDonneeService {
 	private void createOrNotMesureMeteo(MesureMeteo mesureMeteo) {
 		// TODO Auto-generated method stub
 		if (!mesureMeteoService.obtenirMesureMeteo(mesureMeteo).isPresent()) {
+			mesureMeteo.setStationDeMesure(stationMeteoRepository.findByLatitudeAndLongitude(
+					mesureMeteo.getStationDeMesure().getLatitude(), mesureMeteo.getStationDeMesure().getLongitude()));
 			mesureMeteoService.mettreEnBaseMesureMeteo(mesureMeteo);
 		}
 
@@ -99,6 +108,9 @@ public class InsertionEnBasDeDonneeService {
 	private void createOrNotMesurePollution(MesurePollution mesurePollution) {
 		// TODO Auto-generated method stub
 		if (!mesurePollutionService.obtenirMesurePollution(mesurePollution).isPresent()) {
+			mesurePollution.setStationDeMesure(stationPollutionRepository.findByLatitudeAndLongitude(
+					mesurePollution.getStationDeMesure().getLatitude(),
+					mesurePollution.getStationDeMesure().getLongitude()));
 			mesurePollutionService.mettreEnBaseMesurePollution(mesurePollution);
 		}
 		;

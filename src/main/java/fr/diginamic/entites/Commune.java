@@ -3,7 +3,6 @@ package fr.diginamic.entites;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -66,7 +65,7 @@ public class Commune implements Serializable {
 	 * stationDeMesureMeteo : StationDeMesureMeteo est la station de mesure
 	 * Meteo la plus proche de la commune
 	 */
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@ManyToOne
 	@JoinColumn(name = "StationDeMesureMeteo_id")
 	StationDeMesureMeteo stationDeMesureMeteo;
 	/**
@@ -79,7 +78,7 @@ public class Commune implements Serializable {
 	 * StationDeMesure : StationDeMesurePollution est la station de mesure
 	 * pollution la plus proche de la commune
 	 */
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@ManyToOne
 	@JoinColumn(name = "StationDeMesure_id")
 	StationDeMesurePollution StationDeMesure;
 	/**
@@ -92,7 +91,7 @@ public class Commune implements Serializable {
 	 * stationDeMesureSO2 : StationDeMesurePollution est la station de mesure
 	 * pollution la plus proche de la commune et mesurant le SO2 dans l'air
 	 */
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@ManyToOne
 	@JoinColumn(name = "StationDeMesureSO2_id")
 	StationDeMesurePollution stationDeMesureSO2;
 	int distanceSO2;
@@ -101,7 +100,7 @@ public class Commune implements Serializable {
 	 * stationDeMesurePM25 : StationDeMesurePollution est la station de mesure
 	 * pollution la plus proche de la commune et mesurant le PM2.5 dans l'air
 	 */
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@ManyToOne
 	@JoinColumn(name = "StationDeMesurePM25_id")
 	StationDeMesurePollution stationDeMesurePM25;
 	int distancePM25;
@@ -110,7 +109,7 @@ public class Commune implements Serializable {
 	 * stationDeMesurePM10 : StationDeMesurePollution est la station de mesure
 	 * pollution la plus proche de la commune et mesurant le PM10 dans l'air
 	 */
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@ManyToOne
 	@JoinColumn(name = "StationDeMesurePM10_id")
 	StationDeMesurePollution stationDeMesurePM10;
 	int distancePM10;
@@ -119,7 +118,7 @@ public class Commune implements Serializable {
 	 * stationDeMesureO3 : StationDeMesurePollution est la station de mesure
 	 * pollution la plus proche de la commune et mesurant le O3 dans l'air
 	 */
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@ManyToOne
 	@JoinColumn(name = "StationDeMesureO3_id")
 	StationDeMesurePollution stationDeMesureO3;
 	int distanceO3;
@@ -128,7 +127,7 @@ public class Commune implements Serializable {
 	 * stationDeMesureNO2 : StationDeMesurePollution est la station de mesure
 	 * pollution la plus proche de la commune et mesurant le NO2 dans l'air
 	 */
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@ManyToOne
 	@JoinColumn(name = "StationDeMesureNO2_id")
 	StationDeMesurePollution stationDeMesureNO2;
 	int distanceNO2;
@@ -137,7 +136,7 @@ public class Commune implements Serializable {
 	 * stationDeMesureCO : StationDeMesurePollution est la station de mesure
 	 * pollution la plus proche de la commune et mesurant le CO dans l'air
 	 */
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@ManyToOne
 	@JoinColumn(name = "StationDeMesureCO_id")
 	StationDeMesurePollution stationDeMesureCO;
 	int distanceCO;
