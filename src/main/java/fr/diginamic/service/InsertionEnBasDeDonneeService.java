@@ -26,7 +26,7 @@ public class InsertionEnBasDeDonneeService {
 	@Autowired
 	MesureMeteoService mesureMeteoService;
 
-	// @Scheduled(fixedDelay = 1000)
+	// @Scheduled(fixedDelay = 100000)
 	public void insererEnBaseToutesLes24h() throws Exception {
 		// System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 
@@ -56,13 +56,18 @@ public class InsertionEnBasDeDonneeService {
 
 	private void createOrNotMesureMeteo(MesureMeteo mesureMeteo) {
 		// TODO Auto-generated method stub
-		mesureMeteoService.obtenirMesurePollution(mesurePollution);
+		if (!mesureMeteoService.obtenirMesureMeteo(mesureMeteo).isPresent()) {
+			mesureMeteoService.mettreEnBaseMesureMeteo(mesureMeteo);
+		}
 
 	}
 
 	private void createOrNotMesurePollution(MesurePollution mesurePollution) {
 		// TODO Auto-generated method stub
-		mesurePollutionService.obtenirMesurePollution(mesurePollution);
+		if (!mesurePollutionService.obtenirMesurePollution(mesurePollution).isPresent()) {
+			mesurePollutionService.mettreEnBaseMesurePollution(mesurePollution);
+		}
+		;
 
 	}
 

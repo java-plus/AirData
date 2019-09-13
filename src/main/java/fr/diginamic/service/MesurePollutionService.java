@@ -40,7 +40,7 @@ public class MesurePollutionService {
 		return mesurePollutionRepository.findById(mesurePollution.getId());
 	}
 
-	public void insererEnBase(MesurePollution mesurePollution) {
+	public void mettreEnBaseMesurePollution(MesurePollution mesurePollution) {
 		// TODO Auto-generated method stub
 		mesurePollutionRepository.save(mesurePollution);
 	}
