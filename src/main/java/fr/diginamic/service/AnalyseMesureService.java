@@ -7,9 +7,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import fr.diginamic.controller.dto.AnalyseMesureDto;
-import fr.diginamic.controller.dto.IndicateurAvecDateEtValeurDto;
+import fr.diginamic.controller.dto.AnalyseMesureMeteoDto;
 import fr.diginamic.entites.Commune;
+import fr.diginamic.entites.MesureMeteo;
+import fr.diginamic.entites.MesurePollution;
 import fr.diginamic.exception.CommuneNonTrouveeException;
 import fr.diginamic.repository.CommuneRepository;
 import fr.diginamic.repository.MesureMeteoRepository;
@@ -39,28 +40,49 @@ public class AnalyseMesureService {
 		this.mesurePollutionRepository = mesurePollutionRepository;
 	}
 
-	public AnalyseMesureDto recupererHistoriqueIndicateur(AnalyseMesureDto analyseMesureDto) {
+	public AnalyseMesureMeteoDto recupererHistoriqueIndicateur(AnalyseMesureMeteoDto analyseMesureDto) {
 		Commune commune = communeRepository.findByCodeCommune(analyseMesureDto.getCodeCommune()).orElseThrow(CommuneNonTrouveeException::new);
 		analyseMesureDto.setNom(commune.getNom());
 		analyseMesureDto.setPopulation(commune.getPopulation());
 
-		List<IndicateurAvecDateEtValeurDto> listeIndicateur;
+		List<MesureMeteo> listeIndicateurMeteo = null;
+		List<MesurePollution> listeindicateurPollution = null;
 
-		if (analyseMesureDto.getIndicateur().equals("temperature")) {
-			listeIndicateur = mesureMeteoRepository.obtenirLesTemperatureParPeriode(analyseMesureDto.getCodeCommune(), analyseMesureDto.getDateDebut(), analyseMesureDto.getDateFin());
+		if (analyseMesureDto.getIndicateur().equals("meteo")) {
+			listeIndicateurMeteo = mesureMeteoRepository.obtenirTousLesIndicateursParPeriode(analyseMesureDto.getCodeCommune(), analyseMesureDto.getDateDebut(), analyseMesureDto.getDateFin());
+
+		} else if (analyseMesureDto.getIndicateur().equals("pollution")) {
+			listeindicateurPollution = mesurePollutionRepository.obtenirTousLesIndicateursParPeriode(analyseMesureDto.getCodeCommune(), analyseMesureDto.getDateDebut(), analyseMesureDto.getDateFin());
+
+		} else if (analyseMesureDto.getIndicateur().equals("temperature")) {
+
+			listeIndicateurMeteo = mesureMeteoRepository.obtenirLesTemperatureParPeriode(analyseMesureDto.getCodeCommune(), analyseMesureDto.getDateDebut(), analyseMesureDto.getDateFin());
+
 		} else if (analyseMesureDto.getIndicateur().equals("pressure")) {
-			listeIndicateur = mesureMeteoRepository.obtenirLesPressureParPeriode(analyseMesureDto.getCodeCommune(), analyseMesureDto.getDateDebut(), analyseMesureDto.getDateFin());
+
+			listeIndicateurMeteo = mesureMeteoRepository.obtenirLesPressureParPeriode(analyseMesureDto.getCodeCommune(), analyseMesureDto.getDateDebut(), analyseMesureDto.getDateFin());
+
 		} else if (analyseMesureDto.getIndicateur().equals("humidity")) {
-			listeIndicateur = mesureMeteoRepository.obtenirLesHumidityParPeriode(analyseMesureDto.getCodeCommune(), analyseMesureDto.getDateDebut(), analyseMesureDto.getDateFin());
+
+			listeIndicateurMeteo = mesureMeteoRepository.obtenirLesHumidityParPeriode(analyseMesureDto.getCodeCommune(), analyseMesureDto.getDateDebut(), analyseMesureDto.getDateFin());
+
 		} else if (analyseMesureDto.getIndicateur().equals("tempMin")) {
-			listeIndicateur = mesureMeteoRepository.obtenirLesTempsMinParPeriode(analyseMesureDto.getCodeCommune(), analyseMesureDto.getDateDebut(), analyseMesureDto.getDateFin());
+
+			listeIndicateurMeteo = mesureMeteoRepository.obtenirLesTempsMinParPeriode(analyseMesureDto.getCodeCommune(), analyseMesureDto.getDateDebut(), analyseMesureDto.getDateFin());
+
 		} else if (analyseMesureDto.getIndicateur().equals("tempMax")) {
-			listeIndicateur = mesureMeteoRepository.obtenirLesTempsMaxParPeriode(analyseMesureDto.getCodeCommune(), analyseMesureDto.getDateDebut(), analyseMesureDto.getDateFin());
+
+			listeIndicateurMeteo = mesureMeteoRepository.obtenirLesTempsMaxParPeriode(analyseMesureDto.getCodeCommune(), analyseMesureDto.getDateDebut(), analyseMesureDto.getDateFin());
+
 		} else if (analyseMesureDto.getIndicateur().equals("windSpeed")) {
-			listeIndicateur = mesureMeteoRepository.obtenirLesWindSpeedParPeriode(analyseMesureDto.getCodeCommune(), analyseMesureDto.getDateDebut(), analyseMesureDto.getDateFin());
+
+			listeIndicateurMeteo = mesureMeteoRepository.obtenirLesWindSpeedParPeriode(analyseMesureDto.getCodeCommune(), analyseMesureDto.getDateDebut(), analyseMesureDto.getDateFin());
+
 		} else if (analyseMesureDto.getIndicateur().equals("windDegrees")) {
-			listeIndicateur = mesureMeteoRepository.obtenirLesWindDegreesParPeriode(analyseMesureDto.getCodeCommune(), analyseMesureDto.getDateDebut(), analyseMesureDto.getDateFin());
+
+			listeIndicateurMeteo = mesureMeteoRepository.obtenirLesWindDegreesParPeriode(analyseMesureDto.getCodeCommune(), analyseMesureDto.getDateDebut(), analyseMesureDto.getDateFin());
 		}
+
 		//
 		// else if (analyseMesureDto.getIndicateur().equals("O3")) {
 		// mesurePollutionRepository.obtenirLesO3ParPeriode(analyseMesureDto.getCodeCommune(), analyseMesureDto.getDateDebut(),
@@ -78,7 +100,7 @@ public class AnalyseMesureService {
 		// mesurePollutionRepository.obtenirLesS02ParPeriode(analyseMesureDto.getCodeCommune(), analyseMesureDto.getDateDebut(),
 		// analyseMesureDto.getDateFin());
 		// }
-
+		analyseMesureDto.setDonnees(listeIndicateurMeteo);
 		return analyseMesureDto;
 
 	}

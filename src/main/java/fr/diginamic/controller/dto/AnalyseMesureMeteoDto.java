@@ -7,6 +7,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 import fr.diginamic.entites.Commune;
+import fr.diginamic.entites.MesureMeteo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AnalyseMesureDto {
+public class AnalyseMesureMeteoDto {
 
 	private String nom;
 	private String codeCommune;
@@ -26,16 +27,16 @@ public class AnalyseMesureDto {
 	private Integer population;
 
 	private String indicateur;
-	private List<IndicateurAvecDateEtValeurDto> donnees;
+	private List<MesureMeteo> donnees;
 
 	private ZonedDateTime dateDebut;
 	private ZonedDateTime dateFin;
 
-	public AnalyseMesureDto(Commune commune, List<IndicateurAvecDateEtValeurDto> listeIndic) {
+	public AnalyseMesureMeteoDto(Commune commune, List<MesureMeteo> donnees) {
 		this.population = commune.getPopulation();
 		this.nom = commune.getNom();
 		this.codeCommune = commune.getCodeCommune();
-		this.donnees = listeIndic;
+		this.donnees = donnees;
 	}
 
 }

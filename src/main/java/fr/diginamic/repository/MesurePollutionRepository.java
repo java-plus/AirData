@@ -1,5 +1,6 @@
 package fr.diginamic.repository;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -54,6 +55,12 @@ public interface MesurePollutionRepository extends JpaRepository<MesurePollution
 
 	@Query("select m from MesurePollution m where m.stationDeMesure=(select c.stationDeMesureCO from Commune c where c.codeCommune=:code) and m.typeDeDonnee=\'CO\'")
 	List<MesurePollution> obtenirLaMesureDeCO(@Param("code") String code);
+
+	//
+	///////////////////////////////////// FIXME
+	@Query("select m from MesurePollution m where m.stationDeMesure=(select c.stationDeMesureSO2 from Commune c where c.codeCommune=?1) and m.date between ?2 and ?3")
+	List<MesurePollution> obtenirTousLesIndicateursParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
+
 	//
 	// @Query("select valeur from MesurePollution m where m.stationDeMesure=(select c.stationDeMesureCO from Commune c where c.codeCommune=?1) and
 	// m.typeDeDonnee=\'O3\' and m.date between ?2 and ?3")

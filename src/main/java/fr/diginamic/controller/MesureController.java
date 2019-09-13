@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import fr.diginamic.controller.dto.AnalyseMesureDto;
+import fr.diginamic.controller.dto.AnalyseMesureMeteoDto;
 import fr.diginamic.entites.MesureMeteo;
 import fr.diginamic.entites.MesurePollution;
 import fr.diginamic.service.AnalyseMesureService;
@@ -31,9 +31,9 @@ public class MesureController {
 	private MesureMeteoService mesureMeteoService;
 
 	@GetMapping
-	public AnalyseMesureDto recupererHistoriqueIndicateur(@RequestBody AnalyseMesureDto analyseMesureDto) {
+	public AnalyseMesureMeteoDto recupererHistoriqueIndicateur(@RequestBody AnalyseMesureMeteoDto analyseMesureMeteoDto) {
 
-		return analyseMesureService.recupererHistoriqueIndicateur(analyseMesureDto);
+		return analyseMesureService.recupererHistoriqueIndicateur(analyseMesureMeteoDto);
 	}
 
 	@GetMapping("/pollution")
