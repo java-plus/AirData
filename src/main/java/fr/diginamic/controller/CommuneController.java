@@ -1,6 +1,7 @@
 package fr.diginamic.controller;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -38,7 +39,7 @@ public class CommuneController {
 	}
 
 	@GetMapping("/insertion")
-	public List<Commune> insererLaListeDesCommunes() throws Exception {
+	public String insererLaListeDesCommunes() throws Exception {
 		/////////////////// OBTENTION DE LA LISTE DES STATIONS DE
 		/////////////////// MESURE POLLUTION//////////////////////
 		JSONObject myResponse = ApiUtils.callApiPollution(
@@ -81,9 +82,20 @@ public class CommuneController {
 
 		communeService.insererEnBas(listeDesCommunes);
 
+		for (Iterator<MesurePollution> iter = listeDesMesuresPollution.listIterator(); iter.hasNext();) {
+			MesurePollution a = iter.next();
+			if (a.getStationDeMesure().getId() == null) {
+				iter.remove();
+			}
+		}
 		mesurePollutionService.insererEnBase(listeDesMesuresPollution);
-
+		for (Iterator<MesureMeteo> iter = listeDeMesureMeteo.listIterator(); iter.hasNext();) {
+			MesureMeteo a = iter.next();
+			if (a.getStationDeMesure().getId() == null) {
+				iter.remove();
+			}
+		}
 		mesureMeteoService.insererEnBase(listeDeMesureMeteo);
-		return listeDesCommunes;
+		return "ok";
 	}
 }

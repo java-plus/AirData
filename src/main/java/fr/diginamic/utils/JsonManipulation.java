@@ -2,6 +2,7 @@ package fr.diginamic.utils;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -178,7 +179,7 @@ public class JsonManipulation {
 			List<StationDeMesureMeteo> listeDeStationDeMesure) throws JSONException {
 
 		List<MesureMeteo> listeDesMesureMeteo = new ArrayList<MesureMeteo>();
-
+		listeDeStationDeMesure.removeAll(Collections.singletonList(null));
 		int count = myResponseMeteo.getJSONObject("communes").getJSONArray("list").length();
 
 		for (int i = 0; i < count; i++) { // iterate through jsonArray
@@ -190,6 +191,7 @@ public class JsonManipulation {
 					.getJSONObject("coord").getDouble("Lat");
 			StationDeMesureMeteo stationDeMesure = MesureUtils.obtenirStationDeMesureMeteoCorrespondante(latitude,
 					longitude, listeDeStationDeMesure);
+
 			String weatherDescription = myResponseMeteo.getJSONObject("communes").getJSONArray("list").getJSONObject(i)
 					.getJSONArray("weather").getJSONObject(0).getString("description");
 			String weatherIcon = myResponseMeteo.getJSONObject("communes").getJSONArray("list").getJSONObject(i)
@@ -215,7 +217,7 @@ public class JsonManipulation {
 			listeDesMesureMeteo.add(mesureMeteo);
 
 		}
-
+		listeDesMesureMeteo.removeAll(Collections.singletonList(null));
 		return listeDesMesureMeteo;
 	}
 
