@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.diginamic.entites.Commune;
+import fr.diginamic.entites.MesureMeteo;
 import fr.diginamic.entites.MesurePollution;
 import fr.diginamic.entites.StationDeMesureMeteo;
 import fr.diginamic.entites.StationDeMesurePollution;
 import fr.diginamic.service.CommuneService;
-import fr.diginamic.service.MesureService;
+import fr.diginamic.service.MesureMeteoService;
+import fr.diginamic.service.MesurePollutionService;
 import fr.diginamic.utils.ApiUtils;
 import fr.diginamic.utils.CommuneUtils;
 import fr.diginamic.utils.JsonManipulation;
@@ -26,7 +28,9 @@ public class CommuneController {
 	@Autowired
 	CommuneService communeService;
 	@Autowired
-	MesureService mesureService;
+	MesurePollutionService mesurePollutionService;
+	@Autowired
+	MesureMeteoService mesureMeteoService;
 
 	@GetMapping
 	public List<Commune> obtenirLaListeDesCommunes() {
@@ -35,7 +39,6 @@ public class CommuneController {
 
 	@GetMapping("/insertion")
 	public List<Commune> insererLaListeDesCommunes() throws Exception {
-
 		/////////////////// OBTENTION DE LA LISTE DES STATIONS DE
 		/////////////////// MESURE POLLUTION//////////////////////
 		JSONObject myResponse = ApiUtils.callApiPollution(
@@ -58,8 +61,8 @@ public class CommuneController {
 
 		/////////////////// OBTENTION DE LA LISTE DES
 		/////////////////// MESURES POLLUTION//////////////////////
-		List<MesurePollution> listeDesMesures = new ArrayList<MesurePollution>();
-		listeDesMesures = JsonManipulation.obtenirLesMesures(myResponse, listeDeStationsDeMesure);
+		List<MesurePollution> listeDesMesuresPollution = new ArrayList<MesurePollution>();
+		listeDesMesuresPollution = JsonManipulation.obtenirLesMesures(myResponse, listeDeStationsDeMesure);
 
 		/////////////////// OBTENTION DE LA LISTE DES STATIONS METEO DISPONIBLES
 		/////////////////// SUR OMPENWEATHERMAP//////////////////////
@@ -70,10 +73,17 @@ public class CommuneController {
 		listeDesCommunes = CommuneUtils.obtenirLesStationsDeMesuresMeteoLesPlusProches(listeDesCommunes,
 				listeDeStationsDeMesureMeteo);
 
+		/////////////////// OBTENTION DE LA LISTE DES MESURES METEO DISPONIBLES
+		/////////////////// SUR OMPENWEATHERMAP//////////////////////
+		List<MesureMeteo> listeDeMesureMeteo = JsonManipulation.obtenirLesMesuresMeteo(myResponseMeteo,
+				listeDeStationsDeMesureMeteo);
 		/////////////////// INSERTION EN BASE//////////////////////
-		communeService.insererEnBas(listeDesCommunes);
-		mesureService.insererEnBase(listeDesMesures);
 
+		communeService.insererEnBas(listeDesCommunes);
+
+		mesurePollutionService.insererEnBase(listeDesMesuresPollution);
+
+		mesureMeteoService.insererEnBase(listeDeMesureMeteo);
 		return listeDesCommunes;
 	}
 }

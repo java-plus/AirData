@@ -28,7 +28,7 @@ public class StationDeMesurePollution {
 	private Boolean mesureNO2 = false;
 	private Boolean mesureCO = false;
 
-	public StationDeMesurePollution(double latitude, double longitude) {
+	public StationDeMesurePollution(Double latitude, Double longitude) {
 		super();
 		this.latitude = latitude;
 		this.longitude = longitude;
