@@ -1,11 +1,15 @@
 package fr.diginamic.service;
 
+import fr.diginamic.entites.Commune;
+import fr.diginamic.exception.CommuneNonTrouveeException;
+import fr.diginamic.repository.CommuneRepository;
+import org.springframework.stereotype.Service;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.diginamic.entites.Commune;
-import fr.diginamic.exception.CommuneNonTrouveeException;
 import fr.diginamic.repository.CommuneRepository;
 
 @Service
