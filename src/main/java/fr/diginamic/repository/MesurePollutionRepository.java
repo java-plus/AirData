@@ -54,5 +54,25 @@ public interface MesurePollutionRepository extends JpaRepository<MesurePollution
 
 	@Query("select m from MesurePollution m where m.stationDeMesure=(select c.stationDeMesureCO from Commune c where c.codeCommune=:code) and m.typeDeDonnee=\'CO\'")
 	List<MesurePollution> obtenirLaMesureDeCO(@Param("code") String code);
+	//
+	// @Query("select valeur from MesurePollution m where m.stationDeMesure=(select c.stationDeMesureCO from Commune c where c.codeCommune=?1) and
+	// m.typeDeDonnee=\'O3\' and m.date between ?2 and ?3")
+	// Double obtenirLesO3ParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
+	//
+	// @Query("select valeur from MesurePollution m where m.stationDeMesure=(select c.stationDeMesureCO from Commune c where c.codeCommune=?1) and
+	// m.typeDeDonnee=\'PM10\' and m.date between ?2 and ?3")
+	// Double obtenirLesPM10ParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
+	//
+	// @Query("select valeur from MesurePollution m where m.stationDeMesure=(select c.stationDeMesureCO from Commune c where c.codeCommune=?1) and
+	// m.typeDeDonnee=\'PM25\' and m.date between ?2 and ?3")
+	// Double obtenirLesPM25ParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
+	//
+	// @Query("select valeur from MesurePollution m where m.stationDeMesure=(select c.stationDeMesureCO from Commune c where c.codeCommune=?1) and
+	// m.typeDeDonnee=\'NO2\' and m.date between ?2 and ?3")
+	// Double obtenirLesNO2ParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
+	//
+	// @Query("select valeur from MesurePollution m where m.stationDeMesure=(select c.stationDeMesureCO from Commune c where c.codeCommune=?1) and
+	// m.typeDeDonnee=\'CO\' and m.date between ?2 and ?3")
+	// Double obtenirLesS02ParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
 
 }

@@ -32,8 +32,7 @@ public class MesurePollution {
 	@JoinColumn(name = "StationDeMesure_id")
 	private StationDeMesurePollution stationDeMesure;
 
-	public MesurePollution(String id, double valeur, String typeDeDonnee, ZonedDateTime date,
-			StationDeMesurePollution stationDeMesure) {
+	public MesurePollution(String id, double valeur, String typeDeDonnee, ZonedDateTime date, StationDeMesurePollution stationDeMesure) {
 		super();
 		this.id = id;
 		this.valeur = valeur;
