@@ -4,6 +4,7 @@ import java.time.ZonedDateTime;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -28,7 +29,7 @@ public class MesurePollution {
 	private String typeDeDonnee;
 	@NotNull
 	private ZonedDateTime date;
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
 	@JoinColumn(name = "StationDeMesure_id")
 	private StationDeMesurePollution stationDeMesure;
 

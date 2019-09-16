@@ -19,4 +19,5 @@ import lombok.NoArgsConstructor;
 public class MesureDto {
 	private ZonedDateTime date;
 	private Double valeur;
+
 }
