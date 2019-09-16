@@ -1,5 +1,8 @@
 package fr.diginamic.exception;
 
+/**
+ * Exception levée lorsqu’une commune n’est pas trouvée en base de données
+ */
 public class CommuneNonTrouveeException extends RuntimeException {
 
     public CommuneNonTrouveeException() {

@@ -37,15 +37,26 @@ import fr.diginamic.utils.UtilisateurConnecteUtils;
 @RequestMapping("/mesures")
 public class MesureController {
 
+	/**
+	 * Un service de mesure de pollution
+	 */
 	@Autowired
 	private MesurePollutionService mesurePollutionService;
 
+	/**
+	 * Un service d’analyse de mesure
+	 */
 	@Autowired
 	private AnalyseMesureService analyseMesureService;
 
 	@Autowired
 	private MesureMeteoService mesureMeteoService;
 
+	/**
+	 * Cette methode permet d’obtenir l’historique d’un indicateur
+	 * @param analyseMesureDtoPost objet contenant les parametres de la recherche
+	 * @return AnalyseMesureDto
+	 */
 	@GetMapping
 	public AnalyseMesureDto recupererHistoriqueIndicateur(@RequestBody AnalyseMesureDtoPost analyseMesureDtoPost) {
 
@@ -57,7 +68,7 @@ public class MesureController {
 	 * les mesures de pollution concernant la commune enregistrée dans le compte
 	 * de l'utilisateur.
 	 * 
-	 * @return
+	 * @return Une liste de mesure de pollution
 	 */
 	@GetMapping("/pollution")
 	public List<MesurePollution> obtenirLesMesuresPollution() {
@@ -74,7 +85,7 @@ public class MesureController {
 	 * par le codeCommune renseigné (ici le code commune est 44108).
 	 * 
 	 * @param codeCommune
-	 * @return
+	 * @return une liste de mesure de pollution
 	 */
 	@GetMapping(path = "/pollution", params = { "codeCommune" })
 	public List<MesurePollution> obtenirLesMesuresPollution(@RequestParam String codeCommune) {
@@ -88,7 +99,7 @@ public class MesureController {
 	 * mesures de meteo concernant la commune enregistrée dans le compte de
 	 * l'utilisateur.
 	 * 
-	 * @return
+	 * @return une mesure meteo
 	 */
 	@GetMapping("/meteo")
 	public MesureMeteo obtenirLesMesuresDeMeteo() {
@@ -105,7 +116,7 @@ public class MesureController {
 	 * par le codeCommune renseigné (ici le code commune est 44108).
 	 * 
 	 * @param codeCommune
-	 * @return
+	 * @return une mesure meteo
 	 */
 	@GetMapping(path = "/meteo", params = { "codeCommune" })
 	public MesureMeteo obtenirLesMesuresMeteo(@RequestParam String codeCommune) {

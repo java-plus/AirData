@@ -26,14 +26,29 @@ import fr.diginamic.service.StationDeMesurePollutionService;
 @RequestMapping("/communes")
 public class CommuneController {
 
+	/**
+	 * Un service de commune
+	 */
 	@Autowired
 	CommuneService communeService;
+	/**
+	 *  Un service de mesure de pollution
+	 */
 	@Autowired
 	MesurePollutionService mesurePollutionService;
+	/**
+	 * Un service de mesure de meteo
+	 */
 	@Autowired
 	MesureMeteoService mesureMeteoService;
+	/**
+	 * Un service de station de mesure
+	 */
 	@Autowired
 	StationDeMesureMeteoService stationDeMesureMeteoService;
+	/**
+	 * Un service de station de pollution
+	 */
 	@Autowired
 	StationDeMesurePollutionService stationDeMesurePollutionService;
 

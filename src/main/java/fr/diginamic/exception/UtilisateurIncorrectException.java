@@ -1,5 +1,8 @@
 package fr.diginamic.exception;
 
+/**
+ * Exception levée lorsque les informations d’un utilisateur sont incorrects
+ */
 public class UtilisateurIncorrectException extends RuntimeException {
     public UtilisateurIncorrectException() {
     }
