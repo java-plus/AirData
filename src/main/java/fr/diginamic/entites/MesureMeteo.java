@@ -101,6 +101,11 @@ public class MesureMeteo {
 	 */
 	@NotNull
 	private Double windSpeed;
+	/**
+	 * windDegrees : Integer représente l’orientation du vent enregistrée par la
+	 * station météo concernée, cette valeur est sorti de l'API qui nous fourni
+	 * les informations
+	 */
 	@NotNull
 	private Integer windDegrees;
 

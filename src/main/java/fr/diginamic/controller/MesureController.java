@@ -99,7 +99,7 @@ public class MesureController {
 	 * mesures de meteo concernant la commune enregistrée dans le compte de
 	 * l'utilisateur.
 	 * 
-	 * @return
+	 * @return une mesure meteo
 	 */
 	@GetMapping("/meteo")
 	public MesureMeteo obtenirLesMesuresDeMeteo() {
@@ -116,7 +116,7 @@ public class MesureController {
 	 * par le codeCommune renseigné (ici le code commune est 44108).
 	 * 
 	 * @param codeCommune
-	 * @return
+	 * @return une mesure meteo
 	 */
 	@GetMapping(path = "/meteo", params = { "codeCommune" })
 	public MesureMeteo obtenirLesMesuresMeteo(@RequestParam String codeCommune) {

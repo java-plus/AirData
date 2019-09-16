@@ -4,6 +4,7 @@
 package fr.diginamic.exception;
 
 /**
+ * Exception levée lorsque les parametres de recherche d’une analyse sont incorrect
  * @author Eloi
  *
  */

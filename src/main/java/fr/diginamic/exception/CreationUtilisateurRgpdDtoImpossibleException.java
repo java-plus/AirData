@@ -1,5 +1,8 @@
 package fr.diginamic.exception;
 
+/**
+ * Exception levée lorsque la creation d’un dto des données rgpd d’un utilisateur est impossible à créer
+ */
 public class CreationUtilisateurRgpdDtoImpossibleException extends RuntimeException {
     public CreationUtilisateurRgpdDtoImpossibleException() {
     }

@@ -1,5 +1,8 @@
 package fr.diginamic.exception;
 
+/**
+ * exception levée lorsqu’un utilisateur n’est pas trouvée en base de données
+ */
 public class UtilisateurNonTrouveException extends RuntimeException {
 
     public UtilisateurNonTrouveException() {

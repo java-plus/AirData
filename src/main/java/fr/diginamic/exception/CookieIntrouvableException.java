@@ -1,5 +1,8 @@
 package fr.diginamic.exception;
 
+/**
+ * exception levée lorsque le cookie de connexion n’est pas trouvé
+ */
 public class CookieIntrouvableException extends RuntimeException {
     public CookieIntrouvableException() {
     }
