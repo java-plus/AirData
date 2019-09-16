@@ -1,0 +1,477 @@
+{
+	"info": {
+		"_postman_id": "807e57e0-c386-46af-8b41-207b79584d2a",
+		"name": "AirData",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "creer compte",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"identifiant\" : \"user\",\r\n\t\"email\" : \"user@user.fr\",\r\n\t\"age\" : \"18\",\r\n\t\"codeCommune\" : \"44001\",\r\n\t\"motDePasse\" : \"User44000;\"\r\n}\r\n"
+				},
+				"url": {
+					"raw": "http://localhost:8080/compte",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"compte"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "creation compte admin",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"identifiant\" : \"admin\",\r\n\t\"email\" : \"admin@admin.fr\",\r\n\t\"age\" : \"18\",\r\n\t\"codeCommune\" : \"44001\",\r\n\t\"motDePasse\" : \"Admin44000;\"\r\n}\r\n"
+				},
+				"url": {
+					"raw": "http://localhost:8080/compte_admin",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"compte_admin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "connexion user",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"identifiant\" : \"user\",\r\n\t\"mdp\" : \"User44000;\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/auth",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "connexion admin",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"identifiant\" : \"admin\",\r\n\t\"mdp\" : \"Admin44000;\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/auth",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "creer alerte",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"codeCommune\":\"44001\",\n\t\"type\":\"METEO\",\n\t\"message\":\"alerte 4\",\n\t\"dateDebut\":\"2019-09-12T14:37:24.591+02:00\",\n\t\"dateFin\":\"2019-09-11T14:37:24.591+02:00\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/alerte",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"alerte"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FAVORI - creation",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"codeCommune\": \"44001\",\r\n\t\"temperature\" : \"true\",\r\n\t\"temperatureMin\" : \"false\",\r\n\t\"temperatureMax\" : \"true\",\r\n\t\"humidite\" : \"false\",\r\n\t\"ventDirection\" : \"false\",\r\n\t\"ventVitesse\" : \"false\",\r\n\t\"pression\" : \"true\",\r\n\t\"etatMeteo\" : \"false\"\r\n\t\"so2\" : \"false\",\r\n\t\"pm25\" : \"true\",\r\n\t\"pm10\" : \"false\",\r\n\t\"o3\" : \"true\",\r\n\t\"no2\" : \"false\",\r\n\t\"co\" : \"true\",\r\n\t\"population\" : \"true\"\r\n}\r\n"
+				},
+				"url": {
+					"raw": "http://localhost:8080/favoris",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"favoris"
+					]
+				},
+				"description": "création d'un favori "
+			},
+			"response": []
+		},
+		{
+			"name": "lister communes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/communes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"communes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "recuperer compte",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/compte",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"compte"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "recuperer données rgpd",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/utilisateur_rgpd",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"utilisateur_rgpd"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FAVORI - récuperer ses favoris",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/favoris",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"favoris"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "COMMUNES - récuperer mesures d'une commune",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/mesures/pollution?codeCommune=44001",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"mesures",
+						"pollution"
+					],
+					"query": [
+						{
+							"key": "codeCommune",
+							"value": "44001"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "recuperer alertes",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"codeCommune\":\"44001\",\n\t\"type\":\"METEO\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/alertes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"alertes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "recuperer mesures pollution",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/mesures/pollution",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"mesures",
+						"pollution"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "MESURES - récuperer les mesures de pollution d'une commune",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/communes?codeCommune=44001",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"communes"
+					],
+					"query": [
+						{
+							"key": "codeCommune",
+							"value": "44001"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ANALYSE - récuperer  mesures d un indicateur sur une commune",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"codeCommune\": \"44020\",\n    \"indicateur\": \"PM25\",\n    \"dateDebut\": \"2016-12-01T10:15:30+02:00\",\n    \"dateFin\": \"2019-12-01T10:15:30+02:00\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/mesures",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"mesures"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "modifier compte",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"notificationMeteo\": true,\r\n    \"notificationPollution\": true\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/compte",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"compte"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "suppression compte par identifiant",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/compte_avec_admin?identifiant=admin",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"compte_avec_admin"
+					],
+					"query": [
+						{
+							"key": "identifiant",
+							"value": "admin"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "supprimer son compte",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/compte",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"compte"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

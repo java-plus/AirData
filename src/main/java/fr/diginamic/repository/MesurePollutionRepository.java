@@ -1,3 +1,4 @@
+
 package fr.diginamic.repository;
 
 import java.time.ZonedDateTime;
@@ -45,6 +46,7 @@ public interface MesurePollutionRepository extends JpaRepository<MesurePollution
 	 */
 	default List<MesurePollution> obtenirLesMesuresDePollution(String code) {
 
+		List<List<MesurePollution>> listeDeListesMesurePollution = new ArrayList<List<MesurePollution>>();
 		List<MesurePollution> listeDeMesurePollution = new ArrayList<MesurePollution>();
 		List<MesurePollution> mesurePollutionSO2 = obtenirLaMesureDeSO2(code);
 		List<MesurePollution> mesurePollutionPM25 = obtenirLaMesureDePM25(code);
@@ -53,12 +55,25 @@ public interface MesurePollutionRepository extends JpaRepository<MesurePollution
 		List<MesurePollution> mesurePollutionNO2 = obtenirLaMesureDeNO2(code);
 		List<MesurePollution> mesurePollutionCO = obtenirLaMesureDeCO(code);
 
-		listeDeMesurePollution.add(mesurePollutionSO2.get(0));
-		listeDeMesurePollution.add(mesurePollutionPM25.get(0));
-		listeDeMesurePollution.add(mesurePollutionPM10.get(0));
-		listeDeMesurePollution.add(mesurePollutionO3.get(0));
-		listeDeMesurePollution.add(mesurePollutionNO2.get(0));
-		listeDeMesurePollution.add(mesurePollutionCO.get(0));
+		listeDeListesMesurePollution.add(mesurePollutionSO2);
+		listeDeListesMesurePollution.add(mesurePollutionPM25);
+		listeDeListesMesurePollution.add(mesurePollutionPM10);
+		listeDeListesMesurePollution.add(mesurePollutionO3);
+		listeDeListesMesurePollution.add(mesurePollutionNO2);
+		listeDeListesMesurePollution.add(mesurePollutionCO);
+
+		for (List<MesurePollution> listeDeMesurePollutionAtrier : listeDeListesMesurePollution) {
+			MesurePollution mesureLaPlusRecente = new MesurePollution();
+			ZonedDateTime dateMesureLaPlusRecente = ZonedDateTime.now().minusYears(30);
+			for (MesurePollution mesurePollution : listeDeMesurePollutionAtrier) {
+				if (mesurePollution.getDate().isAfter(dateMesureLaPlusRecente)) {
+					dateMesureLaPlusRecente = mesurePollution.getDate();
+					mesureLaPlusRecente = mesurePollution;
+				}
+			}
+			listeDeMesurePollution.add(mesureLaPlusRecente);
+
+		}
 
 		return listeDeMesurePollution;
 
@@ -126,9 +141,9 @@ public interface MesurePollutionRepository extends JpaRepository<MesurePollution
 
 	/**
 	 * 
-	 * Méthode qui retourne une liste de d'Objet contenant les mesures de O3 et les dates, comprises entre 2 dates pour une commune.
-	 * la valeur (index [0]) est un Double
-	 * et la date (index[1]) est une ZonedDateTime
+	 * Méthode qui retourne une liste de d'Objet contenant les mesures de O3 et
+	 * les dates, comprises entre 2 dates pour une commune. la valeur (index
+	 * [0]) est un Double et la date (index[1]) est une ZonedDateTime
 	 * 
 	 * @param codeCommune
 	 *            (le code insee (code commune) de la commune)
@@ -143,9 +158,9 @@ public interface MesurePollutionRepository extends JpaRepository<MesurePollution
 
 	/**
 	 * 
-	 * Méthode qui retourne une liste de d'Objet contenant les mesures de PM10 et les dates, comprises entre 2 dates pour une commune.
-	 * la valeur (index [0]) est un Double
-	 * et la date (index[1]) est une ZonedDateTime
+	 * Méthode qui retourne une liste de d'Objet contenant les mesures de PM10
+	 * et les dates, comprises entre 2 dates pour une commune. la valeur (index
+	 * [0]) est un Double et la date (index[1]) est une ZonedDateTime
 	 * 
 	 * @param codeCommune
 	 *            (le code insee (code commune) de la commune)
@@ -156,13 +171,14 @@ public interface MesurePollutionRepository extends JpaRepository<MesurePollution
 	 * @return
 	 */
 	@Query("select valeur, date from MesurePollution m where m.stationDeMesure=(select c.stationDeMesurePM10 from Commune c where c.codeCommune=?1) and m.typeDeDonnee=\'PM10\' and m.date between?2 and?3")
-	Optional<List<Object[]>> obtenirLesPM10ParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
+	Optional<List<Object[]>> obtenirLesPM10ParPeriode(String codeCommune, ZonedDateTime dateDebut,
+			ZonedDateTime dateFin);
 
 	/**
 	 * 
-	 * Méthode qui retourne une liste de d'Objet contenant les mesures de PM25 et les dates, comprises entre 2 dates pour une commune.
-	 * la valeur (index [0]) est un Double
-	 * et la date (index[1]) est une ZonedDateTime
+	 * Méthode qui retourne une liste de d'Objet contenant les mesures de PM25
+	 * et les dates, comprises entre 2 dates pour une commune. la valeur (index
+	 * [0]) est un Double et la date (index[1]) est une ZonedDateTime
 	 * 
 	 * @param codeCommune
 	 *            (le code insee (code commune) de la commune)
@@ -173,13 +189,14 @@ public interface MesurePollutionRepository extends JpaRepository<MesurePollution
 	 * @return
 	 */
 	@Query("select valeur, date from MesurePollution m where m.stationDeMesure=(select c.stationDeMesurePM25 from Commune c where c.codeCommune=?1)and m.typeDeDonnee=\'PM2.5\'and m.date between?2 and?3")
-	Optional<List<Object[]>> obtenirLesPM25ParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
+	Optional<List<Object[]>> obtenirLesPM25ParPeriode(String codeCommune, ZonedDateTime dateDebut,
+			ZonedDateTime dateFin);
 
 	/**
 	 * 
-	 * Méthode qui retourne une liste de d'Objet contenant les mesures de NO2 et les dates, comprises entre 2 dates pour une commune.
-	 * la valeur (index [0]) est un Double
-	 * et la date (index[1]) est une ZonedDateTime
+	 * Méthode qui retourne une liste de d'Objet contenant les mesures de NO2 et
+	 * les dates, comprises entre 2 dates pour une commune. la valeur (index
+	 * [0]) est un Double et la date (index[1]) est une ZonedDateTime
 	 * 
 	 * @param codeCommune
 	 *            (le code insee (code commune) de la commune)
@@ -190,13 +207,14 @@ public interface MesurePollutionRepository extends JpaRepository<MesurePollution
 	 * @return
 	 */
 	@Query("select valeur, date from MesurePollution m where m.stationDeMesure=(select c.stationDeMesureNO2 from Commune c where c.codeCommune=?1)and m.typeDeDonnee=\'NO2\'and m.date between?2 and?3")
-	Optional<List<Object[]>> obtenirLesNO2ParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
+	Optional<List<Object[]>> obtenirLesNO2ParPeriode(String codeCommune, ZonedDateTime dateDebut,
+			ZonedDateTime dateFin);
 
 	/**
 	 * 
-	 * Méthode qui retourne une liste de d'Objet contenant les mesures de S02 et les dates, comprises entre 2 dates pour une commune.
-	 * la valeur (index [0]) est un Double
-	 * et la date (index[1]) est une ZonedDateTime
+	 * Méthode qui retourne une liste de d'Objet contenant les mesures de S02 et
+	 * les dates, comprises entre 2 dates pour une commune. la valeur (index
+	 * [0]) est un Double et la date (index[1]) est une ZonedDateTime
 	 * 
 	 * @param codeCommune
 	 *            (le code insee (code commune) de la commune)
@@ -207,13 +225,14 @@ public interface MesurePollutionRepository extends JpaRepository<MesurePollution
 	 * @return
 	 */
 	@Query("select valeur, date from MesurePollution m where m.stationDeMesure=(select c.stationDeMesureSO2 from Commune c where c.codeCommune=?1)and m.typeDeDonnee=\'SO2\'and m.date between?2 and?3")
-	Optional<List<Object[]>> obtenirLesS02ParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
+	Optional<List<Object[]>> obtenirLesS02ParPeriode(String codeCommune, ZonedDateTime dateDebut,
+			ZonedDateTime dateFin);
 
 	/**
 	 * 
-	 * Méthode qui retourne une liste de d'Objet contenant les mesures de CO et les dates, comprises entre 2 dates pour une commune.
-	 * la valeur (index [0]) est un Double
-	 * et la date (index[1]) est une ZonedDateTime
+	 * Méthode qui retourne une liste de d'Objet contenant les mesures de CO et
+	 * les dates, comprises entre 2 dates pour une commune. la valeur (index
+	 * [0]) est un Double et la date (index[1]) est une ZonedDateTime
 	 * 
 	 * @param codeCommune
 	 *            (le code insee (code commune) de la commune)

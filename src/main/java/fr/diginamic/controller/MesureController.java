@@ -1,7 +1,9 @@
+
 package fr.diginamic.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,63 +19,99 @@ import fr.diginamic.service.MesureMeteoService;
 import fr.diginamic.service.MesurePollutionService;
 import fr.diginamic.utils.UtilisateurConnecteUtils;
 
+/**
+ * Cette classe gère les appels API suivants: "/mesures/pollution" permet
+ * d'obtenir les mesures de pollution concernant la commune enregistrée dans le
+ * compte de l'utilisateur. "/mesures/pollution?codeCommune=44108" permet
+ * d'obtenir les mesures de pollution concernant la commune représentée par le
+ * codeCommune renseigné (ici le code commune est 44108). "/mesures/meteo"
+ * permet d'obtenir les mesures de meteo concernant la commune enregistrée dans
+ * le compte de l'utilisateur. "/mesures/meteo?codeCommune=44108" permet
+ * d'obtenir les mesures de meteo concernant la commune représentée par le
+ * codeCommune renseigné (ici le code commune est 44108).
+ * 
+ * @author Diginamic02
+ *
+ */
 @RestController
 @RequestMapping("/mesures")
 public class MesureController {
 
+	@Autowired
 	private MesurePollutionService mesurePollutionService;
+
+	@Autowired
 	private AnalyseMesureService analyseMesureService;
+
+	@Autowired
 	private MesureMeteoService mesureMeteoService;
 
-	/**
-	 * Constructor
-	 * 
-	 * @param mesurePollutionService
-	 * @param analyseMesureService
-	 * @param mesureMeteoService
-	 */
-	public MesureController(MesurePollutionService mesurePollutionService, AnalyseMesureService analyseMesureService, MesureMeteoService mesureMeteoService) {
-		this.mesurePollutionService = mesurePollutionService;
-		this.analyseMesureService = analyseMesureService;
-		this.mesureMeteoService = mesureMeteoService;
-	}
-
-	/**
-	 * Méthode qui récupère l'historique d'un indicateur (date et valeur) sur une période donnée.
-	 *
-	 * @see AnalyseMesureDtoPost
-	 * 
-	 * @param analyseMesureDtoPost
-	 *            Le Json envoyé dans le body de la requète GET, sa structure doit correspondre à la classe AnalyseMesureDtoPost
-	 * @return AnalyseMesureDto
-	 * 
-	 */
 	@GetMapping
 	public AnalyseMesureDto recupererHistoriqueIndicateur(@RequestBody AnalyseMesureDtoPost analyseMesureDtoPost) {
+
 		return analyseMesureService.recupererHistoriqueIndicateur(analyseMesureDtoPost);
 	}
 
+	/**
+	 * Cette methode gère l'appel de l'url "/mesures/pollution" permet d'obtenir
+	 * les mesures de pollution concernant la commune enregistrée dans le compte
+	 * de l'utilisateur.
+	 * 
+	 * @return
+	 */
 	@GetMapping("/pollution")
 	public List<MesurePollution> obtenirLesMesuresPollution() {
+
 		String codeCommune = UtilisateurConnecteUtils.recupererCodeCommune();
+
 		return mesurePollutionService.obtenirLesMesuresDePollution(codeCommune);
 
 	}
 
+	/**
+	 * Cette methode gère l'appel de l'url "/mesures/meteo?codeCommune=44108" et
+	 * permet d'obtenir les mesures de meteo concernant la commune représentée
+	 * par le codeCommune renseigné (ici le code commune est 44108).
+	 * 
+	 * @param codeCommune
+	 * @return
+	 */
 	@GetMapping(path = "/pollution", params = { "codeCommune" })
 	public List<MesurePollution> obtenirLesMesuresPollution(@RequestParam String codeCommune) {
+
 		return mesurePollutionService.obtenirLesMesuresDePollution(codeCommune);
+
 	}
 
+	/**
+	 * Cette methode gère l'appel de l'url "/mesures/meteo" permet d'obtenir les
+	 * mesures de meteo concernant la commune enregistrée dans le compte de
+	 * l'utilisateur.
+	 * 
+	 * @return
+	 */
 	@GetMapping("/meteo")
-	public List<MesureMeteo> obtenirLesMesuresDeMeteo() {
+	public MesureMeteo obtenirLesMesuresDeMeteo() {
+
 		String codeCommune = UtilisateurConnecteUtils.recupererCodeCommune();
+
 		return mesureMeteoService.obtenirLesMesuresDeMeteo(codeCommune);
+
 	}
 
+	/**
+	 * Cette methode gère l'appel de l'url "/mesures/meteo?codeCommune=44108"
+	 * permet d'obtenir les mesures de meteo concernant la commune représentée
+	 * par le codeCommune renseigné (ici le code commune est 44108).
+	 * 
+	 * @param codeCommune
+	 * @return
+	 */
 	@GetMapping(path = "/meteo", params = { "codeCommune" })
-	public List<MesureMeteo> obtenirLesMesuresMeteo(@RequestParam String codeCommune) {
+	public MesureMeteo obtenirLesMesuresMeteo(@RequestParam String codeCommune) {
+
 		return mesureMeteoService.obtenirLesMesuresDeMeteo(codeCommune);
+
 	}
 
 }
