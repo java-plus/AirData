@@ -6,8 +6,23 @@ import fr.diginamic.entites.Commune;
 import fr.diginamic.entites.StationDeMesureMeteo;
 import fr.diginamic.entites.StationDeMesurePollution;
 
+/**
+ * Cette classe permet de manipuler et de créer les objets Communes
+ * 
+ * @author Diginamic02
+ *
+ */
 public class CommuneUtils {
 
+	/**
+	 * Cette methode permet de lier les communes à leur station de mesure
+	 * pollution les plus proche. Cette methode calcule pour chaque polluant la
+	 * station de mesure la plus proche disposant de mesures liées à ce polluant
+	 * 
+	 * @param listeDesCommunes
+	 * @param listeDeStationsDeMesure
+	 * @return
+	 */
 	public static List<Commune> obtenirLesStationsDeMesuresLesPlusProches(List<Commune> listeDesCommunes,
 			List<StationDeMesurePollution> listeDeStationsDeMesure) {
 
@@ -73,6 +88,14 @@ public class CommuneUtils {
 		return listeDesCommunes;
 	}
 
+	/**
+	 * Cette methode permet de lier les communes à leur station de mesure meteo
+	 * les plus proche.
+	 * 
+	 * @param listeDesCommunes
+	 * @param listeDeStationsDeMesureMeteo
+	 * @return
+	 */
 	public static List<Commune> obtenirLesStationsDeMesuresMeteoLesPlusProches(List<Commune> listeDesCommunes,
 			List<StationDeMesureMeteo> listeDeStationsDeMesureMeteo) {
 
