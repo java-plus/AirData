@@ -15,8 +15,23 @@ import fr.diginamic.entites.MesurePollution;
 import fr.diginamic.entites.StationDeMesureMeteo;
 import fr.diginamic.entites.StationDeMesurePollution;
 
+/**
+ * Cette classe permet de manipuler les objets JSON retournés par les appels
+ * APIs utilisés dans l'application
+ * 
+ * @author Diginamic02
+ *
+ */
 public class JsonManipulation {
 
+	/**
+	 * Cette methode permet de créer les objets communes à partir de la réponse
+	 * des appels APIs utilisés par l'application
+	 * 
+	 * @param myResponse
+	 * @return
+	 * @throws JSONException
+	 */
 	public static List<Commune> obtenirLesCommunes(JSONObject myResponse) throws JSONException {
 
 		List<Commune> listeDesCommunes = new ArrayList<Commune>();
@@ -41,6 +56,14 @@ public class JsonManipulation {
 
 	}
 
+	/**
+	 * Cette methode permet de créer les objets StationDeMesurePollution à
+	 * partir de la réponse des appels APIs utilisés par l'application
+	 * 
+	 * @param myResponse
+	 * @return
+	 * @throws JSONException
+	 */
 	public static List<StationDeMesurePollution> obtenirLesStationDeMesures(JSONObject myResponse)
 			throws JSONException {
 
@@ -110,9 +133,17 @@ public class JsonManipulation {
 		return listeDeStationsDeMesurePollution;
 	}
 
+	/**
+	 * Cette methode permet de créer les objets MesurePollution à partir de la
+	 * réponse des appels APIs utilisés par l'application
+	 * 
+	 * @param myResponse
+	 * @param listeDeStationDeMesure
+	 * @return
+	 * @throws JSONException
+	 */
 	public static List<MesurePollution> obtenirLesMesures(JSONObject myResponse,
 			List<StationDeMesurePollution> listeDeStationDeMesure) throws JSONException {
-
 
 		List<MesurePollution> listeDesMesures = new ArrayList<MesurePollution>();
 
@@ -152,8 +183,15 @@ public class JsonManipulation {
 		return listeDesMesures;
 	}
 
+	/**
+	 * Cette methode permet de créer les objets StationDeMesureMeteo à partir de
+	 * la réponse des appels APIs utilisés par l'application
+	 * 
+	 * @param myResponse
+	 * @return
+	 * @throws JSONException
+	 */
 	public static List<StationDeMesureMeteo> obtenirLesStationsMeteo(JSONObject myResponse) throws JSONException {
-
 
 		List<StationDeMesureMeteo> listeDesStationMeteo = new ArrayList<StationDeMesureMeteo>();
 
@@ -175,6 +213,15 @@ public class JsonManipulation {
 		return listeDesStationMeteo;
 	}
 
+	/**
+	 * Cette methode permet de créer les objets MesureMeteo à partir de la
+	 * réponse des appels APIs utilisés par l'application
+	 * 
+	 * @param myResponseMeteo
+	 * @param listeDeStationDeMesure
+	 * @return
+	 * @throws JSONException
+	 */
 	public static List<MesureMeteo> obtenirLesMesuresMeteo(JSONObject myResponseMeteo,
 			List<StationDeMesureMeteo> listeDeStationDeMesure) throws JSONException {
 
