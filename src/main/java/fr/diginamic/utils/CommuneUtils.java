@@ -93,7 +93,6 @@ public class CommuneUtils {
 
 		}
 
-		// TODO Auto-generated method stub
 		return listeDesCommunes;
 	}
 

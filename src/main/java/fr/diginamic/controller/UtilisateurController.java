@@ -6,19 +6,29 @@ import fr.diginamic.controller.dto.UtilisateurDto;
 import fr.diginamic.controller.dto.UtilisateurRgpdDto;
 import fr.diginamic.entites.Role;
 import fr.diginamic.entites.Utilisateur;
+import fr.diginamic.exception.CookieIntrouvableException;
 import fr.diginamic.transformer.TransformerUtilisateur;
 import fr.diginamic.utils.UtilisateurConnecteUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import fr.diginamic.entites.CompteUtilisateur;
 import fr.diginamic.service.UtilisateurService;
 
+import java.util.Arrays;
+
 @RestController
 public class UtilisateurController {
+
+    @Value("${jwt.cookie}")
+    private String TOKEN_COOKIE;
 
     private TransformerUtilisateur transformerUtilisateur;
     private UtilisateurService utilisateurService;
@@ -59,9 +69,13 @@ public class UtilisateurController {
     }
 
     @DeleteMapping("/compte")
-    public ResponseEntity<?> supprimerCompte(){
+    public ResponseEntity<?> supprimerCompte(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse){
         String identifiant =UtilisateurConnecteUtils.recupererIdentifiant();
-        return utilisateurService.supprimerCompte(identifiant);
+        utilisateurService.supprimerCompte(identifiant);
+        Cookie cookie = Arrays.stream(httpServletRequest.getCookies()).filter(c -> c.getName().equals(TOKEN_COOKIE)).findFirst().orElseThrow(CookieIntrouvableException::new);
+        cookie.setMaxAge(0);
+        httpServletResponse.addCookie(cookie);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/compte_avec_admin")
