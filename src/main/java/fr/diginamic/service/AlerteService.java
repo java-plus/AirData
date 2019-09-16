@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class AlerteService {
+public class AlerteService implements IAlerteService {
 
     private AlerteRepository alerteRepository;
     private CommuneRepository communeRepository;
@@ -30,18 +30,25 @@ public class AlerteService {
         this.communeRepository = communeRepository;
     }
 
+    @Override
     public Alerte creerAlerte(Alerte alerte){
-        if(alerte.getCodeCommune()!=null){
-            communeRepository.findByCodeCommune(alerte.getCodeCommune()).orElseThrow(CommuneNonTrouveeException::new);
-        }
-        if(validator.validate(alerte).isEmpty()){
-            alerteRepository.save(alerte);
-        }else {
+        if(alerte!=null) {
+            if (alerte.getCodeCommune() != null) {
+                communeRepository.findByCodeCommune(alerte.getCodeCommune()).orElseThrow(CommuneNonTrouveeException::new);
+            }
+
+            if (validator.validate(alerte).isEmpty()) {
+                alerteRepository.save(alerte);
+            } else {
+                throw new AlerteInvalideException();
+            }
+        }else{
             throw new AlerteInvalideException();
         }
         return alerte;
     }
 
+    @Override
     public List<Alerte> recupererAlerte(Alerte alerte){
         List<Alerte> listeAlertes = new ArrayList<>();
         if(alerte.getRegion()!=null){

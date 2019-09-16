@@ -2,6 +2,7 @@ package fr.diginamic.controller;
 
 import fr.diginamic.entites.Alerte;
 import fr.diginamic.service.AlerteService;
+import fr.diginamic.service.IAlerteService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,7 +15,7 @@ import java.util.List;
 @RestController
 public class AlerteController {
 
-private AlerteService alerteService;
+private IAlerteService alerteService;
 
     public AlerteController(AlerteService alerteService) {
         this.alerteService = alerteService;
