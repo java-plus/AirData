@@ -55,7 +55,7 @@ public class MesureMeteoService {
 	 */
 
 	public MesureMeteo obtenirLesMesuresDeMeteo(String codeCommune) {
-		// TODO Auto-generated method stub
+		//
 
 		List<MesureMeteo> listeDeMesureMeteo = mesureMeteoRepository.obtenirLesMesuresDeMeteo(codeCommune);
 		MesureMeteo mesureLaPlusRecente = new MesureMeteo();
@@ -68,6 +68,14 @@ public class MesureMeteoService {
 		}
 
 		return mesureLaPlusRecente;
+
+	}
+
+	public List<MesureMeteo> obtenirToutesLesMesuresDeMeteo(String codeCommune) {
+
+		List<MesureMeteo> listeDeMesureMeteo = mesureMeteoRepository.obtenirLesMesuresDeMeteo(codeCommune);
+
+		return listeDeMesureMeteo;
 
 	}
 

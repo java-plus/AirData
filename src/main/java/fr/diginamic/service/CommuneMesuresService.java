@@ -41,7 +41,7 @@ public class CommuneMesuresService {
 	public CommuneMesuresDto recupererMesureParCommune(String codeCommune) {
 		Commune commune = communeRepository.findByCodeCommune(codeCommune).orElseThrow(CommuneNonTrouveeException::new);
 
-		List<MesureMeteo> listeMeteo = mesureMeteoService.obtenirLesMesuresDeMeteo(codeCommune);
+		List<MesureMeteo> listeMeteo = mesureMeteoService.obtenirToutesLesMesuresDeMeteo(codeCommune);
 		List<MesurePollution> listePollution = mesurePollutionService.obtenirLesMesuresDePollution(codeCommune);
 
 		CommuneMesuresDto communeMesuresDto = new CommuneMesuresDto(listeMeteo, listePollution, commune.getPopulation());
