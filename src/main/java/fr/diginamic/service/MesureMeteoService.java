@@ -53,7 +53,6 @@ public class MesureMeteoService {
 	 * @return
 	 */
 	public List<MesureMeteo> obtenirLesMesuresDeMeteo(String codeCommune) {
-		// TODO Auto-generated method stub
 		return mesureMeteoRepository.obtenirLesMesuresDeMeteo(codeCommune);
 	}
 
@@ -66,7 +65,6 @@ public class MesureMeteoService {
 	 * @return
 	 */
 	public Optional<MesureMeteo> obtenirMesureMeteo(MesureMeteo mesureMeteo) {
-		// TODO Auto-generated method stub
 		return mesureMeteoRepository.findById(mesureMeteo.getId());
 	}
 
@@ -77,7 +75,7 @@ public class MesureMeteoService {
 	 * @param mesureMeteo
 	 */
 	public void mettreEnBaseMesureMeteo(MesureMeteo mesureMeteo) {
-		// TODO Auto-generated method stub
+
 		mesureMeteoRepository.save(mesureMeteo);
 	}
 

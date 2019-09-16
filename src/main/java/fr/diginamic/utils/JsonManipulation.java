@@ -112,7 +112,7 @@ public class JsonManipulation {
 
 	public static List<MesurePollution> obtenirLesMesures(JSONObject myResponse,
 			List<StationDeMesurePollution> listeDeStationDeMesure) throws JSONException {
-		// TODO Auto-generated method stub
+
 
 		List<MesurePollution> listeDesMesures = new ArrayList<MesurePollution>();
 
@@ -153,7 +153,7 @@ public class JsonManipulation {
 	}
 
 	public static List<StationDeMesureMeteo> obtenirLesStationsMeteo(JSONObject myResponse) throws JSONException {
-		// TODO Auto-generated method stub
+
 
 		List<StationDeMesureMeteo> listeDesStationMeteo = new ArrayList<StationDeMesureMeteo>();
 

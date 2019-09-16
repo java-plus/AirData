@@ -54,7 +54,6 @@ public class MesurePollutionService {
 	 * @return
 	 */
 	public List<MesurePollution> obtenirLesMesuresDePollution(String codeCommune) {
-		// TODO retrouver la commune de l'utilisateur via
 		return mesurePollutionRepository.obtenirLesMesuresDePollution(codeCommune);
 	}
 
@@ -67,8 +66,6 @@ public class MesurePollutionService {
 	 * @return
 	 */
 	public Optional<MesurePollution> obtenirMesurePollution(MesurePollution mesurePollution) {
-		// TODO Auto-generated method stub
-
 		return mesurePollutionRepository.findById(mesurePollution.getId());
 	}
 
@@ -79,7 +76,6 @@ public class MesurePollutionService {
 	 * @param mesurePollution
 	 */
 	public void mettreEnBaseMesurePollution(MesurePollution mesurePollution) {
-		// TODO Auto-generated method stub
 		mesurePollutionRepository.save(mesurePollution);
 	}
 
