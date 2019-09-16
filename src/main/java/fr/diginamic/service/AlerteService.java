@@ -1,7 +1,6 @@
 package fr.diginamic.service;
 
 import fr.diginamic.entites.Alerte;
-import fr.diginamic.entites.Type;
 import fr.diginamic.exception.AlerteInvalideException;
 import fr.diginamic.exception.CommuneNonTrouveeException;
 import fr.diginamic.repository.AlerteRepository;

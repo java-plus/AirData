@@ -22,7 +22,7 @@ public abstract class MesureUtils {
 
 	public static StationDeMesureMeteo obtenirStationDeMesureMeteoCorrespondante(Double latitude, Double longitude,
 			List<StationDeMesureMeteo> listeDeStationDeMesures) {
-		// TODO Auto-generated method stub
+
 
 		for (StationDeMesureMeteo stationDeMesure : listeDeStationDeMesures) {
 			if (stationDeMesure.getLatitude().equals(latitude) && stationDeMesure.getLongitude().equals(longitude)) {
