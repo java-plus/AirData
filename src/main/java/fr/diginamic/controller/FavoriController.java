@@ -11,6 +11,8 @@ import fr.diginamic.entites.Favori;
 import fr.diginamic.service.FavoriService;
 
 /**
+ * Class Controller interceptant les requètes sur "/favoris"
+ * 
  * @author Eloi
  *
  */
@@ -21,9 +23,13 @@ public class FavoriController {
 	@Autowired
 	private FavoriService favoriService;
 
+	/**
+	 * Méthode qui récupère la liste des favoris de l'utilisateur qui est connecté
+	 * 
+	 * @return List<Favori> La liste des favoris de l'ulisateur connecté
+	 */
 	@GetMapping
 	public List<Favori> recupererFavoris() {
-
 		return favoriService.recupererFavoris();
 
 	}
