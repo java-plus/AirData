@@ -1,5 +1,8 @@
 package fr.diginamic.controller;
 
+import fr.diginamic.entites.Alerte;
+import fr.diginamic.service.AlerteService;
+import fr.diginamic.service.IAlerteService;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -9,28 +12,27 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import fr.diginamic.entites.Alerte;
-import fr.diginamic.service.AlerteService;
 
 /**
  * Cette classe gère les methodes permettant la création d'alertes (pollution
  * oou météo) par un admin.
- * 
+ *
  * @author Diginamic02
  *
  */
 @RestController
 public class AlerteController {
 
-	private AlerteService alerteService;
+private IAlerteService alerteService;
 
-	public AlerteController(AlerteService alerteService) {
+
+	public AlerteController(IAlerteService alerteService) {
 		this.alerteService = alerteService;
 	}
 
 	/**
 	 * Cette Methode permet la création d'une alerte qui sera stockée en BDD
-	 * 
+	 *
 	 * @param alerte
 	 * @return
 	 */
@@ -41,7 +43,7 @@ public class AlerteController {
 
 	/**
 	 * Cette methode permet d'obtenir la liste des alertes présentes en BDD
-	 * 
+	 *
 	 * @param alerte
 	 * @return
 	 */

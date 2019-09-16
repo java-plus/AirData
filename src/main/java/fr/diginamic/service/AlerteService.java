@@ -19,12 +19,12 @@ import fr.diginamic.repository.CommuneRepository;
 /**
  * Cette classe gère l'insertion en BDD des alertes et l'obtention des alertes
  * présentes en BDD
- * 
+ *
  * @author Diginamic02
  *
  */
 @Service
-public class AlerteService {
+public class AlerteService implements IAlerteService {
 
 	private AlerteRepository alerteRepository;
 	private CommuneRepository communeRepository;
@@ -45,42 +45,48 @@ public class AlerteService {
 	 * BDD, alors une exception CommuneNonTrouveeException est renvoyée Si les
 	 * attributs de l'objet Alerte sont incorrects, alors une exception
 	 * AlerteInvalideException est renvoyée
-	 * 
+	 *
 	 * @param alerte
 	 * @return
 	 */
-	public Alerte creerAlerte(Alerte alerte) {
-		if (alerte.getCodeCommune() != null) {
-			communeRepository.findByCodeCommune(alerte.getCodeCommune()).orElseThrow(CommuneNonTrouveeException::new);
-		}
-		if (validator.validate(alerte).isEmpty()) {
-			alerteRepository.save(alerte);
-		} else {
-			throw new AlerteInvalideException();
-		}
-		return alerte;
-	}
+
+    @Override
+    public Alerte creerAlerte(Alerte alerte){
+        if(alerte!=null) {
+            if (alerte.getCodeCommune() != null) {
+                communeRepository.findByCodeCommune(alerte.getCodeCommune()).orElseThrow(CommuneNonTrouveeException::new);
+            }
+
+            if (validator.validate(alerte).isEmpty()) {
+                alerteRepository.save(alerte);
+            } else {
+                throw new AlerteInvalideException();
+            }
+        }else{
+            throw new AlerteInvalideException();
+        }
+        return alerte;
+    }
 
 	/**
 	 * Cette methode permet d'obtenir la liste des Alertes enregistrées en BDD
 	 * selon plusieurs critères de recherche: la région, le département, la
 	 * commune (via le code commune)
-	 * 
+	 *
 	 * @param alerte
 	 * @return
 	 */
-	public List<Alerte> recupererAlerte(Alerte alerte) {
-		List<Alerte> listeAlertes = new ArrayList<>();
-		if (alerte.getRegion() != null) {
-			listeAlertes = alerteRepository.findAlerteWithRegion(alerte.getType(), alerte.getRegion(),
-					ZonedDateTime.now());
-		} else if (alerte.getDepartement() != null) {
-			listeAlertes = alerteRepository.findAlerteWithDepartement(alerte.getType(), alerte.getDepartement(),
-					ZonedDateTime.now());
-		} else if (alerte.getCodeCommune() != null) {
-			listeAlertes = alerteRepository.findAlerteWithCodeCommune(alerte.getType(), alerte.getCodeCommune(),
-					ZonedDateTime.now());
-		}
-		return listeAlertes;
-	}
+
+    @Override
+    public List<Alerte> recupererAlerte(Alerte alerte){
+        List<Alerte> listeAlertes = new ArrayList<>();
+        if(alerte.getRegion()!=null){
+            listeAlertes = alerteRepository.findAlerteWithRegion(alerte.getType(),alerte.getRegion(), ZonedDateTime.now());
+        }else if (alerte.getDepartement()!=null){
+            listeAlertes = alerteRepository.findAlerteWithDepartement(alerte.getType(),alerte.getDepartement(), ZonedDateTime.now());
+        }else if (alerte.getCodeCommune()!=null){
+            listeAlertes = alerteRepository.findAlerteWithCodeCommune(alerte.getType(),alerte.getCodeCommune(), ZonedDateTime.now());
+        }
+        return listeAlertes;
+    }
 }
