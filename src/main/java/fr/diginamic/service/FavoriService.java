@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import fr.diginamic.entites.Favori;
 import fr.diginamic.entites.Utilisateur;
+import fr.diginamic.exception.FavoriException;
 import fr.diginamic.exception.UtilisateurNonTrouveException;
 import fr.diginamic.repository.FavoriRepository;
 import fr.diginamic.repository.UtilisateurRepository;
@@ -28,21 +29,21 @@ public class FavoriService {
 	public List<Favori> recupererFavoris() {
 		// String utilisateurId = utilisateurRepository.findIdWithIdentifiant(UtilisateurConnecteUtils.recupererIdentifiant());
 		Utilisateur utilisateur = utilisateurRepository.findByIdentifiant(UtilisateurConnecteUtils.recupererIdentifiant()).orElseThrow(UtilisateurNonTrouveException::new);
-		return favoriRepository.findByUtilisateurId(utilisateur);
+		return favoriRepository.findByUtilisateurId(utilisateur).orElseThrow(FavoriException::new);
 
 	}
 
-	public Favori insererEnBase(Favori favoriAEnregistrer) {
-
-		String utilisateurId = utilisateurRepository.findIdWithIdentifiant(UtilisateurConnecteUtils.recupererIdentifiant());
-
-		Utilisateur utilisateur = new Utilisateur();
-		utilisateur.setId(utilisateurId);
-		favoriAEnregistrer.setUtilisateur(utilisateur);
-
-		return favoriRepository.save(favoriAEnregistrer);
-
-	}
+	// public Favori insererEnBase(FavoriDtoPost favoriCreationDto) {
+	//
+	// String utilisateurId = utilisateurRepository.findIdWithIdentifiant(UtilisateurConnecteUtils.recupererIdentifiant());
+	//
+	// Utilisateur utilisateur = new Utilisateur();
+	// utilisateur.setId(utilisateurId);
+	// favoriCreationDto.setUtilisateur(utilisateur);
+	//
+	// return favoriRepository.save(favoriCreationDto);
+	//
+	// }
 
 	public void supprimerFavori(Integer idFavori) {
 		favoriRepository.deleteById(idFavori);
