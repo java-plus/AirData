@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import fr.diginamic.entites.Commune;
 
+
 /**
  * Ce repository gère les communes dans la base de donnée
  * 
@@ -24,4 +25,5 @@ public interface CommuneRepository extends JpaRepository<Commune, Integer> {
 	 * @return un Optional<Commune>
 	 */
 	public Optional<Commune> findByCodeCommune(String codeCommune);
+
 }

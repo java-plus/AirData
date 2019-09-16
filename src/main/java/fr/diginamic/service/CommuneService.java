@@ -15,18 +15,13 @@ import fr.diginamic.repository.CommuneRepository;
  * 
  * @author Diginamic02
  *
- */
-@Service
+ */@Service
 public class CommuneService {
 
 	private CommuneRepository communeRepository;
 
 	/**
-	 * Constructeur CommuneService(CommuneRepository communeRepository) retourne
-	 * une instance de CommuneService ayant comme attribut un CommuneRepository
-	 * (sous la forme d'un singleton Le resultat aurait été le même avec
-	 * un @autowired mais cette méthode ne nous aurait pas permis de tester
-	 * correctement la classe.
+	 * Constructor
 	 * 
 	 * @param communeRepository
 	 */
@@ -43,7 +38,6 @@ public class CommuneService {
 	 * @return
 	 */
 	public Commune trouverCommuneParCode(String codeCommune) {
-
 		return communeRepository.findByCodeCommune(codeCommune).orElseThrow(CommuneNonTrouveeException::new);
 	}
 
@@ -55,7 +49,6 @@ public class CommuneService {
 	 * @return
 	 */
 	public List<Commune> obtenirLaListeDesCommunes() {
-
 		return communeRepository.findAll();
 	}
 
@@ -66,7 +59,6 @@ public class CommuneService {
 	 * @param listeDesCommunes
 	 */
 	public void insererEnBas(List<Commune> listeDesCommunes) {
-
 		communeRepository.saveAll(listeDesCommunes);
 	}
 
