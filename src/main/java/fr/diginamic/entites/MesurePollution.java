@@ -20,18 +20,41 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MesurePollution {
 
+	/**
+	 * id de la mesure de pollution dans la base de données
+	 */
 	@Id
 	private String id;
+	/**
+	 * valeur de la mesure de pollution
+	 */
 	@NotNull
 	private Double valeur;
+	/**
+	 * nom du polluant
+	 */
 	@NotBlank
 	private String typeDeDonnee;
+	/**
+	 * date de la mesure
+	 */
 	@NotNull
 	private ZonedDateTime date;
+	/**
+	 * la station de mesure
+	 */
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "StationDeMesure_id")
 	private StationDeMesurePollution stationDeMesure;
 
+	/**
+	 * Constructeur d’une mesure de pollution
+	 * @param id id de la mesure de pollution dans la base de données
+	 * @param valeur valeur de la mesure de pollution
+	 * @param typeDeDonnee nom du polluant
+	 * @param date date de la mesure
+	 * @param stationDeMesure la station de mesure
+	 */
 	public MesurePollution(String id, double valeur, String typeDeDonnee, ZonedDateTime date,
 			StationDeMesurePollution stationDeMesure) {
 		super();

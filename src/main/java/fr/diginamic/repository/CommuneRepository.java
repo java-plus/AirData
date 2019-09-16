@@ -21,8 +21,8 @@ public interface CommuneRepository extends JpaRepository<Commune, Integer> {
 	 * Methode Cette methode trouve une Commune en base de donnée en fonction de
 	 * son Id
 	 * 
-	 * @param codeCommune
-	 * @return
+	 * @param codeCommune le code de la commune
+	 * @return un Optional<Commune>
 	 */
 	public Optional<Commune> findByCodeCommune(String codeCommune);
 

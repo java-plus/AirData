@@ -1,5 +1,8 @@
 package fr.diginamic.exception;
 
+/**
+ * Exception levée lorsque la creation d’un favoriDto est impossible
+ */
 public class CreationFavoriDtoImpossibleException extends RuntimeException {
     public CreationFavoriDtoImpossibleException() {
     }

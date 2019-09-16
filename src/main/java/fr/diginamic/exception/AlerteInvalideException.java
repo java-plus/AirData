@@ -1,5 +1,8 @@
 package fr.diginamic.exception;
 
+/**
+ * Alerte levée lorsque une Alerte invalide essaye d’etre créer
+ */
 public class AlerteInvalideException extends RuntimeException {
     public AlerteInvalideException() {
     }

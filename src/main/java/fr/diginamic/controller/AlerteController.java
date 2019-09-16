@@ -23,9 +23,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AlerteController {
 
-private IAlerteService alerteService;
 
+	/**
+	 * Interface implementée par un service d’alerte
+	 */
+	private IAlerteService alerteService;
 
+	/**
+	 *
+	 * @param alerteService un service d’alerte
+	 */
 	public AlerteController(IAlerteService alerteService) {
 		this.alerteService = alerteService;
 	}

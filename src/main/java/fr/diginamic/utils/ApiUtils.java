@@ -7,8 +7,23 @@ import java.net.URL;
 
 import org.json.JSONObject;
 
+/**
+ * Cette classe permet d'appeler les APIs utilisées par l'application. Elle est
+ * principalement utilisée dans la classe InsertionEnBaseDeDonneeService().
+ * 
+ * @author Diginamic02
+ *
+ */
 public class ApiUtils {
 
+	/**
+	 * Cette methode permet d'appeler l'API
+	 * https://public.opendatasoft.com/api/records/1.0/search/?dataset=openaq
+	 * 
+	 * @param url
+	 * @return
+	 * @throws Exception
+	 */
 	public static JSONObject callApiPollution(String url) throws Exception {
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -34,6 +49,14 @@ public class ApiUtils {
 		return myResponse;
 	}
 
+	/**
+	 * Cette methode permet d'appeler l'API
+	 * https://geo.api.gouv.fr/communes?codeRegion=52&fields=nom,code,codesPostaux,centre,codeRegion,population&format=json&geometry=centre
+	 * 
+	 * @param url
+	 * @return
+	 * @throws Exception
+	 */
 	public static JSONObject callApiCommunes(String url) throws Exception {
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -62,6 +85,14 @@ public class ApiUtils {
 		return myResponse;
 	}
 
+	/**
+	 * Cette methode permet d'appeler l'API
+	 * http://api.openweathermap.org/data/2.5/box/city?bbox=-2.48291015625,46.29001987172955,1.2139892578125,48.25028349849022,100&appid=cf994ca322a654d044fd952ce00569fe
+	 * 
+	 * @param url
+	 * @return
+	 * @throws Exception
+	 */
 	public static JSONObject callApiMeteo(String url) throws Exception {
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();

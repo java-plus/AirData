@@ -38,12 +38,26 @@ import fr.diginamic.utils.UtilisateurConnecteUtils;
 @RestController
 public class UtilisateurController {
 
+	/**
+	 * nom du cookie permettant de verifier la connexion d’un utilisateur
+	 */
 	@Value("${jwt.cookie}")
 	private String TOKEN_COOKIE;
 
+	/**
+	 * classe permettant de passer d’un objet utilisateur vers un dto ou inversement
+	 */
 	private TransformerUtilisateur transformerUtilisateur;
+	/**
+	 * Un service d’utilisateur
+	 */
 	private UtilisateurService utilisateurService;
 
+	/**
+	 * Constructeur
+	 * @param transformerUtilisateur classe permettant de passer d’un objet utilisateur vers un dto ou inversement
+	 * @param utilisateurService Un service d’utilisateur
+	 */
 	public UtilisateurController(TransformerUtilisateur transformerUtilisateur, UtilisateurService utilisateurService) {
 		this.transformerUtilisateur = transformerUtilisateur;
 		this.utilisateurService = utilisateurService;
@@ -57,7 +71,7 @@ public class UtilisateurController {
 	 * objet UtilisateurDTO
 	 * 
 	 * @param utilisateurCreationComptePost
-	 * @return
+	 * @return un Dto d’utilisateur
 	 */
 	@PostMapping("/compte")
 	public UtilisateurDto creerCompte(@Valid @RequestBody UtilisateurCreationComptePost utilisateurCreationComptePost) {
@@ -78,7 +92,7 @@ public class UtilisateurController {
 	 * cet utilisateur puis renvoi un objet UtilisateurDTO
 	 * 
 	 * @param utilisateurCreationComptePost
-	 * @return
+	 * @return un Dto d’utilisateur
 	 */
 	@PostMapping("/compte_admin")
 	public UtilisateurDto creerCompteAdmin(
@@ -94,7 +108,7 @@ public class UtilisateurController {
 	 * Cette methode gère l'url /compte en GET qui permet d'obtenir un objet
 	 * CompteUtilisateur correspondant à l'utilisateur courant
 	 * 
-	 * @return
+	 * @return un compte Utilisateur
 	 */
 	@GetMapping("/compte")
 	public CompteUtilisateur obtenirCompteUtilisateur() {
@@ -105,8 +119,8 @@ public class UtilisateurController {
 	 * Cette methode gère l'url /compte en PATCH qui permet de modifier les
 	 * informations présentes en BDD concernant un Utilisateur.
 	 * 
-	 * @param compteUtilisateur
-	 * @return
+	 * @param compteUtilisateur objet contenant la modification à faire sur le compte
+	 * @return un compte utilisateur
 	 */
 	@PatchMapping("/compte")
 	public CompteUtilisateur modifierCompteUtilisateur(@RequestBody CompteUtilisateur compteUtilisateur) {
@@ -119,7 +133,7 @@ public class UtilisateurController {
 	 * Cette methode gère l'url /compte en DELETE qui permet de supprimer les
 	 * informations présentes en BDD concernant un Utilisateur.
 	 * 
-	 * @return
+	 * @return ResponseEntity
 	 */
 	@DeleteMapping("/compte")
 	public ResponseEntity<?> supprimerCompte(HttpServletRequest httpServletRequest,
@@ -138,8 +152,8 @@ public class UtilisateurController {
 	 * supprimer les informations présentes en BDD concernant un Utilisateur
 	 * dont l'un des rôle est ROLE_ADMIN.
 	 * 
-	 * @param identifiant
-	 * @return
+	 * @param identifiant identifiant du compte à supprimer
+	 * @return ResponseEntity
 	 */
 	@DeleteMapping("/compte_avec_admin")
 	public ResponseEntity<?> supprimerCompteAvecAdmin(@RequestParam String identifiant) {
@@ -151,7 +165,7 @@ public class UtilisateurController {
 	 * objet UtilisateurRgpdDto afin que l'utilisateur ait accès aux
 	 * informations le concernant en BDD
 	 * 
-	 * @return
+	 * @return les données de l’utilisateur
 	 */
 	@GetMapping("/utilisateur_rgpd")
 	public UtilisateurRgpdDto recupererUtilisateur() {
