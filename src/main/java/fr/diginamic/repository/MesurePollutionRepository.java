@@ -1,5 +1,6 @@
 package fr.diginamic.repository;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -44,6 +45,7 @@ public interface MesurePollutionRepository extends JpaRepository<MesurePollution
 	 */
 	default List<MesurePollution> obtenirLesMesuresDePollution(String code) {
 
+		List<List<MesurePollution>> listeDeListesMesurePollution = new ArrayList<List<MesurePollution>>();
 		List<MesurePollution> listeDeMesurePollution = new ArrayList<MesurePollution>();
 		List<MesurePollution> mesurePollutionSO2 = obtenirLaMesureDeSO2(code);
 		List<MesurePollution> mesurePollutionPM25 = obtenirLaMesureDePM25(code);
@@ -52,12 +54,25 @@ public interface MesurePollutionRepository extends JpaRepository<MesurePollution
 		List<MesurePollution> mesurePollutionNO2 = obtenirLaMesureDeNO2(code);
 		List<MesurePollution> mesurePollutionCO = obtenirLaMesureDeCO(code);
 
-		listeDeMesurePollution.add(mesurePollutionSO2.get(0));
-		listeDeMesurePollution.add(mesurePollutionPM25.get(0));
-		listeDeMesurePollution.add(mesurePollutionPM10.get(0));
-		listeDeMesurePollution.add(mesurePollutionO3.get(0));
-		listeDeMesurePollution.add(mesurePollutionNO2.get(0));
-		listeDeMesurePollution.add(mesurePollutionCO.get(0));
+		listeDeListesMesurePollution.add(mesurePollutionSO2);
+		listeDeListesMesurePollution.add(mesurePollutionPM25);
+		listeDeListesMesurePollution.add(mesurePollutionPM10);
+		listeDeListesMesurePollution.add(mesurePollutionO3);
+		listeDeListesMesurePollution.add(mesurePollutionNO2);
+		listeDeListesMesurePollution.add(mesurePollutionCO);
+
+		for (List<MesurePollution> listeDeMesurePollutionAtrier : listeDeListesMesurePollution) {
+			MesurePollution mesureLaPlusRecente = new MesurePollution();
+			ZonedDateTime dateMesureLaPlusRecente = ZonedDateTime.now().minusYears(30);
+			for (MesurePollution mesurePollution : listeDeMesurePollutionAtrier) {
+				if (mesurePollution.getDate().isAfter(dateMesureLaPlusRecente)) {
+					dateMesureLaPlusRecente = mesurePollution.getDate();
+					mesureLaPlusRecente = mesurePollution;
+				}
+			}
+			listeDeMesurePollution.add(mesureLaPlusRecente);
+
+		}
 
 		return listeDeMesurePollution;
 

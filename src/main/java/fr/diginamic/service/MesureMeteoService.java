@@ -1,5 +1,6 @@
 package fr.diginamic.service;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,9 +53,20 @@ public class MesureMeteoService {
 	 * @param codeCommune
 	 * @return
 	 */
-	public List<MesureMeteo> obtenirLesMesuresDeMeteo(String codeCommune) {
+	public MesureMeteo obtenirLesMesuresDeMeteo(String codeCommune) {
 		// TODO Auto-generated method stub
-		return mesureMeteoRepository.obtenirLesMesuresDeMeteo(codeCommune);
+
+		List<MesureMeteo> listeDeMesureMeteo = mesureMeteoRepository.obtenirLesMesuresDeMeteo(codeCommune);
+		MesureMeteo mesureLaPlusRecente = new MesureMeteo();
+		ZonedDateTime dateMesureLaPlusRecente = ZonedDateTime.now().minusYears(30);
+		for (MesureMeteo mesureMeteo : listeDeMesureMeteo) {
+			if (mesureMeteo.getDate().isAfter(dateMesureLaPlusRecente)) {
+				mesureLaPlusRecente = mesureMeteo;
+				dateMesureLaPlusRecente = mesureMeteo.getDate();
+			}
+		}
+
+		return mesureLaPlusRecente;
 	}
 
 	/**

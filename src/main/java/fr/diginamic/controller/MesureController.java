@@ -14,6 +14,20 @@ import fr.diginamic.service.MesureMeteoService;
 import fr.diginamic.service.MesurePollutionService;
 import fr.diginamic.utils.UtilisateurConnecteUtils;
 
+/**
+ * Cette classe gère les appels API suivants: "/mesures/pollution" permet
+ * d'obtenir les mesures de pollution concernant la commune enregistrée dans le
+ * compte de l'utilisateur. "/mesures/pollution?codeCommune=44108" permet
+ * d'obtenir les mesures de pollution concernant la commune représentée par le
+ * codeCommune renseigné (ici le code commune est 44108). "/mesures/meteo"
+ * permet d'obtenir les mesures de meteo concernant la commune enregistrée dans
+ * le compte de l'utilisateur. "/mesures/meteo?codeCommune=44108" permet
+ * d'obtenir les mesures de meteo concernant la commune représentée par le
+ * codeCommune renseigné (ici le code commune est 44108).
+ * 
+ * @author Diginamic02
+ *
+ */
 @RestController
 @RequestMapping("/mesures")
 public class MesureController {
@@ -24,6 +38,13 @@ public class MesureController {
 	@Autowired
 	MesureMeteoService mesureMeteoService;
 
+	/**
+	 * Cette methode gère l'appel de l'url "/mesures/pollution" permet d'obtenir
+	 * les mesures de pollution concernant la commune enregistrée dans le compte
+	 * de l'utilisateur.
+	 * 
+	 * @return
+	 */
 	@GetMapping("/pollution")
 	public List<MesurePollution> obtenirLesMesuresPollution() {
 
@@ -33,6 +54,14 @@ public class MesureController {
 
 	}
 
+	/**
+	 * Cette methode gère l'appel de l'url "/mesures/meteo?codeCommune=44108" et
+	 * permet d'obtenir les mesures de meteo concernant la commune représentée
+	 * par le codeCommune renseigné (ici le code commune est 44108).
+	 * 
+	 * @param codeCommune
+	 * @return
+	 */
 	@GetMapping(path = "/pollution", params = { "codeCommune" })
 	public List<MesurePollution> obtenirLesMesuresPollution(@RequestParam String codeCommune) {
 
@@ -40,8 +69,15 @@ public class MesureController {
 
 	}
 
+	/**
+	 * Cette methode gère l'appel de l'url "/mesures/meteo" permet d'obtenir les
+	 * mesures de meteo concernant la commune enregistrée dans le compte de
+	 * l'utilisateur.
+	 * 
+	 * @return
+	 */
 	@GetMapping("/meteo")
-	public List<MesureMeteo> obtenirLesMesuresDeMeteo() {
+	public MesureMeteo obtenirLesMesuresDeMeteo() {
 
 		String codeCommune = UtilisateurConnecteUtils.recupererCodeCommune();
 
@@ -49,8 +85,16 @@ public class MesureController {
 
 	}
 
+	/**
+	 * Cette methode gère l'appel de l'url "/mesures/meteo?codeCommune=44108"
+	 * permet d'obtenir les mesures de meteo concernant la commune représentée
+	 * par le codeCommune renseigné (ici le code commune est 44108).
+	 * 
+	 * @param codeCommune
+	 * @return
+	 */
 	@GetMapping(path = "/meteo", params = { "codeCommune" })
-	public List<MesureMeteo> obtenirLesMesuresMeteo(@RequestParam String codeCommune) {
+	public MesureMeteo obtenirLesMesuresMeteo(@RequestParam String codeCommune) {
 
 		return mesureMeteoService.obtenirLesMesuresDeMeteo(codeCommune);
 
