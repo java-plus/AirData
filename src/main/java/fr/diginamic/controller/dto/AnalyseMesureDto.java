@@ -6,37 +6,29 @@ package fr.diginamic.controller.dto;
 import java.time.ZonedDateTime;
 import java.util.List;
 
-import fr.diginamic.entites.Commune;
-import fr.diginamic.entites.MesureMeteo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
  * @author Eloi
+ * @param <T>
  *
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AnalyseMesureMeteoDto {
+public class AnalyseMesureDto {
 
 	private String nom;
-	private String codeCommune;
 
 	private Integer population;
 
+	private List<MesureDto> donnees;
+
 	private String indicateur;
-	private List<MesureMeteo> donnees;
 
 	private ZonedDateTime dateDebut;
 	private ZonedDateTime dateFin;
-
-	public AnalyseMesureMeteoDto(Commune commune, List<MesureMeteo> donnees) {
-		this.population = commune.getPopulation();
-		this.nom = commune.getNom();
-		this.codeCommune = commune.getCodeCommune();
-		this.donnees = donnees;
-	}
 
 }

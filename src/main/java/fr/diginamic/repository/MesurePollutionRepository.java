@@ -56,30 +56,33 @@ public interface MesurePollutionRepository extends JpaRepository<MesurePollution
 	@Query("select m from MesurePollution m where m.stationDeMesure=(select c.stationDeMesureCO from Commune c where c.codeCommune=:code) and m.typeDeDonnee=\'CO\'")
 	List<MesurePollution> obtenirLaMesureDeCO(@Param("code") String code);
 
-	//
-	///////////////////////////////////// FIXME
-	@Query("select m from MesurePollution m where m.stationDeMesure=(select c.stationDeMesureSO2 from Commune c where c.codeCommune=?1) and m.date between ?2 and ?3")
-	List<MesurePollution> obtenirTousLesIndicateursParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
+	@Query("select m from MesurePollution m where m.stationDeMesure=(select c.stationDeMesureO3 from Commune c where c.codeCommune=?1) and  m.typeDeDonnee=\'O3\' and m.date between?2 and?3")
 
+	List<MesurePollution> obtenirLesO3ParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
+
+	// @Query("select valeur, date from MesurePollution m where m.stationDeMesure=(select c.stationDeMesurePM10 from Commune c where c.codeCommune=?1)
+	// and m.typeDeDonnee=\'PM10\' and m.date between?2 and?3")
 	//
-	// @Query("select valeur from MesurePollution m where m.stationDeMesure=(select c.stationDeMesureCO from Commune c where c.codeCommune=?1) and
-	// m.typeDeDonnee=\'O3\' and m.date between ?2 and ?3")
-	// Double obtenirLesO3ParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
+	// List<MesurePollution> obtenirLesPM10ParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
 	//
-	// @Query("select valeur from MesurePollution m where m.stationDeMesure=(select c.stationDeMesureCO from Commune c where c.codeCommune=?1) and
-	// m.typeDeDonnee=\'PM10\' and m.date between ?2 and ?3")
-	// Double obtenirLesPM10ParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
+	// @Query("select valeur, date from MesurePollution m where m.stationDeMesure=(select c.stationDeMesurePM25 from Commune c where c.codeCommune=?1)
+	// andm.typeDeDonnee=\'PM25\'and m.date between?2 and?3")
 	//
-	// @Query("select valeur from MesurePollution m where m.stationDeMesure=(select c.stationDeMesureCO from Commune c where c.codeCommune=?1) and
-	// m.typeDeDonnee=\'PM25\' and m.date between ?2 and ?3")
-	// Double obtenirLesPM25ParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
+	// List<MesurePollution> obtenirLesPM25ParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
 	//
-	// @Query("select valeur from MesurePollution m where m.stationDeMesure=(select c.stationDeMesureCO from Commune c where c.codeCommune=?1) and
-	// m.typeDeDonnee=\'NO2\' and m.date between ?2 and ?3")
-	// Double obtenirLesNO2ParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
+	// @Query("select valeur, date from MesurePollution m where m.stationDeMesure=(select c.stationDeMesureNO2 from Commune c where c.codeCommune=?1)
+	// andm.typeDeDonnee=\'NO2\'and m.date between?2 and?3")
 	//
-	// @Query("select valeur from MesurePollution m where m.stationDeMesure=(select c.stationDeMesureCO from Commune c where c.codeCommune=?1) and
-	// m.typeDeDonnee=\'CO\' and m.date between ?2 and ?3")
-	// Double obtenirLesS02ParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
+	// List<MesurePollution> obtenirLesNO2ParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
+	//
+	// @Query("select valeur, date from MesurePollution m where m.stationDeMesure=(select c.stationDeMesureSO2 from Commune c where c.codeCommune=?1)
+	// andm.typeDeDonnee=\'SO2\'and m.date between?2 and?3")
+	//
+	// List<MesurePollution> obtenirLesS02ParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
+	//
+	// @Query("select valeur, date from MesurePollution m where m.stationDeMesure=(select c.stationDeMesureCO from Commune c where c.codeCommune=?1)
+	// andm.typeDeDonnee=\'CO\'and m.date between?2 and?3")
+	//
+	// List<MesurePollution> obtenirLesCOParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
 
 }

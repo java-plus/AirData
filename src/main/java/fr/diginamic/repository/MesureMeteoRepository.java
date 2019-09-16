@@ -20,27 +20,27 @@ public interface MesureMeteoRepository extends JpaRepository<MesureMeteo, Long> 
 	List<MesureMeteo> obtenirLesMesuresDeMeteo(@Param("code") String codeCommune);
 
 	@Query("select m, date from MesureMeteo m where m.stationDeMesure=(select c.stationDeMesureMeteo from Commune c where c.codeCommune=?1) and m.date between ?2 and ?3")
-	List<MesureMeteo> obtenirTousLesIndicateursParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
+	Optional<List<MesureMeteo>> obtenirTousLesIndicateursParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
 
 	@Query("select temperature, date from MesureMeteo m where m.stationDeMesure=(select c.stationDeMesureMeteo from Commune c where c.codeCommune=?1) and m.date between ?2 and ?3")
-	List<MesureMeteo> obtenirLesTemperatureParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
+	Optional<List<MesureMeteo>> obtenirLesTemperatureParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
 
 	@Query("select pressure, date from MesureMeteo m where m.stationDeMesure=(select c.stationDeMesureMeteo from Commune c where c.codeCommune=?1) and m.date between ?2 and ?3")
-	List<MesureMeteo> obtenirLesPressureParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
+	Optional<List<MesureMeteo>> obtenirLesPressureParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
 
 	@Query("select humidity, date from MesureMeteo m where m.stationDeMesure=(select c.stationDeMesureMeteo from Commune c where c.codeCommune=?1) and m.date between ?2 and ?3")
-	List<MesureMeteo> obtenirLesHumidityParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
+	Optional<List<MesureMeteo>> obtenirLesHumidityParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
 
 	@Query("select tempMin, date from MesureMeteo m where m.stationDeMesure=(select c.stationDeMesureMeteo from Commune c where c.codeCommune=?1) and m.date between ?2 and ?3")
-	List<MesureMeteo> obtenirLesTempsMinParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
+	Optional<List<MesureMeteo>> obtenirLesTempsMinParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
 
 	@Query("select tempMax, date from MesureMeteo m where m.stationDeMesure=(select c.stationDeMesureMeteo from Commune c where c.codeCommune=?1) and m.date between ?2 and ?3")
-	List<MesureMeteo> obtenirLesTempsMaxParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
+	Optional<List<MesureMeteo>> obtenirLesTempsMaxParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
 
 	@Query("select windSpeed, date from MesureMeteo m where m.stationDeMesure=(select c.stationDeMesureMeteo from Commune c where c.codeCommune=?1) and m.date between ?2 and ?3")
-	List<MesureMeteo> obtenirLesWindSpeedParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
+	Optional<List<MesureMeteo>> obtenirLesWindSpeedParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
 
 	@Query("select windDegrees, date from MesureMeteo m where m.stationDeMesure=(select c.stationDeMesureMeteo from Commune c where c.codeCommune=?1) and m.date between ?2 and ?3")
-	List<MesureMeteo> obtenirLesWindDegreesParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
+	Optional<List<MesureMeteo>> obtenirLesWindDegreesParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
 
 }
