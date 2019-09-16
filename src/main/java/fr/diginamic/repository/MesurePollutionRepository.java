@@ -1,5 +1,6 @@
 package fr.diginamic.repository;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -122,5 +123,107 @@ public interface MesurePollutionRepository extends JpaRepository<MesurePollution
 	 */
 	@Query("select m from MesurePollution m where m.stationDeMesure=(select c.stationDeMesureCO from Commune c where c.codeCommune=:code) and m.typeDeDonnee=\'CO\'")
 	List<MesurePollution> obtenirLaMesureDeCO(@Param("code") String code);
+
+	/**
+	 * 
+	 * Méthode qui retourne une liste de d'Objet contenant les mesures de O3 et les dates, comprises entre 2 dates pour une commune.
+	 * la valeur (index [0]) est un Double
+	 * et la date (index[1]) est une ZonedDateTime
+	 * 
+	 * @param codeCommune
+	 *            (le code insee (code commune) de la commune)
+	 * @param dateDebut
+	 *            (ZonedDateTime de début)
+	 * @param dateFin
+	 *            (ZonedDateTime de fin)
+	 * @return
+	 */
+	@Query("select valeur, date from MesurePollution m where m.stationDeMesure=(select c.stationDeMesureO3 from Commune c where c.codeCommune=?1) and  m.typeDeDonnee=\'O3\' and m.date between?2 and?3")
+	Optional<List<Object[]>> obtenirLesO3ParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
+
+	/**
+	 * 
+	 * Méthode qui retourne une liste de d'Objet contenant les mesures de PM10 et les dates, comprises entre 2 dates pour une commune.
+	 * la valeur (index [0]) est un Double
+	 * et la date (index[1]) est une ZonedDateTime
+	 * 
+	 * @param codeCommune
+	 *            (le code insee (code commune) de la commune)
+	 * @param dateDebut
+	 *            (ZonedDateTime de début)
+	 * @param dateFin
+	 *            (ZonedDateTime de fin)
+	 * @return
+	 */
+	@Query("select valeur, date from MesurePollution m where m.stationDeMesure=(select c.stationDeMesurePM10 from Commune c where c.codeCommune=?1) and m.typeDeDonnee=\'PM10\' and m.date between?2 and?3")
+	Optional<List<Object[]>> obtenirLesPM10ParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
+
+	/**
+	 * 
+	 * Méthode qui retourne une liste de d'Objet contenant les mesures de PM25 et les dates, comprises entre 2 dates pour une commune.
+	 * la valeur (index [0]) est un Double
+	 * et la date (index[1]) est une ZonedDateTime
+	 * 
+	 * @param codeCommune
+	 *            (le code insee (code commune) de la commune)
+	 * @param dateDebut
+	 *            (ZonedDateTime de début)
+	 * @param dateFin
+	 *            (ZonedDateTime de fin)
+	 * @return
+	 */
+	@Query("select valeur, date from MesurePollution m where m.stationDeMesure=(select c.stationDeMesurePM25 from Commune c where c.codeCommune=?1)and m.typeDeDonnee=\'PM2.5\'and m.date between?2 and?3")
+	Optional<List<Object[]>> obtenirLesPM25ParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
+
+	/**
+	 * 
+	 * Méthode qui retourne une liste de d'Objet contenant les mesures de NO2 et les dates, comprises entre 2 dates pour une commune.
+	 * la valeur (index [0]) est un Double
+	 * et la date (index[1]) est une ZonedDateTime
+	 * 
+	 * @param codeCommune
+	 *            (le code insee (code commune) de la commune)
+	 * @param dateDebut
+	 *            (ZonedDateTime de début)
+	 * @param dateFin
+	 *            (ZonedDateTime de fin)
+	 * @return
+	 */
+	@Query("select valeur, date from MesurePollution m where m.stationDeMesure=(select c.stationDeMesureNO2 from Commune c where c.codeCommune=?1)and m.typeDeDonnee=\'NO2\'and m.date between?2 and?3")
+	Optional<List<Object[]>> obtenirLesNO2ParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
+
+	/**
+	 * 
+	 * Méthode qui retourne une liste de d'Objet contenant les mesures de S02 et les dates, comprises entre 2 dates pour une commune.
+	 * la valeur (index [0]) est un Double
+	 * et la date (index[1]) est une ZonedDateTime
+	 * 
+	 * @param codeCommune
+	 *            (le code insee (code commune) de la commune)
+	 * @param dateDebut
+	 *            (ZonedDateTime de début)
+	 * @param dateFin
+	 *            (ZonedDateTime de fin)
+	 * @return
+	 */
+	@Query("select valeur, date from MesurePollution m where m.stationDeMesure=(select c.stationDeMesureSO2 from Commune c where c.codeCommune=?1)and m.typeDeDonnee=\'SO2\'and m.date between?2 and?3")
+	Optional<List<Object[]>> obtenirLesS02ParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
+
+	/**
+	 * 
+	 * Méthode qui retourne une liste de d'Objet contenant les mesures de CO et les dates, comprises entre 2 dates pour une commune.
+	 * la valeur (index [0]) est un Double
+	 * et la date (index[1]) est une ZonedDateTime
+	 * 
+	 * @param codeCommune
+	 *            (le code insee (code commune) de la commune)
+	 * @param dateDebut
+	 *            (ZonedDateTime de début)
+	 * @param dateFin
+	 *            (ZonedDateTime de fin)
+	 * @return
+	 */
+	@Query("select valeur, date from MesurePollution m where m.stationDeMesure=(select c.stationDeMesureCO from Commune c where c.codeCommune=?1)and m.typeDeDonnee=\'CO\'and m.date between?2 and?3")
+	Optional<List<Object[]>> obtenirLesCOParPeriode(String codeCommune, ZonedDateTime dateDebut, ZonedDateTime dateFin);
 
 }
