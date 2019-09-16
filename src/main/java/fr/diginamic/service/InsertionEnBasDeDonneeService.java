@@ -47,7 +47,7 @@ public class InsertionEnBasDeDonneeService {
 	@Autowired
 	StationDeMesurePollutionService stationDeMesurePollutionService;
 
-	@Scheduled(fixedDelay = 100000)
+	@Scheduled(fixedDelay = 86400000)
 	/**
 	 * Methode insererEnBaseToutesLes24h() Cette methode s'active
 	 * automatiquement (grâce à un @Schedule) tous les X temps pour vérifier si
