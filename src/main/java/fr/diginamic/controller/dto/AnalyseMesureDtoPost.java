@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * 
- * Classe représentant la requète GET pour récuperer l'historique d'un indicateur sur une commune, sur une période
+ * Classe représentant la requète du front-end pour récuperer l'historique d'un indicateur sur une commune, sur une période
  * 
  * 
  * @author Eloi
