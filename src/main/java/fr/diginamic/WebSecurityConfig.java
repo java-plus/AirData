@@ -33,14 +33,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/h2-console/**").permitAll();
         http.headers().frameOptions().disable();
 
-        http.authorizeRequests().anyRequest().permitAll();
-        /*http.authorizeRequests().antMatchers(HttpMethod.POST,"/auth").permitAll();
-        http.authorizeRequests().antMatchers(HttpMethod.POST,"/compte").permitAll();
-        http.authorizeRequests().antMatchers(HttpMethod.GET,"/**").hasAnyRole("USER","ADMIN");
-        http.authorizeRequests().antMatchers(HttpMethod.POST,"/**").hasAnyRole("USER","ADMIN");
-        http.authorizeRequests().anyRequest().authenticated();*/
 
-       // http.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
+        http.authorizeRequests().antMatchers(HttpMethod.POST,"/auth").permitAll();
+        http.authorizeRequests().antMatchers(HttpMethod.POST,"/compte").permitAll();
+        http.authorizeRequests().antMatchers(HttpMethod.PATCH,"/compte").hasAnyRole("USER","ADMIN");
+        http.authorizeRequests().antMatchers(HttpMethod.DELETE,"/compte").hasAnyRole("USER","ADMIN");
+        http.authorizeRequests().antMatchers(HttpMethod.DELETE,"/compte_avec_admin").hasRole("ADMIN");
+        http.authorizeRequests().antMatchers(HttpMethod.GET,"/**").hasAnyRole("USER","ADMIN");
+        http.authorizeRequests().antMatchers(HttpMethod.POST,"/**").hasAnyRole("ADMIN");
+        http.authorizeRequests().anyRequest().authenticated();
+
+       http.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
 
         http.logout()
                 .logoutSuccessHandler((req,resp,auth)-> resp.setStatus(HttpStatus.OK.value()))
