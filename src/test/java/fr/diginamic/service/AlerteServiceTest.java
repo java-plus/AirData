@@ -4,6 +4,7 @@ import fr.diginamic.entites.Alerte;
 import fr.diginamic.entites.Commune;
 import fr.diginamic.entites.Type;
 import fr.diginamic.exception.AlerteInvalideException;
+import fr.diginamic.exception.CommuneNonTrouveeException;
 import fr.diginamic.repository.AlerteRepository;
 import fr.diginamic.repository.CommuneRepository;
 import org.junit.Test;
@@ -20,6 +21,19 @@ public class AlerteServiceTest {
 
     private AlerteService alerteService;
 
+    @Test
+    public void test_creerAlerte_Valide(){
+        Alerte alerte= new Alerte(null,null,null,"44001", Type.METEO,"message", ZonedDateTime.now(),ZonedDateTime.now().plusDays(1));
+        AlerteRepository mockAlerteRepository = Mockito.mock(AlerteRepository.class);
+        Mockito.when(mockAlerteRepository.save(Mockito.any(Alerte.class))).thenReturn(alerte);
+        CommuneRepository mockCommuneRepository = Mockito.mock(CommuneRepository.class);
+        Mockito.when(mockCommuneRepository.findByCodeCommune(Mockito.anyString())).thenReturn(java.util.Optional.of(new Commune()));
+
+        this.alerteService = new AlerteService(mockAlerteRepository,mockCommuneRepository);
+        assertThat(alerteService.creerAlerte(alerte)).isNotNull();
+
+    }
+
     @Test(expected = AlerteInvalideException.class)
     public void test_creerAlerte_alerteNull(){
        AlerteRepository mockAlerteRepository = Mockito.mock(AlerteRepository.class);
@@ -31,17 +45,31 @@ public class AlerteServiceTest {
         alerteService.creerAlerte(null);
     }
 
-    @Test(expected = AlerteInvalideException.class)
+    @Test(expected = CommuneNonTrouveeException.class)
     public void test_creerAlerte_alerteCodeCommuneInconnu(){
         Alerte alerte= new Alerte(null,null,null,"1", Type.METEO,"message", ZonedDateTime.now(),ZonedDateTime.now().plusDays(1));
+        AlerteRepository mockAlerteRepository = Mockito.mock(AlerteRepository.class);
+        Mockito.when(mockAlerteRepository.save(Mockito.any(Alerte.class))).thenReturn(alerte);
+        CommuneRepository mockCommuneRepository = Mockito.mock(CommuneRepository.class);
+        Mockito.when(mockCommuneRepository.findByCodeCommune(Mockito.anyString())).thenThrow(CommuneNonTrouveeException.class);
+
+        this.alerteService = new AlerteService(mockAlerteRepository,mockCommuneRepository);
+        alerteService.creerAlerte(alerte);
+    }
+
+    @Test(expected = AlerteInvalideException.class)
+    public void test_creerAlerte_alerteInvalide(){
+        Alerte alerte= new Alerte(null,null,null,"44001", null,"message", ZonedDateTime.now(),ZonedDateTime.now().plusDays(1));
         AlerteRepository mockAlerteRepository = Mockito.mock(AlerteRepository.class);
         Mockito.when(mockAlerteRepository.save(Mockito.any(Alerte.class))).thenReturn(alerte);
         CommuneRepository mockCommuneRepository = Mockito.mock(CommuneRepository.class);
         Mockito.when(mockCommuneRepository.findByCodeCommune(Mockito.anyString())).thenReturn(java.util.Optional.of(new Commune()));
 
         this.alerteService = new AlerteService(mockAlerteRepository,mockCommuneRepository);
-        alerteService.creerAlerte(null);
+        alerteService.creerAlerte(alerte);
     }
+
+
 
 
 }

@@ -29,7 +29,7 @@ public class MesurePollution {
 	private String typeDeDonnee;
 	@NotNull
 	private ZonedDateTime date;
-	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "StationDeMesure_id")
 	private StationDeMesurePollution stationDeMesure;
 
