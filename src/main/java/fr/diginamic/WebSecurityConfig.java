@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * Classe WebSecurityConfig Cette classe gère la méthode configure(HttpSecurity
@@ -47,21 +49,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().antMatchers("/h2-console/**").permitAll();
 		http.headers().frameOptions().disable();
 
-		http.authorizeRequests().anyRequest().permitAll();
-		/*
-		 * http.authorizeRequests().antMatchers(HttpMethod.POST,"/auth").
-		 * permitAll();
-		 * http.authorizeRequests().antMatchers(HttpMethod.POST,"/compte").
-		 * permitAll();
-		 * http.authorizeRequests().antMatchers(HttpMethod.GET,"/**").hasAnyRole
-		 * ("USER","ADMIN");
-		 * http.authorizeRequests().antMatchers(HttpMethod.POST,"/**").
-		 * hasAnyRole("USER","ADMIN");
-		 * http.authorizeRequests().anyRequest().authenticated();
-		 */
+		http.authorizeRequests().antMatchers(HttpMethod.POST, "/auth").permitAll();
+		http.authorizeRequests().antMatchers(HttpMethod.POST, "/compte").permitAll();
+		http.authorizeRequests().antMatchers(HttpMethod.PATCH, "/compte").hasAnyRole("USER", "ADMIN");
+		http.authorizeRequests().antMatchers(HttpMethod.DELETE, "/compte").hasAnyRole("USER", "ADMIN");
+		http.authorizeRequests().antMatchers(HttpMethod.DELETE, "/compte_avec_admin").hasRole("ADMIN");
+		http.authorizeRequests().antMatchers(HttpMethod.GET, "/**").hasAnyRole("USER", "ADMIN");
+		http.authorizeRequests().antMatchers(HttpMethod.POST, "/**").hasAnyRole("ADMIN");
+		http.authorizeRequests().anyRequest().authenticated();
 
-		// http.addFilterBefore(jwtAuthorizationFilter,
-		// UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
 
 		http.logout().logoutSuccessHandler((req, resp, auth) -> resp.setStatus(HttpStatus.OK.value()))
 				.deleteCookies(TOKEN_COOKIE);

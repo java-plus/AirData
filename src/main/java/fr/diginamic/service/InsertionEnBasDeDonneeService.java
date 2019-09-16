@@ -95,7 +95,6 @@ public class InsertionEnBasDeDonneeService {
 	 * @param mesureMeteo
 	 */
 	private void createOrNotMesureMeteo(MesureMeteo mesureMeteo) {
-		// TODO Auto-generated method stub
 		if (!mesureMeteoService.obtenirMesureMeteo(mesureMeteo).isPresent()) {
 			mesureMeteo.setStationDeMesure(stationMeteoRepository.findByLatitudeAndLongitude(
 					mesureMeteo.getStationDeMesure().getLatitude(), mesureMeteo.getStationDeMesure().getLongitude()));
@@ -112,7 +111,6 @@ public class InsertionEnBasDeDonneeService {
 	 * @param mesurePollution
 	 */
 	private void createOrNotMesurePollution(MesurePollution mesurePollution) {
-		// TODO Auto-generated method stub
 		if (!mesurePollutionService.obtenirMesurePollution(mesurePollution).isPresent()) {
 			mesurePollution.setStationDeMesure(stationPollutionRepository.findByLatitudeAndLongitude(
 					mesurePollution.getStationDeMesure().getLatitude(),

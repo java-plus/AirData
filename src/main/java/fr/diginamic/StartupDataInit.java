@@ -4,6 +4,8 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
+import fr.diginamic.controller.UtilisateurController;
+import fr.diginamic.controller.dto.UtilisateurCreationComptePost;
 import fr.diginamic.service.InsertionEnBasDeDonneeService;
 
 /**
@@ -16,8 +18,12 @@ public class StartupDataInit {
 
 	private InsertionEnBasDeDonneeService insertionEnBasDeDonneeService;
 
-	public StartupDataInit(InsertionEnBasDeDonneeService insertionEnBasDeDonneeService) {
+	private UtilisateurController utilisateurController;
+
+	public StartupDataInit(InsertionEnBasDeDonneeService insertionEnBasDeDonneeService,
+			UtilisateurController utilisateurController) {
 		this.insertionEnBasDeDonneeService = insertionEnBasDeDonneeService;
+		this.utilisateurController = utilisateurController;
 	}
 
 	/**
@@ -32,6 +38,11 @@ public class StartupDataInit {
 	@EventListener(ContextRefreshedEvent.class)
 	public void init() throws Exception {
 		insertionEnBasDeDonneeService.insererLaListeDesCommunes();
+		UtilisateurCreationComptePost utilisateur = new UtilisateurCreationComptePost("user", "User44000;",
+				"user@user.fr", 18, "44001");
+		utilisateurController.creerCompte(utilisateur);
+		utilisateur = new UtilisateurCreationComptePost("admin", "Admin44000;", "admin@admin.fr", 18, "44001");
+		utilisateurController.creerCompteAdmin(utilisateur);
 	}
 
 }

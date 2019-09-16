@@ -1,15 +1,20 @@
+
 package fr.diginamic.controller;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import fr.diginamic.controller.dto.AnalyseMesureDto;
+import fr.diginamic.controller.dto.AnalyseMesureDtoPost;
 import fr.diginamic.entites.MesureMeteo;
 import fr.diginamic.entites.MesurePollution;
+import fr.diginamic.service.AnalyseMesureService;
 import fr.diginamic.service.MesureMeteoService;
 import fr.diginamic.service.MesurePollutionService;
 import fr.diginamic.utils.UtilisateurConnecteUtils;
@@ -33,10 +38,19 @@ import fr.diginamic.utils.UtilisateurConnecteUtils;
 public class MesureController {
 
 	@Autowired
-	MesurePollutionService mesurePollutionService;
+	private MesurePollutionService mesurePollutionService;
 
 	@Autowired
-	MesureMeteoService mesureMeteoService;
+	private AnalyseMesureService analyseMesureService;
+
+	@Autowired
+	private MesureMeteoService mesureMeteoService;
+
+	@GetMapping
+	public AnalyseMesureDto recupererHistoriqueIndicateur(@RequestBody AnalyseMesureDtoPost analyseMesureDtoPost) {
+
+		return analyseMesureService.recupererHistoriqueIndicateur(analyseMesureDtoPost);
+	}
 
 	/**
 	 * Cette methode gère l'appel de l'url "/mesures/pollution" permet d'obtenir
