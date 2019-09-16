@@ -20,8 +20,15 @@ import fr.diginamic.service.AuthentificationService;
 @RestController
 public class AuthentificationController {
 
+	/**
+	 * un service d’authentification
+	 */
 	private AuthentificationService authentificationService;
 
+	/**
+	 *
+	 * @param authentificationService un service d’authentification
+	 */
 	public AuthentificationController(AuthentificationService authentificationService) {
 		this.authentificationService = authentificationService;
 	}
