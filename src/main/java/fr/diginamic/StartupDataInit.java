@@ -1,5 +1,6 @@
 package fr.diginamic;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,10 @@ import fr.diginamic.service.InsertionEnBasDeDonneeService;
  */
 @Component
 public class StartupDataInit {
+
+
+	@Value("${data.init}")
+	private Boolean isDataInit;
 
 	private InsertionEnBasDeDonneeService insertionEnBasDeDonneeService;
 
@@ -37,12 +42,16 @@ public class StartupDataInit {
 	// La méthode init va être invoquée au démarrage de l'application.
 	@EventListener(ContextRefreshedEvent.class)
 	public void init() throws Exception {
-		insertionEnBasDeDonneeService.insererLaListeDesCommunes();
-		UtilisateurCreationComptePost utilisateur = new UtilisateurCreationComptePost("user", "User44000;",
-				"user@user.fr", 18, "44001");
-		utilisateurController.creerCompte(utilisateur);
-		utilisateur = new UtilisateurCreationComptePost("admin", "Admin44000;", "admin@admin.fr", 18, "44001");
-		utilisateurController.creerCompteAdmin(utilisateur);
+
+		if(isDataInit) {
+			insertionEnBasDeDonneeService.insererLaListeDesCommunes();
+			UtilisateurCreationComptePost utilisateur = new UtilisateurCreationComptePost("user", "User44000;",
+					"user@user.fr", 18, "44001");
+			utilisateurController.creerCompte(utilisateur);
+			utilisateur = new UtilisateurCreationComptePost("admin", "Admin44000;", "admin@admin.fr", 18, "44001");
+			utilisateurController.creerCompteAdmin(utilisateur);
+		}
+
 	}
 
 }
