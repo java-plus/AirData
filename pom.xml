@@ -88,7 +88,7 @@
         <profile>
             <id>prod</id>
             <properties>
-                <jdbc.url>jdbc:mysql://${env.POSTGRESQL_ADDON_HOST}:${env.POSTGRESQL_ADDON_PORT}/${env.POSTGRESQL_ADDON_DB}</jdbc.url>
+                <jdbc.url>jdbc:postgresql://${env.POSTGRESQL_ADDON_HOST}:${env.POSTGRESQL_ADDON_PORT}/${env.POSTGRESQL_ADDON_DB}</jdbc.url>
                 <jdbc.user>${env.POSTGRESQL_ADDON_USER}</jdbc.user>
                 <jdbc.pass>${env.POSTGRESQL_ADDON_PASSWORD}</jdbc.pass>
                 <generate.ddl>${env.GENERATE_DDL}</generate.ddl>
