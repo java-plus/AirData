@@ -3,6 +3,8 @@
  */
 package fr.diginamic.controller.dto;
 
+import javax.validation.constraints.Pattern;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,7 +24,7 @@ public class FavoriDtoPostAvecId {
 	 * codeCommune : Commune représente la commune selectionnée par l'utilisateur
 	 * pour caractériser son favori
 	 */
-
+	@Pattern(regexp = "^[0-9]*$")
 	private String codeCommune;
 
 	/**
