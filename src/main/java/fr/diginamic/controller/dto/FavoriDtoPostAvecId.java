@@ -1,20 +1,22 @@
-
+/**
+ * 
+ */
 package fr.diginamic.controller.dto;
 
-import fr.diginamic.entites.Favori;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Classe Dto à destination du front, représentant les paramètres d'un favori de l'utilisateur
+ * @author Eloi
  *
- * @see Favori
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FavoriDtoPost {
+public class FavoriDtoPostAvecId {
+
+	private Integer id;
 
 	/**
 	 * codeCommune : Commune représente la commune selectionnée par l'utilisateur
@@ -121,5 +123,4 @@ public class FavoriDtoPost {
 	 * son favori
 	 */
 	private Boolean population;
-
 }

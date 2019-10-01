@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import fr.diginamic.controller.dto.FavoriDtoPost;
+import fr.diginamic.controller.dto.FavoriDtoPostAvecId;
 import fr.diginamic.controller.dto.FavoriSansUtilisateurDto;
 import fr.diginamic.entites.Commune;
 import fr.diginamic.entites.Favori;
@@ -29,9 +30,10 @@ public class FavoriService {
 	private UtilisateurRepository utilisateurRepository;
 	private CommuneRepository communeRepository;
 
-	public FavoriService(FavoriRepository favoriRepository, UtilisateurRepository utilisateurRepository) {
+	public FavoriService(FavoriRepository favoriRepository, UtilisateurRepository utilisateurRepository, CommuneRepository communeRepository) {
 		this.favoriRepository = favoriRepository;
 		this.utilisateurRepository = utilisateurRepository;
+		this.communeRepository = communeRepository;
 	}
 
 	public List<FavoriSansUtilisateurDto> recupererFavoris() {
@@ -44,25 +46,80 @@ public class FavoriService {
 
 	}
 
-	public Favori insererEnBase(FavoriDtoPost favoriCreationDto) {
+	public FavoriSansUtilisateurDto insererEnBase(FavoriDtoPost favoriCreationDto) {
 		Utilisateur utilisateur = utilisateurRepository.findByIdentifiant(UtilisateurConnecteUtils.recupererIdentifiant()).orElseThrow(UtilisateurNonTrouveException::new);
+
 		Commune commune = communeRepository.findByCodeCommune(favoriCreationDto.getCodeCommune()).orElseThrow(CommuneNonTrouveeException::new);
 
-		// String utilisateurId = utilisateurRepository.findIdWithIdentifiant(UtilisateurConnecteUtils.recupererIdentifiant());
-		//
-		// Utilisateur utilisateur = new Utilisateur();
-		// utilisateur.setId(utilisateurId);
-		//
-		// favoriCreationDto.setUtilisateur(utilisateur);
+		Favori favori = new Favori();
+		favori.setCommune(commune);
+		favori.setHumidity(favoriCreationDto.getHumidity());
+		favori.setMesureCO(favoriCreationDto.getMesureCO());
+		favori.setMesureNO2(favoriCreationDto.getMesureNO2());
+		favori.setMesureO3(favoriCreationDto.getMesureO3());
+		favori.setMesurePM10(favoriCreationDto.getMesurePM10());
+		favori.setMesurePM25(favoriCreationDto.getMesurePM25());
+		favori.setMesureSO2(favoriCreationDto.getMesureSO2());
+		favori.setPressure(favoriCreationDto.getPressure());
+		favori.setTemperature(favoriCreationDto.getTemperature());
+		favori.setTempMax(favoriCreationDto.getTempMax());
+		favori.setTempMin(favoriCreationDto.getTempMin());
+		favori.setUtilisateur(utilisateur);
+		favori.setWeatherDescription(favoriCreationDto.getWeatherDescription());
+		favori.setWeatherIcon(favoriCreationDto.getWeatherIcon());
+		favori.setWindDegrees(favoriCreationDto.getWindDegrees());
+		favori.setWindSpeed(favoriCreationDto.getWindSpeed());
 
-		Favori favori = new Favori(commune, utilisateur, favoriCreationDto.getWeatherDescription(), favoriCreationDto.getWeatherIcon(), favoriCreationDto.getTemperature(), favoriCreationDto.getPressure(), favoriCreationDto.getHumidity(), favoriCreationDto.getTempMin(), favoriCreationDto.getTempMax(), favoriCreationDto.getWindSpeed(), favoriCreationDto.getWindDegrees(),
-				favoriCreationDto.getMesureSO2(), favoriCreationDto.getMesurePM25(), favoriCreationDto.getMesurePM10(), favoriCreationDto.getMesureO3(), favoriCreationDto.getMesureNO2(), favoriCreationDto.getMesureCO());
+		Favori favoriSaved = favoriRepository.save(favori);
 
-		return favoriRepository.save(favori);
+		TransformerFavori t = new TransformerFavori();
+
+		FavoriSansUtilisateurDto favSansUtilisateurDto = t.FavoriToFavoriDto(favoriSaved);
+		return favSansUtilisateurDto;
 
 	}
 
-	public void supprimerFavori(Integer idFavori) {
-		favoriRepository.deleteById(idFavori);
+	public void supprimerFavori(String idFavori) {
+		Integer integerId = Integer.valueOf(idFavori);
+		favoriRepository.deleteById(integerId);
+	}
+
+	/**
+	 * @param favoriCreationDto
+	 * @return
+	 */
+
+	public FavoriSansUtilisateurDto modifier(FavoriDtoPostAvecId favoriCreationDtoAvecId) {
+		Utilisateur utilisateur = utilisateurRepository.findByIdentifiant(UtilisateurConnecteUtils.recupererIdentifiant()).orElseThrow(UtilisateurNonTrouveException::new);
+
+		Commune commune = communeRepository.findByCodeCommune(favoriCreationDtoAvecId.getCodeCommune()).orElseThrow(CommuneNonTrouveeException::new);
+
+		Favori favori = new Favori();
+		favori.setId(favoriCreationDtoAvecId.getId());
+		favori.setCommune(commune);
+		favori.setHumidity(favoriCreationDtoAvecId.getHumidity());
+		favori.setMesureCO(favoriCreationDtoAvecId.getMesureCO());
+		favori.setMesureNO2(favoriCreationDtoAvecId.getMesureNO2());
+		favori.setMesureO3(favoriCreationDtoAvecId.getMesureO3());
+		favori.setMesurePM10(favoriCreationDtoAvecId.getMesurePM10());
+		favori.setMesurePM25(favoriCreationDtoAvecId.getMesurePM25());
+		favori.setMesureSO2(favoriCreationDtoAvecId.getMesureSO2());
+		favori.setPressure(favoriCreationDtoAvecId.getPressure());
+		favori.setTemperature(favoriCreationDtoAvecId.getTemperature());
+		favori.setTempMax(favoriCreationDtoAvecId.getTempMax());
+		favori.setTempMin(favoriCreationDtoAvecId.getTempMin());
+		favori.setUtilisateur(utilisateur);
+		favori.setWeatherDescription(favoriCreationDtoAvecId.getWeatherDescription());
+		favori.setWeatherIcon(favoriCreationDtoAvecId.getWeatherIcon());
+		favori.setWindDegrees(favoriCreationDtoAvecId.getWindDegrees());
+		favori.setWindSpeed(favoriCreationDtoAvecId.getWindSpeed());
+
+		Favori favoriModifie = favoriRepository.save(favori);
+
+		TransformerFavori t = new TransformerFavori();
+
+		FavoriSansUtilisateurDto favSansUtilisateurDto = t.FavoriToFavoriDto(favoriModifie);
+		return favSansUtilisateurDto;
+
 	}
 }

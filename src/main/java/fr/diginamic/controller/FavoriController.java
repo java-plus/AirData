@@ -3,15 +3,17 @@ package fr.diginamic.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.diginamic.controller.dto.FavoriDtoPost;
+import fr.diginamic.controller.dto.FavoriDtoPostAvecId;
 import fr.diginamic.controller.dto.FavoriSansUtilisateurDto;
-import fr.diginamic.entites.Favori;
 import fr.diginamic.service.FavoriService;
 
 /**
@@ -39,22 +41,22 @@ public class FavoriController {
 	}
 
 	@PostMapping
-	public Favori enregistrerFavori(@RequestBody FavoriDtoPost favoriCreationDto) {
+	public FavoriSansUtilisateurDto enregistrerFavori(@RequestBody FavoriDtoPost favoriCreationDto) {
 
 		return favoriService.insererEnBase(favoriCreationDto);
 
 	}
 
-	////
-	// @DeleteMapping
-	// public void supprimerFavori(@RequestBody Favori favori) {
-	// // FavoriService.supprimerFavori(Favori);
-	// }
-	//
-	// @PatchMapping
-	// public Favori modifierFavori() {
-	//
-	// return favoriModifie;
-	// }
+	@DeleteMapping
+	public void supprimerFavori(@RequestBody String id) {
+		favoriService.supprimerFavori(id);
+	}
+
+	@PatchMapping
+	public FavoriSansUtilisateurDto modifierFavori(@RequestBody FavoriDtoPostAvecId favoriCreationDtoAvecId) {
+
+		return favoriService.modifier(favoriCreationDtoAvecId);
+
+	}
 
 }
