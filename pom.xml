@@ -98,6 +98,7 @@
                 <dependency>
                     <groupId>org.postgresql</groupId>
                     <artifactId>postgresql</artifactId>
+                    <scope>runtime</scope>
                 </dependency>
             </dependencies>
         </profile>
@@ -114,6 +115,7 @@
                 <dependency>
                     <groupId>mysql</groupId>
                     <artifactId>mysql-connector-java</artifactId>
+                    <scope>runtime</scope>
                 </dependency>
             </dependencies>
 
