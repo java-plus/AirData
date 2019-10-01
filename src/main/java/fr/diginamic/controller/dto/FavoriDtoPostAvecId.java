@@ -10,6 +10,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
+ * 
+ * Classe Dto à destination du front, représentant un favori à modifier, de l'utilisateur
+ * 
  * @author Eloi
  *
  */
@@ -18,6 +21,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class FavoriDtoPostAvecId {
 
+	/** id : Integer l'id unique du favori */
 	private Integer id;
 
 	/**

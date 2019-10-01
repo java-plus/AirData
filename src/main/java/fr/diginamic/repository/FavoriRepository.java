@@ -14,6 +14,14 @@ import fr.diginamic.entites.Utilisateur;
 
 public interface FavoriRepository extends JpaRepository<Favori, Integer> {
 
+	/**
+	 * 
+	 * Requete qui récupère une liste de tous les favori d'un utilisateur
+	 * 
+	 * @param utilisateur
+	 * 
+	 * @return un Optional<List<Favori>>
+	 */
 	@Query("select f from Favori f where f.utilisateur=?1")
 	Optional<List<Favori>> findByUtilisateurId(Utilisateur utilisateur);
 

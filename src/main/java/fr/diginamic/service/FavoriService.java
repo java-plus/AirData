@@ -36,21 +36,28 @@ public class FavoriService {
 		this.communeRepository = communeRepository;
 	}
 
+	/**
+	 * Méthode qui récupère tous les favoris de l'utilisateur qui est auhtentifié
+	 * 
+	 * @return List<FavoriSansUtilisateurDto>
+	 */
 	public List<FavoriSansUtilisateurDto> recupererFavoris() {
-
 		TransformerFavori t = new TransformerFavori();
 		Utilisateur utilisateur = utilisateurRepository.findByIdentifiant(UtilisateurConnecteUtils.recupererIdentifiant()).orElseThrow(UtilisateurNonTrouveException::new);
 		List<Favori> listeFav = favoriRepository.findByUtilisateurId(utilisateur).orElseThrow(FavoriException::new);
 		List<FavoriSansUtilisateurDto> listeFavSansDto = listeFav.stream().map((f) -> t.FavoriToFavoriDto(f)).collect(Collectors.toList());
 		return listeFavSansDto;
-
 	}
 
+	/**
+	 * Méthode qui enregistre en base le favori passé en param
+	 * 
+	 * @param favoriCreationDto
+	 * @return
+	 */
 	public FavoriSansUtilisateurDto insererEnBase(FavoriDtoPost favoriCreationDto) {
 		Utilisateur utilisateur = utilisateurRepository.findByIdentifiant(UtilisateurConnecteUtils.recupererIdentifiant()).orElseThrow(UtilisateurNonTrouveException::new);
-
 		Commune commune = communeRepository.findByCodeCommune(favoriCreationDto.getCodeCommune()).orElseThrow(CommuneNonTrouveeException::new);
-
 		Favori favori = new Favori();
 		favori.setCommune(commune);
 		favori.setHumidity(favoriCreationDto.getHumidity());
@@ -79,12 +86,19 @@ public class FavoriService {
 
 	}
 
+	/**
+	 * méthode qui supprime le favori
+	 * 
+	 * @param idFavori
+	 */
 	public void supprimerFavori(String idFavori) {
 		Integer integerId = Integer.valueOf(idFavori);
 		favoriRepository.deleteById(integerId);
 	}
 
 	/**
+	 * Méthode qui modifie en base de donnée un favori
+	 * 
 	 * @param favoriCreationDto
 	 * @return
 	 */

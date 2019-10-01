@@ -40,21 +40,37 @@ public class FavoriController {
 
 	}
 
+	/**
+	 * Méthode qui enregistre en base de donnée le favori créé dans le font
+	 * 
+	 * @param favoriCreationDto
+	 *            un FavoriDtoPost (= un Favori sans l'id et sans l'utilisateur)
+	 * @return un FavoriSansUtilisateurDto
+	 */
 	@PostMapping
 	public FavoriSansUtilisateurDto enregistrerFavori(@RequestBody FavoriDtoPost favoriCreationDto) {
-
 		return favoriService.insererEnBase(favoriCreationDto);
-
 	}
 
+	/**
+	 * Méthode qui supprime de la base de donnée le favori correspondant à l'id passé en param
+	 * 
+	 * @param id
+	 */
 	@DeleteMapping
 	public void supprimerFavori(@RequestBody String id) {
 		favoriService.supprimerFavori(id);
 	}
 
+	/**
+	 * 
+	 * Méthode qui enregistre les modifications d'un favori faites dans le front, en base de donnée
+	 * 
+	 * @param favoriCreationDtoAvecId
+	 * @return
+	 */
 	@PatchMapping
 	public FavoriSansUtilisateurDto modifierFavori(@RequestBody FavoriDtoPostAvecId favoriCreationDtoAvecId) {
-
 		return favoriService.modifier(favoriCreationDtoAvecId);
 
 	}
