@@ -120,4 +120,46 @@ public class Favori {
 	 */
 	private Boolean mesureCO = false;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param commune
+	 * @param utilisateur
+	 * @param weatherDescription
+	 * @param weatherIcon
+	 * @param temperature
+	 * @param pressure
+	 * @param humidity
+	 * @param tempMin
+	 * @param tempMax
+	 * @param windSpeed
+	 * @param windDegrees
+	 * @param mesureSO2
+	 * @param mesurePM25
+	 * @param mesurePM10
+	 * @param mesureO3
+	 * @param mesureNO2
+	 * @param mesureCO
+	 */
+	public Favori(Commune commune, Utilisateur utilisateur, Boolean weatherDescription, Boolean weatherIcon, Boolean temperature, Boolean pressure, Boolean humidity, Boolean tempMin, Boolean tempMax, Boolean windSpeed, Boolean windDegrees, Boolean mesureSO2, Boolean mesurePM25, Boolean mesurePM10, Boolean mesureO3, Boolean mesureNO2, Boolean mesureCO) {
+		super();
+		this.commune = commune;
+		this.utilisateur = utilisateur;
+		this.weatherDescription = weatherDescription;
+		this.weatherIcon = weatherIcon;
+		this.temperature = temperature;
+		this.pressure = pressure;
+		this.humidity = humidity;
+		this.tempMin = tempMin;
+		this.tempMax = tempMax;
+		this.windSpeed = windSpeed;
+		this.windDegrees = windDegrees;
+		this.mesureSO2 = mesureSO2;
+		this.mesurePM25 = mesurePM25;
+		this.mesurePM10 = mesurePM10;
+		this.mesureO3 = mesureO3;
+		this.mesureNO2 = mesureNO2;
+		this.mesureCO = mesureCO;
+	}
+
 }
