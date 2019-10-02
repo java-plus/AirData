@@ -41,7 +41,7 @@ public class UtilisateurDto {
 	 * listeFavori : List<Favori> représente la liste des favoris de
 	 * l'utilisateur
 	 */
-	List<Favori> listeFavori;
+	List<FavoriSansUtilisateurDto> listeFavori;
 	/** commune : Commune représente la commune de l'utilisateur */
 	Commune commune;
 	/**

@@ -54,7 +54,7 @@ public class TransformerUtilisateur {
         utilisateurDto.setIdentifiant(utilisateur.getIdentifiant());
         utilisateurDto.setEmail(utilisateur.getEmail());
         utilisateurDto.setAge(utilisateur.getAge());
-        utilisateurDto.setListeFavori(utilisateur.getListeFavori());
+        utilisateurDto.setListeFavori(utilisateur.getListeFavori().stream().map(favori -> transformerFavori.FavoriToFavoriDto(favori)).collect(Collectors.toList()));
         utilisateurDto.setCommune(utilisateur.getCommune());
         utilisateurDto.setCompteUtilisateur(utilisateur.getCompteUtilisateur());
         return utilisateurDto;
