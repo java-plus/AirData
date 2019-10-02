@@ -20,6 +20,11 @@ import lombok.NoArgsConstructor;
 public class FavoriSansUtilisateurDto {
 
 	/**
+	 * id du favori
+	 */
+	private Integer id;
+
+	/**
 	 * commune : Commune représente la commune selectionnée par l'utilisateur
 	 * pour caractériser son favori
 	 */

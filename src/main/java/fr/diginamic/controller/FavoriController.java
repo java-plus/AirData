@@ -58,8 +58,8 @@ public class FavoriController {
 	 * @param id
 	 */
 	@DeleteMapping
-	public void supprimerFavori(@RequestBody String id) {
-		favoriService.supprimerFavori(id);
+	public void supprimerFavori(@RequestBody FavoriDtoPostAvecId favori) {
+		favoriService.supprimerFavori(favori.getId());
 	}
 
 	/**

@@ -91,16 +91,15 @@ public class FavoriService {
 	 * 
 	 * @param idFavori
 	 */
-	public void supprimerFavori(String idFavori) {
-		Integer integerId = Integer.valueOf(idFavori);
-		favoriRepository.deleteById(integerId);
+	public void supprimerFavori(Integer idFavori) {
+		favoriRepository.deleteById(idFavori);
 	}
 
 	/**
 	 * Méthode qui modifie en base de donnée un favori
 	 * 
-	 * @param favoriCreationDto
-	 * @return
+	 * @param favoriCreationDtoAvecId un favori
+	 * @return un favori sans l’utilisateur
 	 */
 
 	public FavoriSansUtilisateurDto modifier(FavoriDtoPostAvecId favoriCreationDtoAvecId) {
@@ -131,9 +130,6 @@ public class FavoriService {
 		Favori favoriModifie = favoriRepository.save(favori);
 
 		TransformerFavori t = new TransformerFavori();
-
-		FavoriSansUtilisateurDto favSansUtilisateurDto = t.FavoriToFavoriDto(favoriModifie);
-		return favSansUtilisateurDto;
-
+		return t.FavoriToFavoriDto(favoriModifie);
 	}
 }
