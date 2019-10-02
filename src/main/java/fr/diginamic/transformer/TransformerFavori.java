@@ -13,6 +13,7 @@ public class TransformerFavori {
 
         FavoriSansUtilisateurDto favoriDto = new FavoriSansUtilisateurDto();
         if(favori!=null){
+            favoriDto.setId(favori.getId());
         favoriDto.setCommune(favori.getCommune());
         favoriDto.setWeatherDescription(favori.getWeatherDescription());
         favoriDto.setWeatherIcon(favori.getWeatherIcon());
