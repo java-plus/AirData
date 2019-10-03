@@ -52,8 +52,6 @@ public class AnalyseMesureService {
 
 		List<Object[]> listeindicateurs = null;
 
-		// TODO refactor pour ne plus avoir un gros if/else (ci-dessous)
-
 		if (analyseMesureDtoPost.getIndicateur().equals("temperature")) {
 
 			listeindicateurs = mesureMeteoRepository.obtenirLesTemperatureParPeriode(analyseMesureDtoPost.getCodeCommune(), analyseMesureDtoPost.getDateDebut(), analyseMesureDtoPost.getDateFin()).orElseThrow(AnalyseMesureException::new);
