@@ -14,6 +14,10 @@ import lombok.NoArgsConstructor;
  * @author Diginamic02
  *
  */
+/**
+ * @author Eloi
+ *
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -110,5 +114,11 @@ public class FavoriSansUtilisateurDto {
 	 * cette information comme apparaissant dans les résultats de son favori
 	 */
 	private Boolean mesureCO = false;
+
+	/**
+	 * population : Boolean représente si oui ou non l'utilisateur a sélectionné
+	 * cette information comme apparaissant dans les résultats de son favori
+	 */
+	private Boolean population = false;
 
 }
