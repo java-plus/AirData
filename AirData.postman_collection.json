@@ -294,7 +294,7 @@
 				"disableBodyPruning": true
 			},
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
@@ -308,7 +308,7 @@
 					"raw": "{\n\t\"codeCommune\":\"44001\",\n\t\"type\":\"METEO\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/alertes",
+					"raw": "http://localhost:8080/recupereralertes",
 					"protocol": "http",
 					"host": [
 						"localhost"

@@ -54,7 +54,7 @@ public class AlerteController {
 	 * @param alerte
 	 * @return
 	 */
-	@GetMapping("/alertes")
+	@PostMapping("/recupereralertes")
 	public List<Alerte> recupererAlertes(@RequestBody Alerte alerte) {
 		return alerteService.recupererAlerte(alerte);
 	}
