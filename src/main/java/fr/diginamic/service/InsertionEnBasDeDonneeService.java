@@ -47,7 +47,7 @@ public class InsertionEnBasDeDonneeService {
 	@Autowired
 	StationDeMesurePollutionService stationDeMesurePollutionService;
 
-	@Scheduled(fixedDelay = 86400000)
+	@Scheduled(fixedDelay = 3600000)
 	/**
 	 * Methode insererEnBaseToutesLes24h() Cette methode s'active
 	 * automatiquement (grâce à un @Schedule) tous les X temps pour vérifier si
@@ -100,7 +100,6 @@ public class InsertionEnBasDeDonneeService {
 					mesureMeteo.getStationDeMesure().getLatitude(), mesureMeteo.getStationDeMesure().getLongitude()));
 			mesureMeteoService.mettreEnBaseMesureMeteo(mesureMeteo);
 		}
-
 	}
 
 	/**
