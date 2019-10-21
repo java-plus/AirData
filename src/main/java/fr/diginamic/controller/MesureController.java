@@ -85,7 +85,7 @@ public class MesureController {
 	/**
 	 * Cette methode gère l'appel de l'url "/mesures/meteo?codeCommune=44108" et
 	 * permet d'obtenir les mesures de meteo concernant la commune représentée
-	 * par le codeCommune renseigné .
+	 * par le codeCommune renseigné (ici le code commune est 44108).
 	 * 
 	 * @param codeCommune
 	 * @return une liste de mesure de pollution
@@ -116,7 +116,7 @@ public class MesureController {
 	/**
 	 * Cette methode gère l'appel de l'url "/mesures/meteo?codeCommune=44108"
 	 * permet d'obtenir les mesures de meteo concernant la commune représentée
-	 * par le codeCommune renseigné.
+	 * par le codeCommune renseigné (ici le code commune est 44108).
 	 * 
 	 * @param codeCommune
 	 * @return une mesure meteo
