@@ -15,7 +15,8 @@ import fr.diginamic.repository.CommuneRepository;
  * 
  * @author Diginamic02
  *
- */@Service
+ */
+@Service
 public class CommuneService {
 
 	private CommuneRepository communeRepository;

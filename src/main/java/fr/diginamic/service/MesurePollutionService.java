@@ -58,6 +58,19 @@ public class MesurePollutionService {
 	}
 
 	/**
+	 * Methode MesurePollution obtenirlaMesureDePollutionPm10(String
+	 * codeCommune) Cette methode permet de d'obtenir la dernière
+	 * MesurePollution liée au PM10 présente en basse de donnée et dont le
+	 * CodeCommune correspond
+	 * 
+	 * @param codeCommune
+	 * @return
+	 */
+	public MesurePollution obtenirlaMesureDePollutionPm10(String codeCommune) {
+		return mesurePollutionRepository.obtenirLaMesureDePM10(codeCommune).get(0);
+	}
+
+	/**
 	 * Methode Optional<MesurePollution> obtenirMesurePollution(MesurePollution
 	 * mesurePollution) cette methode permet d'obtenir une MesurePollution
 	 * présente en base de donnée dont l'id correspond

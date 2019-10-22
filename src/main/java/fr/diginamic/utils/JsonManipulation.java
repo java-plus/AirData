@@ -3,17 +3,24 @@ package fr.diginamic.utils;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import fr.diginamic.controller.dto.CommuneMesurePm10;
 import fr.diginamic.entites.Commune;
 import fr.diginamic.entites.MesureMeteo;
 import fr.diginamic.entites.MesurePollution;
 import fr.diginamic.entites.StationDeMesureMeteo;
 import fr.diginamic.entites.StationDeMesurePollution;
+import fr.diginamic.geojson.CommuneGeojson;
+import fr.diginamic.geojson.CoordonneeGps;
+import fr.diginamic.geojson.GeoJson;
+import fr.diginamic.geojson.Geometry;
+import fr.diginamic.geojson.Properties;
 
 /**
  * Cette classe permet de manipuler les objets JSON retournés par les appels
@@ -23,6 +30,126 @@ import fr.diginamic.entites.StationDeMesurePollution;
  *
  */
 public class JsonManipulation {
+
+	public static JSONObject obtenirGeoJson2(JSONObject myResponse, List<CommuneMesurePm10> listeDesCommunesMesurePm10)
+			throws JSONException {
+
+		JSONObject featureCollection = new JSONObject();
+
+		JSONArray features = new JSONArray();
+
+		JSONArray tableauDesFeatures = myResponse.getJSONArray("features");
+
+		for (int i = 0; i < tableauDesFeatures.length(); i++) {
+			JSONObject feature = new JSONObject();
+			JSONObject properties = new JSONObject();
+
+			JSONObject geometry = new JSONObject();
+			geometry.put("type", tableauDesFeatures.getJSONObject(i).getJSONObject("geometry").getString("type"));
+			if (!tableauDesFeatures.getJSONObject(i).getJSONObject("geometry").getString("type").equals("Polygon")) {
+				continue;
+			}
+			JSONArray JSONArrayCoord = new JSONArray();
+			JSONArray coordinates = new JSONArray();
+			JSONArray tableauDesCoords = tableauDesFeatures.getJSONObject(i).getJSONObject("geometry")
+					.getJSONArray("coordinates").getJSONArray(0);
+
+			for (int j = 0; j < tableauDesCoords.length(); j++) {
+				JSONArray coord = new JSONArray();
+				// System.out.println("-----------------------------------------------------------");
+				// System.out.println(tableauDesFeatures.getJSONObject(i).getJSONObject("geometry").getString("type"));
+				// System.out.println(coord.put(tableauDesCoords.getJSONArray(j).getDouble(0)));
+				coord.put(tableauDesCoords.getJSONArray(j).getDouble(0));
+				coord.put(tableauDesCoords.getJSONArray(j).getDouble(1));
+
+				coordinates.put(coord);
+
+			}
+			JSONArrayCoord.put(coordinates);
+			geometry.put("coordinates", JSONArrayCoord);
+			System.out.println("-----------------------------------------------------------");
+			System.out.println(tableauDesFeatures.getJSONObject(i).toString());
+			System.out.println(
+					tableauDesFeatures.getJSONObject(i).getJSONObject("properties").getString("code").toString());
+			properties.put("code", tableauDesFeatures.getJSONObject(i).getJSONObject("properties").getString("code"));
+			properties.put("nom", tableauDesFeatures.getJSONObject(i).getJSONObject("properties").getString("nom"));
+
+			String code = tableauDesFeatures.getJSONObject(i).getJSONObject("properties").getString("code");
+
+			for (CommuneMesurePm10 communeMesurePm10 : listeDesCommunesMesurePm10) {
+				if (communeMesurePm10.getCodeCommune().equals(code)) {
+					properties.put("pm10", communeMesurePm10.getValeurPm10());
+				}
+			}
+			// int n = 0;
+			// while
+			// (!listeDesCommunesMesurePm10.get(n).getCodeCommune().equals(code))
+			// {
+			// properties.put("pm10",
+			// listeDesCommunesMesurePm10.get(n).getValeurPm10());
+			// n++;
+			// }
+
+			feature.put("properties", properties);
+			feature.put("geometry", geometry);
+			feature.put("type", "Feature");
+			features.put(feature);
+		}
+
+		featureCollection.put("features", features);
+		featureCollection.put("type", "FeatureCollection");
+		return featureCollection;
+	}
+
+	public static GeoJson obtenirGeoJson(JSONObject myResponse) throws JSONException {
+		List<String> listeDesString = new ArrayList<String>();
+		JSONArray tableauDesCommuneGeojson = myResponse.getJSONArray("features");
+
+		List<CommuneGeojson> listeDeCommuneGeojson = new ArrayList<CommuneGeojson>();
+		int count = tableauDesCommuneGeojson.length();
+		for (int i = 0; i < count; i++) {
+			// "properties":{"code":"44005","nom":"Chaumes-en-Retz"}
+			String geometryType = tableauDesCommuneGeojson.getJSONObject(i).getJSONObject("geometry").getString("type");
+			if (!geometryType.equals("Polygon")) {
+				System.out.println(geometryType);
+				continue;
+			}
+			List<CoordonneeGps> coordinates = new ArrayList<CoordonneeGps>();
+
+			JSONArray tableauDesCoordonneeGps = tableauDesCommuneGeojson.getJSONObject(i).getJSONObject("geometry")
+					.getJSONArray("coordinates").getJSONArray(0);
+
+			System.out.println("-----------------------------------------------------------");
+			System.out.println(tableauDesCoordonneeGps.toString());
+
+			int countTableauDesCoordonneeGps = tableauDesCoordonneeGps.length();
+			for (int iTableauDesCoordonneeGps = 0; iTableauDesCoordonneeGps < countTableauDesCoordonneeGps; iTableauDesCoordonneeGps++) {
+
+				double latitude = tableauDesCoordonneeGps.getJSONArray(iTableauDesCoordonneeGps).getDouble(0);
+				double longitude = tableauDesCoordonneeGps.getJSONArray(iTableauDesCoordonneeGps).getDouble(1);
+				double[] coordinnees={latitude,latitude};
+				coordinates.add(new CoordonneeGps(coordinnees));
+			}
+
+			List<CoordonneeGps>[] listeDeCoordinates;// = {coordinates};
+			//listeDeCoordinates.put(coordinates);
+			Geometry geometry = new Geometry(geometryType , [coordinates]);
+
+			String code = tableauDesCommuneGeojson.getJSONObject(i).getJSONObject("properties").getString("code");
+			String nom = tableauDesCommuneGeojson.getJSONObject(i).getJSONObject("properties").getString("nom");
+			Properties properties = new Properties(code, nom);
+
+			CommuneGeojson communeGeoJson = new CommuneGeojson("Feature", geometry, properties);
+			listeDeCommuneGeojson.add(communeGeoJson);
+			System.out.println("communeGeoJson = " + communeGeoJson.toString());
+		}
+
+		GeoJson geoJson = new GeoJson("FeatureCollection", listeDeCommuneGeojson);
+		System.out.println(geoJson.toString());
+
+		return geoJson;
+
+	}
 
 	/**
 	 * Cette methode permet de créer les objets communes à partir de la réponse
@@ -41,7 +168,12 @@ public class JsonManipulation {
 		for (int i = 0; i < count; i++) { // iterate through jsonArray
 			// for (Object object : tableauDesCommunes) {
 			// JSONObject commune = (JSONObject) object;
-			Commune communeTableau = new Commune(tableauDesCommunes.getJSONObject(i).getString("nom"), tableauDesCommunes.getJSONObject(i).getString("code"), tableauDesCommunes.getJSONObject(i).getJSONObject("centre").getJSONArray("coordinates").getDouble(1), tableauDesCommunes.getJSONObject(i).getJSONObject("centre").getJSONArray("coordinates").getDouble(0),
+			Commune communeTableau = new Commune(tableauDesCommunes.getJSONObject(i).getString("nom"),
+					tableauDesCommunes.getJSONObject(i).getString("code"),
+					tableauDesCommunes.getJSONObject(i).getJSONObject("centre").getJSONArray("coordinates")
+							.getDouble(1),
+					tableauDesCommunes.getJSONObject(i).getJSONObject("centre").getJSONArray("coordinates")
+							.getDouble(0),
 					tableauDesCommunes.getJSONObject(i).getInt("population"));
 
 			listeDesCommunes.add(communeTableau);
@@ -59,7 +191,8 @@ public class JsonManipulation {
 	 * @return
 	 * @throws JSONException
 	 */
-	public static List<StationDeMesurePollution> obtenirLesStationDeMesures(JSONObject myResponse) throws JSONException {
+	public static List<StationDeMesurePollution> obtenirLesStationDeMesures(JSONObject myResponse)
+			throws JSONException {
 
 		List<StationDeMesurePollution> listeDeStationsDeMesurePollution = new ArrayList<StationDeMesurePollution>();
 
@@ -68,10 +201,10 @@ public class JsonManipulation {
 		for (int i = 0; i < count; i++) { // iterate through jsonArray
 
 			JSONObject jsonObject = myResponse.getJSONArray("records").getJSONObject(i); // get
-																						 // jsonObject
-																						 // @
-																						 // i
-																						 // position
+																							// jsonObject
+																							// @
+																							// i
+																							// position
 			// System.out.println("jsonObject " + i + " ------ " + jsonObject);
 
 			JSONObject jsonObjectGeometry = jsonObject.getJSONObject("geometry");
@@ -87,7 +220,8 @@ public class JsonManipulation {
 			boolean stationsDeMesurePollutionExisteDeja = false;
 
 			for (StationDeMesurePollution stationsDeMesurePollution : listeDeStationsDeMesurePollution) {
-				if (stationsDeMesurePollution.getLatitude().equals(latitude) && stationsDeMesurePollution.getLongitude().equals(longitude)) {
+				if (stationsDeMesurePollution.getLatitude().equals(latitude)
+						&& stationsDeMesurePollution.getLongitude().equals(longitude)) {
 					stationsDeMesurePollutionExisteDeja = true;
 
 				}
@@ -98,7 +232,8 @@ public class JsonManipulation {
 			}
 
 			for (StationDeMesurePollution stationDeMesure : listeDeStationsDeMesurePollution) {
-				if (stationDeMesure.getLatitude().equals(latitude) && stationDeMesure.getLongitude().equals(longitude)) {
+				if (stationDeMesure.getLatitude().equals(latitude)
+						&& stationDeMesure.getLongitude().equals(longitude)) {
 					if (typeDonnee.equals("SO2")) {
 						stationDeMesure.setMesureSO2(true);
 					}
@@ -134,7 +269,8 @@ public class JsonManipulation {
 	 * @return
 	 * @throws JSONException
 	 */
-	public static List<MesurePollution> obtenirLesMesures(JSONObject myResponse, List<StationDeMesurePollution> listeDeStationDeMesure) throws JSONException {
+	public static List<MesurePollution> obtenirLesMesures(JSONObject myResponse,
+			List<StationDeMesurePollution> listeDeStationDeMesure) throws JSONException {
 
 		List<MesurePollution> listeDesMesures = new ArrayList<MesurePollution>();
 
@@ -143,10 +279,10 @@ public class JsonManipulation {
 		for (int i = 0; i < count; i++) { // iterate through jsonArray
 
 			JSONObject jsonObject = myResponse.getJSONArray("records").getJSONObject(i); // get
-																						 // jsonObject
-																						 // @
-																						 // i
-																						 // position
+																							// jsonObject
+																							// @
+																							// i
+																							// position
 			String id = jsonObject.getString("recordid");
 			JSONObject jsonObjectFields = jsonObject.getJSONObject("fields");
 			String typeDonnee = jsonObjectFields.getString("measurements_parameter");
@@ -159,7 +295,8 @@ public class JsonManipulation {
 			Double latitude = jsonObject.getJSONObject("geometry").getJSONArray("coordinates").getDouble(1);
 			Double longitude = jsonObject.getJSONObject("geometry").getJSONArray("coordinates").getDouble(0);
 
-			stationDeMesure = MesureUtils.obtenirStationDeMesurePollutionCorrespondante(latitude, longitude, listeDeStationDeMesure);
+			stationDeMesure = MesureUtils.obtenirStationDeMesurePollutionCorrespondante(latitude, longitude,
+					listeDeStationDeMesure);
 
 			MesurePollution mesure = new MesurePollution(id, valeur, typeDonnee, zonedDateTime, stationDeMesure);
 			if (mesure != null) {
@@ -191,8 +328,10 @@ public class JsonManipulation {
 
 		for (int i = 0; i < count; i++) { // iterate through jsonArray
 
-			Double longitude = myResponse.getJSONObject("communes").getJSONArray("list").getJSONObject(i).getJSONObject("coord").getDouble("Lon");
-			Double latitude = myResponse.getJSONObject("communes").getJSONArray("list").getJSONObject(i).getJSONObject("coord").getDouble("Lat");
+			Double longitude = myResponse.getJSONObject("communes").getJSONArray("list").getJSONObject(i)
+					.getJSONObject("coord").getDouble("Lon");
+			Double latitude = myResponse.getJSONObject("communes").getJSONArray("list").getJSONObject(i)
+					.getJSONObject("coord").getDouble("Lat");
 			StationDeMesureMeteo stationDeMesureMeteo = new StationDeMesureMeteo(latitude, longitude);
 			listeDesStationMeteo.add(stationDeMesureMeteo);
 
@@ -210,7 +349,8 @@ public class JsonManipulation {
 	 * @return
 	 * @throws JSONException
 	 */
-	public static List<MesureMeteo> obtenirLesMesuresMeteo(JSONObject myResponseMeteo, List<StationDeMesureMeteo> listeDeStationDeMesure) throws JSONException {
+	public static List<MesureMeteo> obtenirLesMesuresMeteo(JSONObject myResponseMeteo,
+			List<StationDeMesureMeteo> listeDeStationDeMesure) throws JSONException {
 
 		List<MesureMeteo> listeDesMesureMeteo = new ArrayList<MesureMeteo>();
 		listeDeStationDeMesure.removeAll(Collections.singletonList(null));
@@ -219,22 +359,35 @@ public class JsonManipulation {
 		for (int i = 0; i < count; i++) { // iterate through jsonArray
 
 			Long id = myResponseMeteo.getJSONObject("communes").getJSONArray("list").getJSONObject(i).getLong("id");
-			Double longitude = myResponseMeteo.getJSONObject("communes").getJSONArray("list").getJSONObject(i).getJSONObject("coord").getDouble("Lon");
-			Double latitude = myResponseMeteo.getJSONObject("communes").getJSONArray("list").getJSONObject(i).getJSONObject("coord").getDouble("Lat");
-			StationDeMesureMeteo stationDeMesure = MesureUtils.obtenirStationDeMesureMeteoCorrespondante(latitude, longitude, listeDeStationDeMesure);
+			Double longitude = myResponseMeteo.getJSONObject("communes").getJSONArray("list").getJSONObject(i)
+					.getJSONObject("coord").getDouble("Lon");
+			Double latitude = myResponseMeteo.getJSONObject("communes").getJSONArray("list").getJSONObject(i)
+					.getJSONObject("coord").getDouble("Lat");
+			StationDeMesureMeteo stationDeMesure = MesureUtils.obtenirStationDeMesureMeteoCorrespondante(latitude,
+					longitude, listeDeStationDeMesure);
 
-			String weatherDescription = myResponseMeteo.getJSONObject("communes").getJSONArray("list").getJSONObject(i).getJSONArray("weather").getJSONObject(0).getString("description");
-			String weatherIcon = myResponseMeteo.getJSONObject("communes").getJSONArray("list").getJSONObject(i).getJSONArray("weather").getJSONObject(0).getString("icon");
-			Double temperature = myResponseMeteo.getJSONObject("communes").getJSONArray("list").getJSONObject(i).getJSONObject("main").getDouble("temp");
-			Double pressure = myResponseMeteo.getJSONObject("communes").getJSONArray("list").getJSONObject(i).getJSONObject("main").getDouble("pressure");
-			Integer humidity = myResponseMeteo.getJSONObject("communes").getJSONArray("list").getJSONObject(i).getJSONObject("main").getInt("humidity");
-			Double tempMin = myResponseMeteo.getJSONObject("communes").getJSONArray("list").getJSONObject(i).getJSONObject("main").getDouble("temp_min");
-			Double tempMax = myResponseMeteo.getJSONObject("communes").getJSONArray("list").getJSONObject(i).getJSONObject("main").getDouble("temp_max");
-			Double windSpeed = myResponseMeteo.getJSONObject("communes").getJSONArray("list").getJSONObject(i).getJSONObject("wind").getDouble("speed");
+			String weatherDescription = myResponseMeteo.getJSONObject("communes").getJSONArray("list").getJSONObject(i)
+					.getJSONArray("weather").getJSONObject(0).getString("description");
+			String weatherIcon = myResponseMeteo.getJSONObject("communes").getJSONArray("list").getJSONObject(i)
+					.getJSONArray("weather").getJSONObject(0).getString("icon");
+			Double temperature = myResponseMeteo.getJSONObject("communes").getJSONArray("list").getJSONObject(i)
+					.getJSONObject("main").getDouble("temp");
+			Double pressure = myResponseMeteo.getJSONObject("communes").getJSONArray("list").getJSONObject(i)
+					.getJSONObject("main").getDouble("pressure");
+			Integer humidity = myResponseMeteo.getJSONObject("communes").getJSONArray("list").getJSONObject(i)
+					.getJSONObject("main").getInt("humidity");
+			Double tempMin = myResponseMeteo.getJSONObject("communes").getJSONArray("list").getJSONObject(i)
+					.getJSONObject("main").getDouble("temp_min");
+			Double tempMax = myResponseMeteo.getJSONObject("communes").getJSONArray("list").getJSONObject(i)
+					.getJSONObject("main").getDouble("temp_max");
+			Double windSpeed = myResponseMeteo.getJSONObject("communes").getJSONArray("list").getJSONObject(i)
+					.getJSONObject("wind").getDouble("speed");
 
-			Integer windDegrees = myResponseMeteo.getJSONObject("communes").getJSONArray("list").getJSONObject(i).getJSONObject("wind").optInt("deg");
+			Integer windDegrees = myResponseMeteo.getJSONObject("communes").getJSONArray("list").getJSONObject(i)
+					.getJSONObject("wind").optInt("deg");
 
-			MesureMeteo mesureMeteo = new MesureMeteo(id, ZonedDateTime.now(), stationDeMesure, weatherDescription, weatherIcon, temperature, pressure, humidity, tempMin, tempMax, windSpeed, windDegrees);
+			MesureMeteo mesureMeteo = new MesureMeteo(id, ZonedDateTime.now(), stationDeMesure, weatherDescription,
+					weatherIcon, temperature, pressure, humidity, tempMin, tempMax, windSpeed, windDegrees);
 			listeDesMesureMeteo.add(mesureMeteo);
 
 		}

@@ -1,19 +1,25 @@
 package fr.diginamic.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import fr.diginamic.controller.dto.CommuneMesurePm10;
 import fr.diginamic.entites.Commune;
+import fr.diginamic.entites.MesurePollution;
 import fr.diginamic.service.CommuneService;
 import fr.diginamic.service.MesureMeteoService;
 import fr.diginamic.service.MesurePollutionService;
 import fr.diginamic.service.StationDeMesureMeteoService;
 import fr.diginamic.service.StationDeMesurePollutionService;
+import fr.diginamic.utils.ApiUtils;
+import fr.diginamic.utils.JsonManipulation;
 
 /**
  * Cette classe les appels faits grâce aux url /communes et gère donc les objets
@@ -32,7 +38,7 @@ public class CommuneController {
 	@Autowired
 	CommuneService communeService;
 	/**
-	 *  Un service de mesure de pollution
+	 * Un service de mesure de pollution
 	 */
 	@Autowired
 	MesurePollutionService mesurePollutionService;
@@ -61,6 +67,34 @@ public class CommuneController {
 	@GetMapping
 	public List<Commune> obtenirLaListeDesCommunes() {
 		return communeService.obtenirLaListeDesCommunes();
+	}
+
+	@GetMapping("/pm10")
+	public String obtenirLaListeDesCommunesPm10() throws Exception {
+		List<Commune> listeDesCommunes = communeService.obtenirLaListeDesCommunes();
+		List<CommuneMesurePm10> listeDesCommunesMesurePm10 = new ArrayList<CommuneMesurePm10>();
+		for (Commune commune : listeDesCommunes) {
+			MesurePollution mesurePollutionPm10 = mesurePollutionService
+					.obtenirlaMesureDePollutionPm10(commune.getCodeCommune());
+			listeDesCommunesMesurePm10.add(new CommuneMesurePm10(commune.getCodeCommune(), mesurePollutionPm10));
+		}
+
+		JSONObject jSONObject = ApiUtils.callApiGeojsonCommunes(
+				"https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/regions/pays-de-la-loire/communes-pays-de-la-loire.geojson");
+		return JsonManipulation.obtenirGeoJson2(jSONObject, listeDesCommunesMesurePm10).toString();
+	}
+
+	@GetMapping("/testpm10")
+	public List<CommuneMesurePm10> obtenirLaListeDesCommunesPm10test() throws Exception {
+		List<Commune> listeDesCommunes = communeService.obtenirLaListeDesCommunes();
+		List<CommuneMesurePm10> listeDesCommunesMesurePm10 = new ArrayList<CommuneMesurePm10>();
+		for (Commune commune : listeDesCommunes) {
+			MesurePollution mesurePollutionPm10 = mesurePollutionService
+					.obtenirlaMesureDePollutionPm10(commune.getCodeCommune());
+			listeDesCommunesMesurePm10.add(new CommuneMesurePm10(commune.getCodeCommune(), mesurePollutionPm10));
+		}
+
+		return listeDesCommunesMesurePm10;
 	}
 
 	/**
