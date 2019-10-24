@@ -11,6 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import fr.diginamic.controller.dto.CommuneMesurePm10;
+import fr.diginamic.controller.dto.CommuneMesurePollution;
 import fr.diginamic.entites.Commune;
 import fr.diginamic.entites.MesureMeteo;
 import fr.diginamic.entites.MesurePollution;
@@ -31,7 +32,7 @@ import fr.diginamic.geojson.Properties;
  */
 public class JsonManipulation {
 
-	public static JSONObject obtenirGeoJson2(JSONObject myResponse, List<CommuneMesurePm10> listeDesCommunesMesurePm10)
+	public static JSONObject obtenirGeoJson2(JSONObject myResponse, List<CommuneMesurePollution> listeDesCommunesMesure)
 			throws JSONException {
 
 		JSONObject featureCollection = new JSONObject();
@@ -76,9 +77,14 @@ public class JsonManipulation {
 
 			String code = tableauDesFeatures.getJSONObject(i).getJSONObject("properties").getString("code");
 
-			for (CommuneMesurePm10 communeMesurePm10 : listeDesCommunesMesurePm10) {
-				if (communeMesurePm10.getCodeCommune().equals(code)) {
-					properties.put("pm10", communeMesurePm10.getValeurPm10());
+			for (CommuneMesurePollution communeMesure : listeDesCommunesMesure) {
+				if (communeMesure.getCodeCommune().equals(code)) {
+					properties.put("pm10", communeMesure.getValeurPm10());
+					properties.put("pm25", communeMesure.getValeurPm25());
+					properties.put("no2", communeMesure.getValeurNO2());
+					properties.put("so2", communeMesure.getValeurSO2());
+					properties.put("co", communeMesure.getValeurCO());
+					properties.put("o3", communeMesure.getValeurO3());
 				}
 			}
 			// int n = 0;
