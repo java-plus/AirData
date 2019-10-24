@@ -3,25 +3,18 @@ package fr.diginamic.utils;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import fr.diginamic.controller.dto.CommuneMesurePm10;
 import fr.diginamic.controller.dto.CommuneMesurePollution;
 import fr.diginamic.entites.Commune;
 import fr.diginamic.entites.MesureMeteo;
 import fr.diginamic.entites.MesurePollution;
 import fr.diginamic.entites.StationDeMesureMeteo;
 import fr.diginamic.entites.StationDeMesurePollution;
-import fr.diginamic.geojson.CommuneGeojson;
-import fr.diginamic.geojson.CoordonneeGps;
-import fr.diginamic.geojson.GeoJson;
-import fr.diginamic.geojson.Geometry;
-import fr.diginamic.geojson.Properties;
 
 /**
  * Cette classe permet de manipuler les objets JSON retournés par les appels
@@ -105,56 +98,6 @@ public class JsonManipulation {
 		featureCollection.put("features", features);
 		featureCollection.put("type", "FeatureCollection");
 		return featureCollection;
-	}
-
-	public static GeoJson obtenirGeoJson(JSONObject myResponse) throws JSONException {
-		List<String> listeDesString = new ArrayList<String>();
-		JSONArray tableauDesCommuneGeojson = myResponse.getJSONArray("features");
-
-		List<CommuneGeojson> listeDeCommuneGeojson = new ArrayList<CommuneGeojson>();
-		int count = tableauDesCommuneGeojson.length();
-		for (int i = 0; i < count; i++) {
-			// "properties":{"code":"44005","nom":"Chaumes-en-Retz"}
-			String geometryType = tableauDesCommuneGeojson.getJSONObject(i).getJSONObject("geometry").getString("type");
-			if (!geometryType.equals("Polygon")) {
-				System.out.println(geometryType);
-				continue;
-			}
-			List<CoordonneeGps> coordinates = new ArrayList<CoordonneeGps>();
-
-			JSONArray tableauDesCoordonneeGps = tableauDesCommuneGeojson.getJSONObject(i).getJSONObject("geometry")
-					.getJSONArray("coordinates").getJSONArray(0);
-
-			System.out.println("-----------------------------------------------------------");
-			System.out.println(tableauDesCoordonneeGps.toString());
-
-			int countTableauDesCoordonneeGps = tableauDesCoordonneeGps.length();
-			for (int iTableauDesCoordonneeGps = 0; iTableauDesCoordonneeGps < countTableauDesCoordonneeGps; iTableauDesCoordonneeGps++) {
-
-				double latitude = tableauDesCoordonneeGps.getJSONArray(iTableauDesCoordonneeGps).getDouble(0);
-				double longitude = tableauDesCoordonneeGps.getJSONArray(iTableauDesCoordonneeGps).getDouble(1);
-				double[] coordinnees={latitude,latitude};
-				coordinates.add(new CoordonneeGps(coordinnees));
-			}
-
-			List<CoordonneeGps>[] listeDeCoordinates;// = {coordinates};
-			//listeDeCoordinates.put(coordinates);
-			Geometry geometry = new Geometry(geometryType , [coordinates]);
-
-			String code = tableauDesCommuneGeojson.getJSONObject(i).getJSONObject("properties").getString("code");
-			String nom = tableauDesCommuneGeojson.getJSONObject(i).getJSONObject("properties").getString("nom");
-			Properties properties = new Properties(code, nom);
-
-			CommuneGeojson communeGeoJson = new CommuneGeojson("Feature", geometry, properties);
-			listeDeCommuneGeojson.add(communeGeoJson);
-			System.out.println("communeGeoJson = " + communeGeoJson.toString());
-		}
-
-		GeoJson geoJson = new GeoJson("FeatureCollection", listeDeCommuneGeojson);
-		System.out.println(geoJson.toString());
-
-		return geoJson;
-
 	}
 
 	/**
