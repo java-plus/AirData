@@ -45,7 +45,7 @@ public class GeojsonManager {
 	 */
 	public String obtenirLaListeDesCommunesAvecPollution() throws Exception {
 		List<Commune> listeDesCommunes = communeService.obtenirLaListeDesCommunes();
-		List<CommuneMesurePollution> listeDesCommunesMesure = new ArrayList<CommuneMesurePollution>();
+		List<CommuneMesurePollution> listeDesCommunesAvecMesures = new ArrayList<CommuneMesurePollution>();
 		for (Commune commune : listeDesCommunes) {
 			List<MesurePollution> listeDesMesuresPollution = mesurePollutionService
 					.obtenirLesMesuresDePollution(commune.getCodeCommune());
@@ -56,6 +56,7 @@ public class GeojsonManager {
 			double mesurePollutionCO = 0;
 			double mesurePollutionO3 = 0;
 			for (MesurePollution mesurePollution : listeDesMesuresPollution) {
+
 				if (mesurePollution.getTypeDeDonnee().equals("PM10")) {
 					mesurePollutionPm10 = mesurePollution.getValeur();
 				}
@@ -75,14 +76,15 @@ public class GeojsonManager {
 					mesurePollutionO3 = mesurePollution.getValeur();
 				}
 			}
-			listeDesCommunesMesure.add(new CommuneMesurePollution(commune.getCodeCommune(), mesurePollutionPm10,
+
+			listeDesCommunesAvecMesures.add(new CommuneMesurePollution(commune.getCodeCommune(), mesurePollutionPm10,
 					mesurePollutionPm25, mesurePollutionNO2, mesurePollutionSO2, mesurePollutionCO, mesurePollutionO3));
 
 		}
 
 		JSONObject jSONObject = ApiUtils.callApiGeojsonCommunes(
 				"https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/regions/pays-de-la-loire/communes-pays-de-la-loire.geojson");
-		return JsonManipulation.obtenirGeoJson2(jSONObject, listeDesCommunesMesure).toString();
+		return JsonManipulation.obtenirGeoJson2(jSONObject, listeDesCommunesAvecMesures).toString();
 
 	}
 }

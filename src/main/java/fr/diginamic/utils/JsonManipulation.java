@@ -40,37 +40,67 @@ public class JsonManipulation {
 
 			JSONObject geometry = new JSONObject();
 			geometry.put("type", tableauDesFeatures.getJSONObject(i).getJSONObject("geometry").getString("type"));
-			if (!tableauDesFeatures.getJSONObject(i).getJSONObject("geometry").getString("type").equals("Polygon")) {
-				continue;
-			}
+
 			JSONArray JSONArrayCoord = new JSONArray();
-			JSONArray coordinates = new JSONArray();
-			JSONArray tableauDesCoords = tableauDesFeatures.getJSONObject(i).getJSONObject("geometry")
-					.getJSONArray("coordinates").getJSONArray(0);
 
-			for (int j = 0; j < tableauDesCoords.length(); j++) {
-				JSONArray coord = new JSONArray();
-				// System.out.println("-----------------------------------------------------------");
-				// System.out.println(tableauDesFeatures.getJSONObject(i).getJSONObject("geometry").getString("type"));
-				// System.out.println(coord.put(tableauDesCoords.getJSONArray(j).getDouble(0)));
-				coord.put(tableauDesCoords.getJSONArray(j).getDouble(0));
-				coord.put(tableauDesCoords.getJSONArray(j).getDouble(1));
+			if (!tableauDesFeatures.getJSONObject(i).getJSONObject("geometry").getString("type").equals("Polygon")) {
+				JSONArray tableauDesCoords = tableauDesFeatures.getJSONObject(i).getJSONObject("geometry")
+						.getJSONArray("coordinates");
+				System.out.println("tableauDesCoords.toString()");
+				System.out.println(tableauDesCoords.toString());
+				JSONArray coordsMultiPolygone = new JSONArray();
+				for (int n = 0; n < tableauDesCoords.length(); n++) {
+					JSONArray coordinates = new JSONArray();
+					JSONArray coordsPolygone = new JSONArray();
+					JSONArray tableauDesCoordsMultiPolygone = tableauDesCoords.getJSONArray(n);
 
-				coordinates.put(coord);
+					System.out.println("tableauDesCoordsMultiPolygone.toString()");
+					System.out.println(tableauDesCoordsMultiPolygone.toString());
+					for (int j = 0; j < tableauDesCoordsMultiPolygone.getJSONArray(0).length(); j++) {
+						JSONArray coord = new JSONArray();
+						coord.put(tableauDesCoordsMultiPolygone.getJSONArray(0).getJSONArray(j).getDouble(0));
+						coord.put(tableauDesCoordsMultiPolygone.getJSONArray(0).getJSONArray(j).getDouble(1));
 
+						coordinates.put(coord);
+						System.out.println(coord.toString());
+
+					}
+					System.out.println("coordinates.toString()");
+					System.out.println(coordinates.toString());
+					coordsPolygone.put(coordinates);
+					coordsMultiPolygone.put(coordsPolygone);
+				}
+				System.out.println("coordsMultiPolygone.toString()");
+				System.out.println(coordsMultiPolygone.toString());
+
+				JSONArrayCoord = coordsMultiPolygone;
+				System.out.println("JSONArrayCoord.toString()");
+				System.out.println(JSONArrayCoord.toString());
+
+			} else {
+
+				JSONArray tableauDesCoords = tableauDesFeatures.getJSONObject(i).getJSONObject("geometry")
+						.getJSONArray("coordinates").getJSONArray(0);
+				JSONArray coordinates = new JSONArray();
+				for (int j = 0; j < tableauDesCoords.length(); j++) {
+					JSONArray coord = new JSONArray();
+					coord.put(tableauDesCoords.getJSONArray(j).getDouble(0));
+					coord.put(tableauDesCoords.getJSONArray(j).getDouble(1));
+
+					coordinates.put(coord);
+
+				}
+				JSONArrayCoord.put(coordinates);
 			}
-			JSONArrayCoord.put(coordinates);
 			geometry.put("coordinates", JSONArrayCoord);
-			System.out.println("-----------------------------------------------------------");
-			System.out.println(tableauDesFeatures.getJSONObject(i).toString());
-			System.out.println(
-					tableauDesFeatures.getJSONObject(i).getJSONObject("properties").getString("code").toString());
 			properties.put("code", tableauDesFeatures.getJSONObject(i).getJSONObject("properties").getString("code"));
 			properties.put("nom", tableauDesFeatures.getJSONObject(i).getJSONObject("properties").getString("nom"));
 
 			String code = tableauDesFeatures.getJSONObject(i).getJSONObject("properties").getString("code");
 
+			boolean communeTrouve = false;
 			for (CommuneMesurePollution communeMesure : listeDesCommunesMesure) {
+
 				if (communeMesure.getCodeCommune().equals(code)) {
 					properties.put("pm10", communeMesure.getValeurPm10());
 					properties.put("pm25", communeMesure.getValeurPm25());
@@ -78,17 +108,18 @@ public class JsonManipulation {
 					properties.put("so2", communeMesure.getValeurSO2());
 					properties.put("co", communeMesure.getValeurCO());
 					properties.put("o3", communeMesure.getValeurO3());
+					communeTrouve = true;
+					continue;
 				}
 			}
-			// int n = 0;
-			// while
-			// (!listeDesCommunesMesurePm10.get(n).getCodeCommune().equals(code))
-			// {
-			// properties.put("pm10",
-			// listeDesCommunesMesurePm10.get(n).getValeurPm10());
-			// n++;
-			// }
-
+			if (!communeTrouve) {
+				properties.put("pm10", 0);
+				properties.put("pm25", 0);
+				properties.put("no2", 0);
+				properties.put("so2", 0);
+				properties.put("co", 0);
+				properties.put("o3", 0);
+			}
 			feature.put("properties", properties);
 			feature.put("geometry", geometry);
 			feature.put("type", "Feature");

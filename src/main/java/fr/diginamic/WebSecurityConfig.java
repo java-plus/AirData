@@ -73,10 +73,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.headers().frameOptions().disable();
 
 		http.authorizeRequests().antMatchers(HttpMethod.POST, "/auth").permitAll();
-		http.authorizeRequests().antMatchers(HttpMethod.GET, "/communes").permitAll();
 		http.authorizeRequests().antMatchers(HttpMethod.POST, "/compte").permitAll();
 		http.authorizeRequests().antMatchers(HttpMethod.GET, "/communes/geojson").hasAnyRole("USER", "ADMIN");
 		http.authorizeRequests().antMatchers(HttpMethod.PATCH, "/compte").hasAnyRole("USER", "ADMIN");
+		http.authorizeRequests().antMatchers(HttpMethod.GET, "/communes").hasAnyRole("USER", "ADMIN");
 		http.authorizeRequests().antMatchers(HttpMethod.DELETE, "/compte").hasAnyRole("USER", "ADMIN");
 		http.authorizeRequests().antMatchers(HttpMethod.DELETE, "/compte_avec_admin").hasRole("ADMIN");
 		http.authorizeRequests().antMatchers(HttpMethod.GET, "/**").hasAnyRole("USER", "ADMIN");
