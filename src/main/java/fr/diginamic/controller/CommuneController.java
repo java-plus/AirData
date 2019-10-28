@@ -73,7 +73,7 @@ public class CommuneController {
 	/**
 	 * Cette methode permet d'obtenir la liste complète des communes présentes
 	 * en BDD complétées par ses coordonnées polygonales pour geojson et des
-	 * données de pollutions
+	 * données de pollutions.
 	 * 
 	 * @return
 	 */

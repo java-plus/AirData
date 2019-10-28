@@ -46,36 +46,25 @@ public class JsonManipulation {
 			if (!tableauDesFeatures.getJSONObject(i).getJSONObject("geometry").getString("type").equals("Polygon")) {
 				JSONArray tableauDesCoords = tableauDesFeatures.getJSONObject(i).getJSONObject("geometry")
 						.getJSONArray("coordinates");
-				System.out.println("tableauDesCoords.toString()");
-				System.out.println(tableauDesCoords.toString());
 				JSONArray coordsMultiPolygone = new JSONArray();
 				for (int n = 0; n < tableauDesCoords.length(); n++) {
 					JSONArray coordinates = new JSONArray();
 					JSONArray coordsPolygone = new JSONArray();
 					JSONArray tableauDesCoordsMultiPolygone = tableauDesCoords.getJSONArray(n);
 
-					System.out.println("tableauDesCoordsMultiPolygone.toString()");
-					System.out.println(tableauDesCoordsMultiPolygone.toString());
 					for (int j = 0; j < tableauDesCoordsMultiPolygone.getJSONArray(0).length(); j++) {
 						JSONArray coord = new JSONArray();
 						coord.put(tableauDesCoordsMultiPolygone.getJSONArray(0).getJSONArray(j).getDouble(0));
 						coord.put(tableauDesCoordsMultiPolygone.getJSONArray(0).getJSONArray(j).getDouble(1));
 
 						coordinates.put(coord);
-						System.out.println(coord.toString());
 
 					}
-					System.out.println("coordinates.toString()");
-					System.out.println(coordinates.toString());
 					coordsPolygone.put(coordinates);
 					coordsMultiPolygone.put(coordsPolygone);
 				}
-				System.out.println("coordsMultiPolygone.toString()");
-				System.out.println(coordsMultiPolygone.toString());
 
 				JSONArrayCoord = coordsMultiPolygone;
-				System.out.println("JSONArrayCoord.toString()");
-				System.out.println(JSONArrayCoord.toString());
 
 			} else {
 
