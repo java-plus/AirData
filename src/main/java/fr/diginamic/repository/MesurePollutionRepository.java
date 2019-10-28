@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import fr.diginamic.entites.Commune;
 import fr.diginamic.entites.MesurePollution;
 
 /**
@@ -29,6 +30,17 @@ public interface MesurePollutionRepository extends JpaRepository<MesurePollution
 	 * @see org.springframework.data.repository.CrudRepository#findById(java.lang.Object)
 	 */
 	public Optional<MesurePollution> findById(String id);
+
+	default public List<MesurePollution> obtenirLesMesuresDePm10(List<Commune> listeDesCommunes) {
+
+		List<MesurePollution> listeDesMesuresPm10 = new ArrayList<MesurePollution>();
+		for (Commune commune : listeDesCommunes) {
+			listeDesMesuresPm10.add(obtenirLaMesureDePM10(commune.getCodeCommune()).get(0));
+		}
+
+		return listeDesMesuresPm10;
+
+	}
 
 	/**
 	 * Cette methode retourne une liste de MesurePollution (une pour le SO2, une

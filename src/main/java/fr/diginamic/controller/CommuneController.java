@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.diginamic.entites.Commune;
+import fr.diginamic.manager.GeojsonManager;
 import fr.diginamic.service.CommuneService;
 import fr.diginamic.service.MesureMeteoService;
 import fr.diginamic.service.MesurePollutionService;
@@ -32,7 +33,7 @@ public class CommuneController {
 	@Autowired
 	CommuneService communeService;
 	/**
-	 *  Un service de mesure de pollution
+	 * Un service de mesure de pollution
 	 */
 	@Autowired
 	MesurePollutionService mesurePollutionService;
@@ -53,6 +54,12 @@ public class CommuneController {
 	StationDeMesurePollutionService stationDeMesurePollutionService;
 
 	/**
+	 * Un service de station de pollution
+	 */
+	@Autowired
+	GeojsonManager geojsonManager;
+
+	/**
 	 * Cette methode permet d'obtenir la liste complète des communes présentes
 	 * en BDD
 	 * 
@@ -61,6 +68,18 @@ public class CommuneController {
 	@GetMapping
 	public List<Commune> obtenirLaListeDesCommunes() {
 		return communeService.obtenirLaListeDesCommunes();
+	}
+
+	/**
+	 * Cette methode permet d'obtenir la liste complète des communes présentes
+	 * en BDD complétées par ses coordonnées polygonales pour geojson et des
+	 * données de pollutions.
+	 * 
+	 * @return
+	 */
+	@GetMapping("/geojson")
+	public String obtenirLaListeDesCommunesAvecPollution() throws Exception {
+		return geojsonManager.obtenirLaListeDesCommunesAvecPollution();
 	}
 
 	/**

@@ -1,5 +1,7 @@
 package fr.diginamic;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -14,8 +16,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.Arrays;
 
 /**
  * Classe WebSecurityConfig Cette classe gère la méthode configure(HttpSecurity
@@ -43,10 +43,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	public CorsConfigurationSource corsConfigurationSource() {
 		final CorsConfiguration configuration = new CorsConfiguration();
 		configuration.setAllowedOrigins(Arrays.asList("*"));
-		configuration.setAllowedMethods(Arrays.asList("HEAD",
-				"GET", "POST", "PUT", "DELETE", "PATCH"));
+		configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH"));
 		// setAllowCredentials(true) is important, otherwise:
-		// The value of the 'Access-Control-Allow-Origin' header in the response must not be the wildcard '*' when the request's credentials mode is 'include'.
+		// The value of the 'Access-Control-Allow-Origin' header in the response
+		// must not be the wildcard '*' when the request's credentials mode is
+		// 'include'.
 		configuration.setAllowCredentials(true);
 		// setAllowedHeaders is important! Without it, OPTIONS preflight request
 		// will fail with 403 Invalid CORS request
@@ -55,7 +56,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		source.registerCorsConfiguration("/**", configuration);
 		return source;
 	}
-
 
 	/**
 	 * Cette methode définit les urls disponibles (en GET ou POST) par
@@ -74,7 +74,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		http.authorizeRequests().antMatchers(HttpMethod.POST, "/auth").permitAll();
 		http.authorizeRequests().antMatchers(HttpMethod.POST, "/compte").permitAll();
+		http.authorizeRequests().antMatchers(HttpMethod.GET, "/communes/geojson").hasAnyRole("USER", "ADMIN");
 		http.authorizeRequests().antMatchers(HttpMethod.PATCH, "/compte").hasAnyRole("USER", "ADMIN");
+		http.authorizeRequests().antMatchers(HttpMethod.GET, "/communes").hasAnyRole("USER", "ADMIN");
 		http.authorizeRequests().antMatchers(HttpMethod.DELETE, "/compte").hasAnyRole("USER", "ADMIN");
 		http.authorizeRequests().antMatchers(HttpMethod.DELETE, "/compte_avec_admin").hasRole("ADMIN");
 		http.authorizeRequests().antMatchers(HttpMethod.GET, "/**").hasAnyRole("USER", "ADMIN");
@@ -86,7 +88,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		http.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
 		http.cors();
-		http.logout().logoutSuccessHandler((req, resp, auth) -> resp.setStatus(HttpStatus.OK.value())).deleteCookies(TOKEN_COOKIE);
+		http.logout().logoutSuccessHandler((req, resp, auth) -> resp.setStatus(HttpStatus.OK.value()))
+				.deleteCookies(TOKEN_COOKIE);
 	}
 
 }

@@ -61,24 +61,26 @@ public class InsertionEnBasDeDonneeService {
 	 * @throws Exception
 	 */
 	public void insererEnBaseToutesLes24h() throws Exception {
-		// System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 
 		JSONObject myResponse = ApiUtils.callApiPollution(
-				"https://public.opendatasoft.com/api/records/1.0/search/?dataset=openaq&rows=1500&sort=measurements_lastupdated&facet=location&facet=measurements_parameter&facet=measurements_sourcename&facet=measurements_lastupdated&geofilter.polygon=(46.29001987172955%2C-2.48291015625)%2C(48.25028349849022%2C-2.48291015625)%2C(48.25028349849022%2C1.2139892578125)%2C(46.29001987172955%2C1.2139892578125)%2C(46.29001987172955%2C-2.48291015625)");
-		List<StationDeMesurePollution> listeDeStationsDeMesure = JsonManipulation.obtenirLesStationDeMesures(myResponse);
+				"https://public.opendatasoft.com/api/records/1.0/search/?dataset=openaq&rows=10000&sort=measurements_lastupdated&facet=location&facet=measurements_parameter&facet=measurements_sourcename&facet=measurements_lastupdated&geofilter.polygon=(40.29001987172955%2C-10.48291015625)%2C(55.25028349849022%2C-10.48291015625)%2C(55.25028349849022%2C10.2139892578125)%2C(40.29001987172955%2C10.2139892578125)%2C(40.29001987172955%2C-10.48291015625)");
+		List<StationDeMesurePollution> listeDeStationsDeMesure = JsonManipulation
+				.obtenirLesStationDeMesures(myResponse);
 		List<MesurePollution> listeDesMesuresPollution = new ArrayList<MesurePollution>();
 		listeDesMesuresPollution = JsonManipulation.obtenirLesMesures(myResponse, listeDeStationsDeMesure);
 		for (MesurePollution mesurePollution : listeDesMesuresPollution) {
 			createOrNotMesurePollution(mesurePollution);
 		}
 
-		JSONObject myResponseMeteo = ApiUtils.callApiMeteo("http://api.openweathermap.org/data/2.5/box/city?bbox=-2.48291015625,46.29001987172955,1.2139892578125,48.25028349849022,100&appid=cf994ca322a654d044fd952ce00569fe&lang=fr");
+		JSONObject myResponseMeteo = ApiUtils.callApiMeteo(
+				"http://api.openweathermap.org/data/2.5/box/city?bbox=-2.48291015625,46.29001987172955,1.2139892578125,48.25028349849022,100&appid=cf994ca322a654d044fd952ce00569fe&lang=fr");
 		List<StationDeMesureMeteo> listeDeStationsDeMesureMeteo = new ArrayList<StationDeMesureMeteo>();
 		listeDeStationsDeMesureMeteo = JsonManipulation.obtenirLesStationsMeteo(myResponseMeteo);
 
 		/////////////////// OBTENTION DE LA LISTE DES MESURES METEO DISPONIBLES
 		/////////////////// SUR OMPENWEATHERMAP//////////////////////
-		List<MesureMeteo> listeDeMesureMeteo = JsonManipulation.obtenirLesMesuresMeteo(myResponseMeteo, listeDeStationsDeMesureMeteo);
+		List<MesureMeteo> listeDeMesureMeteo = JsonManipulation.obtenirLesMesuresMeteo(myResponseMeteo,
+				listeDeStationsDeMesureMeteo);
 		for (MesureMeteo mesureMeteo : listeDeMesureMeteo) {
 			createOrNotMesureMeteo(mesureMeteo);
 		}
@@ -93,7 +95,8 @@ public class InsertionEnBasDeDonneeService {
 	 */
 	private void createOrNotMesureMeteo(MesureMeteo mesureMeteo) {
 		if (!mesureMeteoService.obtenirMesureMeteo(mesureMeteo).isPresent()) {
-			mesureMeteo.setStationDeMesure(stationMeteoRepository.findByLatitudeAndLongitude(mesureMeteo.getStationDeMesure().getLatitude(), mesureMeteo.getStationDeMesure().getLongitude()));
+			mesureMeteo.setStationDeMesure(stationMeteoRepository.findByLatitudeAndLongitude(
+					mesureMeteo.getStationDeMesure().getLatitude(), mesureMeteo.getStationDeMesure().getLongitude()));
 			mesureMeteoService.mettreEnBaseMesureMeteo(mesureMeteo);
 		}
 	}
@@ -107,7 +110,9 @@ public class InsertionEnBasDeDonneeService {
 	 */
 	private void createOrNotMesurePollution(MesurePollution mesurePollution) {
 		if (!mesurePollutionService.obtenirMesurePollution(mesurePollution).isPresent()) {
-			mesurePollution.setStationDeMesure(stationPollutionRepository.findByLatitudeAndLongitude(mesurePollution.getStationDeMesure().getLatitude(), mesurePollution.getStationDeMesure().getLongitude()));
+			mesurePollution.setStationDeMesure(stationPollutionRepository.findByLatitudeAndLongitude(
+					mesurePollution.getStationDeMesure().getLatitude(),
+					mesurePollution.getStationDeMesure().getLongitude()));
 			mesurePollutionService.mettreEnBaseMesurePollution(mesurePollution);
 		}
 		;
@@ -119,18 +124,21 @@ public class InsertionEnBasDeDonneeService {
 		/////////////////// MESURE POLLUTION//////////////////////
 		JSONObject myResponse = ApiUtils.callApiPollution(
 				"https://public.opendatasoft.com/api/records/1.0/search/?dataset=openaq&rows=1500&sort=measurements_lastupdated&facet=location&facet=measurements_parameter&facet=measurements_sourcename&facet=measurements_lastupdated&geofilter.polygon=(46.29001987172955%2C-2.48291015625)%2C(48.25028349849022%2C-2.48291015625)%2C(48.25028349849022%2C1.2139892578125)%2C(46.29001987172955%2C1.2139892578125)%2C(46.29001987172955%2C-2.48291015625)");
-		List<StationDeMesurePollution> listeDeStationsDeMesurePollution = JsonManipulation.obtenirLesStationDeMesures(myResponse);
+		List<StationDeMesurePollution> listeDeStationsDeMesurePollution = JsonManipulation
+				.obtenirLesStationDeMesures(myResponse);
 
 		/////////////////// OBTENTION DE LA LISTE DES COMMUNES DISPONIBLES SUR
 		/////////////////// GEO DATA//////////////////////
-		JSONObject myResponseCommunes = ApiUtils.callApiCommunes("https://geo.api.gouv.fr/communes?codeRegion=52&fields=nom,code,codesPostaux,centre,codeRegion,population&format=json&geometry=centre");
+		JSONObject myResponseCommunes = ApiUtils.callApiCommunes(
+				"https://geo.api.gouv.fr/communes?codeRegion=52&fields=nom,code,codesPostaux,centre,codeRegion,population&format=json&geometry=centre");
 		List<Commune> listeDesCommunes = new ArrayList<Commune>();
 		listeDesCommunes = JsonManipulation.obtenirLesCommunes(myResponseCommunes);
 
 		/////////////////// MISE EN RELATION DES COMMUNES DISPONIBLES SUR GEO
 		/////////////////// DATA ET DES STATIONS DE
 		/////////////////// MESURES//////////////////////
-		listeDesCommunes = CommuneUtils.obtenirLesStationsDeMesuresLesPlusProches(listeDesCommunes, listeDeStationsDeMesurePollution);
+		listeDesCommunes = CommuneUtils.obtenirLesStationsDeMesuresLesPlusProches(listeDesCommunes,
+				listeDeStationsDeMesurePollution);
 
 		/////////////////// OBTENTION DE LA LISTE DES
 		/////////////////// MESURES POLLUTION//////////////////////
@@ -139,14 +147,17 @@ public class InsertionEnBasDeDonneeService {
 
 		/////////////////// OBTENTION DE LA LISTE DES STATIONS METEO DISPONIBLES
 		/////////////////// SUR OMPENWEATHERMAP//////////////////////
-		JSONObject myResponseMeteo = ApiUtils.callApiMeteo("http://api.openweathermap.org/data/2.5/box/city?bbox=-2.48291015625,46.29001987172955,1.2139892578125,48.25028349849022,100&appid=cf994ca322a654d044fd952ce00569fe");
+		JSONObject myResponseMeteo = ApiUtils.callApiMeteo(
+				"http://api.openweathermap.org/data/2.5/box/city?bbox=-2.48291015625,46.29001987172955,1.2139892578125,48.25028349849022,100&appid=cf994ca322a654d044fd952ce00569fe");
 		List<StationDeMesureMeteo> listeDeStationsDeMesureMeteo = new ArrayList<StationDeMesureMeteo>();
 		listeDeStationsDeMesureMeteo = JsonManipulation.obtenirLesStationsMeteo(myResponseMeteo);
-		listeDesCommunes = CommuneUtils.obtenirLesStationsDeMesuresMeteoLesPlusProches(listeDesCommunes, listeDeStationsDeMesureMeteo);
+		listeDesCommunes = CommuneUtils.obtenirLesStationsDeMesuresMeteoLesPlusProches(listeDesCommunes,
+				listeDeStationsDeMesureMeteo);
 
 		/////////////////// OBTENTION DE LA LISTE DES MESURES METEO DISPONIBLES
 		/////////////////// SUR OMPENWEATHERMAP//////////////////////
-		List<MesureMeteo> listeDeMesureMeteo = JsonManipulation.obtenirLesMesuresMeteo(myResponseMeteo, listeDeStationsDeMesureMeteo);
+		List<MesureMeteo> listeDeMesureMeteo = JsonManipulation.obtenirLesMesuresMeteo(myResponseMeteo,
+				listeDeStationsDeMesureMeteo);
 		/////////////////// INSERTION EN BASE//////////////////////
 
 		stationDeMesurePollutionService.insererEnBaseListeStationsDeMesurePollution(listeDeStationsDeMesurePollution);
