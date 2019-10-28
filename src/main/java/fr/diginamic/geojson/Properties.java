@@ -11,6 +11,5 @@ public class Properties {
 
 	private String code;
 	private String nom;
-	// private double mesurePm10;
 
 }

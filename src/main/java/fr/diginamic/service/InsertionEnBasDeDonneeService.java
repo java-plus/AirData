@@ -61,7 +61,6 @@ public class InsertionEnBasDeDonneeService {
 	 * @throws Exception
 	 */
 	public void insererEnBaseToutesLes24h() throws Exception {
-		// System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 
 		JSONObject myResponse = ApiUtils.callApiPollution(
 				"https://public.opendatasoft.com/api/records/1.0/search/?dataset=openaq&rows=10000&sort=measurements_lastupdated&facet=location&facet=measurements_parameter&facet=measurements_sourcename&facet=measurements_lastupdated&geofilter.polygon=(40.29001987172955%2C-10.48291015625)%2C(55.25028349849022%2C-10.48291015625)%2C(55.25028349849022%2C10.2139892578125)%2C(40.29001987172955%2C10.2139892578125)%2C(40.29001987172955%2C-10.48291015625)");

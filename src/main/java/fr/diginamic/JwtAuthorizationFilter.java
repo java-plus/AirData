@@ -29,8 +29,7 @@ import io.jsonwebtoken.Jwts;
  * doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain
  * chain) qui place dans le context les informations sur l'utilisateur présentes
  * dans son cookie d'authentification
- * 
- * @author Diginamic02
+ *
  *
  */
 @Configuration
@@ -38,10 +37,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
 	@Value("${jwt.cookie}")
 	private String TOKEN_COOKIE;
-
 	@Value("${jwt.secret}")
 	private String SECRET;
-
 	private UtilisateurConnecteService utilisateurConnecteService = new UtilisateurConnecteService();
 
 	/**
@@ -55,6 +52,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
 			throws ServletException, IOException {
+
 		if (req.getCookies() != null) {
 			Stream.of(req.getCookies()).filter(cookie -> cookie.getName().equals(TOKEN_COOKIE)).map(Cookie::getValue)
 					.forEach(token -> {
@@ -65,13 +63,12 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 						List<SimpleGrantedAuthority> authorities = Arrays
 								.asList(body.get("roles", String.class).split(",")).stream()
 								.map(roleString -> new SimpleGrantedAuthority(roleString)).collect(Collectors.toList());
+
 						Authentication authentication = new UsernamePasswordAuthenticationToken(
 								utilisateurConnecteService, null, authorities);
 						SecurityContextHolder.getContext().setAuthentication(authentication);
 					});
 		}
-
 		chain.doFilter(req, res);
-
 	}
 }

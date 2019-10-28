@@ -135,8 +135,6 @@ public class JsonManipulation {
 
 		int count = tableauDesCommunes.length();
 		for (int i = 0; i < count; i++) { // iterate through jsonArray
-			// for (Object object : tableauDesCommunes) {
-			// JSONObject commune = (JSONObject) object;
 			Commune communeTableau = new Commune(tableauDesCommunes.getJSONObject(i).getString("nom"),
 					tableauDesCommunes.getJSONObject(i).getString("code"),
 					tableauDesCommunes.getJSONObject(i).getJSONObject("centre").getJSONArray("coordinates")
@@ -174,17 +172,13 @@ public class JsonManipulation {
 																							// @
 																							// i
 																							// position
-			// System.out.println("jsonObject " + i + " ------ " + jsonObject);
 
 			JSONObject jsonObjectGeometry = jsonObject.getJSONObject("geometry");
 			Double latitude = (Double) jsonObjectGeometry.getJSONArray("coordinates").get(1);
-			// System.out.println(jsonObjectGeometry.getJSONArray("coordinates").get(0));
 			Double longitude = (Double) jsonObjectGeometry.getJSONArray("coordinates").get(0);
-			// System.out.println(jsonObjectGeometry.getJSONArray("coordinates").get(1));
 
 			JSONObject jsonObjectFields = jsonObject.getJSONObject("fields");
 			String typeDonnee = jsonObjectFields.getString("measurements_parameter");
-			// System.out.println(typeDonnee);
 
 			boolean stationsDeMesurePollutionExisteDeja = false;
 
@@ -291,8 +285,7 @@ public class JsonManipulation {
 
 		List<StationDeMesureMeteo> listeDesStationMeteo = new ArrayList<StationDeMesureMeteo>();
 
-		// JSONArray longitude =
-		// myResponse.getJSONObject("communes").getJSONArray("list");
+
 		int count = myResponse.getJSONObject("communes").getJSONArray("list").length();
 
 		for (int i = 0; i < count; i++) { // iterate through jsonArray

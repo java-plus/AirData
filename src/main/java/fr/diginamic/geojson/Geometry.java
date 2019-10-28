@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 public class Geometry {
 
 	private String type;
-	// private double[] coordinatess;
 	private List<List<CoordonneeGps>> coordinates;
 
 }
