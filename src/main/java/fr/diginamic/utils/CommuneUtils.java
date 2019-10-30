@@ -1,8 +1,12 @@
 package fr.diginamic.utils;
 
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import fr.diginamic.entites.Commune;
+import fr.diginamic.entites.MesurePollution;
 import fr.diginamic.entites.StationDeMesureMeteo;
 import fr.diginamic.entites.StationDeMesurePollution;
 
@@ -112,6 +116,60 @@ public class CommuneUtils {
 					commune.setDistanceStationDeMesureMeteo((int) (distancecalculee * 111110));
 					commune.setStationDeMesureMeteo(stationDeMesureMeteo);
 				}
+			}
+
+		}
+
+		return listeDesCommunes;
+	}
+
+	public static List<Commune> obtenirMesuresPollutionLesPlusRecentes(List<Commune> listeDesCommunes,
+			List<MesurePollution> listeDesMesuresPollution) {
+		for (Commune commune : listeDesCommunes) {
+
+			String[] typeDeDonnee = { "CO", "NO2", "PM10", "O3", "PM2.5", "SO2" };
+			StationDeMesurePollution[] stationDeMesurePollutionConcerne = { commune.getStationDeMesureCO(),
+					commune.getStationDeMesureNO2(), commune.getStationDeMesurePM10(), commune.getStationDeMesureO3(),
+					commune.getStationDeMesurePM25(), commune.getStationDeMesureSO2() };
+
+			for (int i = 0; i < typeDeDonnee.length; i++) {
+
+				Instant minInstant = Instant.ofEpochMilli(Long.MIN_VALUE);
+				ZonedDateTime dateMesurePollutionLaPlusRecente = minInstant.atZone(ZoneOffset.UTC);
+				for (MesurePollution mesurePollution : listeDesMesuresPollution) {
+					boolean mesureTrouvee = false;
+					if (mesurePollution.getTypeDeDonnee().equals(typeDeDonnee[i])
+							&& mesurePollution.getStationDeMesure().equals(stationDeMesurePollutionConcerne[i])) {
+						if (dateMesurePollutionLaPlusRecente.compareTo(mesurePollution.getDate()) < 0) {
+							dateMesurePollutionLaPlusRecente = mesurePollution.getDate();
+							mesureTrouvee = true;
+						}
+					}
+
+					if (mesureTrouvee) {
+						if (typeDeDonnee[i].equals("CO")) {
+
+							commune.setMesurePollutionCO(mesurePollution);
+						}
+						if (typeDeDonnee[i].equals("NO2")) {
+							commune.setMesurePollutionNO2(mesurePollution);
+						}
+						if (typeDeDonnee[i].equals("PM10")) {
+							commune.setMesurePollutionPM10(mesurePollution);
+						}
+						if (typeDeDonnee[i].equals("O3")) {
+							commune.setMesurePollutionO3(mesurePollution);
+						}
+						if (typeDeDonnee[i].equals("PM2.5")) {
+							commune.setMesurePollutionPM25(mesurePollution);
+						}
+						if (typeDeDonnee[i].equals("SO2")) {
+							commune.setMesurePollutionSO2(mesurePollution);
+						}
+
+					}
+				}
+
 			}
 
 		}

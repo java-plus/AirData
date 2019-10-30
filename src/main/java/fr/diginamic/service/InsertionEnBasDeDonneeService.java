@@ -129,8 +129,9 @@ public class InsertionEnBasDeDonneeService {
 
 		/////////////////// OBTENTION DE LA LISTE DES COMMUNES DISPONIBLES SUR
 		/////////////////// GEO DATA//////////////////////
+
 		JSONObject myResponseCommunes = ApiUtils.callApiCommunes(
-				"https://geo.api.gouv.fr/communes?codeRegion=52&fields=nom,code,codesPostaux,centre,codeRegion,population&format=json&geometry=centre");
+				"https://geo.api.gouv.fr/communes?codeRegion=52&fields=nom,code,contour,codesPostaux,centre,codeRegion,population&format=json&geometry=centre");
 		List<Commune> listeDesCommunes = new ArrayList<Commune>();
 		listeDesCommunes = JsonManipulation.obtenirLesCommunes(myResponseCommunes);
 
@@ -144,6 +145,12 @@ public class InsertionEnBasDeDonneeService {
 		/////////////////// MESURES POLLUTION//////////////////////
 		List<MesurePollution> listeDesMesuresPollution = new ArrayList<MesurePollution>();
 		listeDesMesuresPollution = JsonManipulation.obtenirLesMesures(myResponse, listeDeStationsDeMesurePollution);
+
+		/////////////////// MISE EN RELATION DES COMMUNES DISPONIBLES SUR GEO
+		/////////////////// DATA ET MESURES POLLUTION LES PLUS
+		/////////////////// RECENTES//////////////////////
+		listeDesCommunes = CommuneUtils.obtenirMesuresPollutionLesPlusRecentes(listeDesCommunes,
+				listeDesMesuresPollution);
 
 		/////////////////// OBTENTION DE LA LISTE DES STATIONS METEO DISPONIBLES
 		/////////////////// SUR OMPENWEATHERMAP//////////////////////
@@ -162,9 +169,8 @@ public class InsertionEnBasDeDonneeService {
 
 		stationDeMesurePollutionService.insererEnBaseListeStationsDeMesurePollution(listeDeStationsDeMesurePollution);
 		stationDeMesureMeteoService.insererEnBaseListeStationsDeMesureMeteo(listeDeStationsDeMesureMeteo);
-		communeService.insererEnBas(listeDesCommunes);
-
 		mesurePollutionService.insererEnBase(listeDesMesuresPollution);
+		communeService.insererEnBas(listeDesCommunes);
 
 		mesureMeteoService.insererEnBase(listeDeMesureMeteo);
 		return "ok";

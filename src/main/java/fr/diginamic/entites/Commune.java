@@ -141,6 +141,35 @@ public class Commune implements Serializable {
 	StationDeMesurePollution stationDeMesureCO;
 	int distanceCO;
 
+	String typeGeometryGeojson;
+
+	@Column(length = 100000)
+	String coordinatesGeometryGeojson;
+
+	@ManyToOne
+	@JoinColumn(name = "MesureSO2_id")
+	MesurePollution mesurePollutionSO2;
+
+	@ManyToOne
+	@JoinColumn(name = "MesurePM25_id")
+	MesurePollution mesurePollutionPM25;
+
+	@ManyToOne
+	@JoinColumn(name = "MesurePM10_id")
+	MesurePollution mesurePollutionPM10;
+
+	@ManyToOne
+	@JoinColumn(name = "MesureNO2_id")
+	MesurePollution mesurePollutionNO2;
+
+	@ManyToOne
+	@JoinColumn(name = "MesureO3_id")
+	MesurePollution mesurePollutionO3;
+
+	@ManyToOne
+	@JoinColumn(name = "MesureCO_id")
+	MesurePollution mesurePollutionCO;
+
 	/**
 	 * Constructeur retournant une instance de Commune
 	 * 
@@ -151,13 +180,16 @@ public class Commune implements Serializable {
 	 * @param population
 	 */
 	public Commune(@NotBlank String nom, @NotBlank @Pattern(regexp = "^[0-9]*$") String codeCommune,
-			@NotNull double latitude, @NotNull double longitude, @NotNull Integer population) {
+			@NotNull double latitude, @NotNull double longitude, @NotNull Integer population,
+			@NotNull String typeGeometryGeojson, @NotNull String coordinatesGeometryGeojson) {
 		super();
 		this.nom = nom;
 		this.codeCommune = codeCommune;
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.population = population;
+		this.typeGeometryGeojson = typeGeometryGeojson;
+		this.coordinatesGeometryGeojson = coordinatesGeometryGeojson;
 	}
 
 }
